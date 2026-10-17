@@ -1,0 +1,216 @@
+{
+  "name": "d5fc/flip-card",
+  "d4Shortcode": "",
+  "title": "Flip Card",
+  "titles": "Flip Cards",
+  "moduleIcon": "d5fc/module-flip-card",
+  "moduleClassName": "d5fc_flip_card",
+  "moduleOrderClassName": "d5fc_flip_card",
+  "category": "module",
+  "childModuleName": "d5fc/flip-card-face",
+  "childModuleTitle": "Face",
+  "childrenName": [
+    "d5fc/flip-card-face"
+  ],
+  "attributes": {
+    "module": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "default": {
+        "meta": {
+          "adminLabel": {
+            "desktop": {
+              "value": "Flip Card"
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "border": {
+          "important": true
+        }
+      },
+      "settings": {
+        "meta": {
+          "adminLabel": {}
+        },
+        "advanced": {
+          "htmlAttributes": {},
+          "text": {
+            "component": {
+              "props": {
+                "fields": {
+                  "color": {
+                    "render": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "background": {},
+          "sizing": {},
+          "spacing": {},
+          "border": {},
+          "boxShadow": {},
+          "filters": {},
+          "transform": {},
+          "animation": {},
+          "disabledOn": {},
+          "transition": {},
+          "position": {},
+          "zIndex": {},
+          "scroll": {},
+          "sticky": {}
+        }
+      }
+    },
+    "flip": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "default": {
+        "advanced": {
+          "preview": {
+            "desktop": {
+              "value": "front"
+            }
+          },
+          "direction": {
+            "desktop": {
+              "value": "left"
+            }
+          },
+          "duration": {
+            "desktop": {
+              "value": "600ms"
+            }
+          }
+        }
+      },
+      "settings": {
+        "advanced": {
+          "preview": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.preview",
+              "label": "Show in Builder",
+              "description": "Choose which face is shown while you edit this card in the Visual Builder. This has no effect on the live page.",
+              "priority": 10,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false,
+                "preset": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "front": {
+                      "label": "Front"
+                    },
+                    "back": {
+                      "label": "Back"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "direction": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.direction",
+              "label": "Flip Direction",
+              "description": "Choose the direction in which the card turns over.",
+              "priority": 20,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "left": {
+                      "label": "Left"
+                    },
+                    "right": {
+                      "label": "Right"
+                    },
+                    "up": {
+                      "label": "Up"
+                    },
+                    "down": {
+                      "label": "Down"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "duration": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.duration",
+              "label": "Flip Duration",
+              "description": "How long the flip animation takes.",
+              "priority": 30,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "min": 0,
+                  "max": 3000,
+                  "allowedUnits": [
+                    "ms"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "customCssFields": {
+    "inner": {
+      "subName": "inner",
+      "selectorSuffix": " .d5fc_flip_card__inner"
+    }
+  },
+  "settings": {
+    "content": "auto",
+    "design": "auto",
+    "advanced": "auto",
+    "groups": {
+      "contentFlip": {
+        "panel": "content",
+        "priority": 10,
+        "groupName": "contentFlip",
+        "multiElements": true,
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Flip"
+          }
+        }
+      }
+    }
+  }
+}

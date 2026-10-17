@@ -1,0 +1,67 @@
+{
+  "name": "d5fc/flip-card-face",
+  "d4Shortcode": "",
+  "title": "Face",
+  "titles": "Faces",
+  "moduleIcon": "d5fc/module-flip-card",
+  "moduleClassName": "d5fc_flip_card_face",
+  "moduleOrderClassName": "d5fc_flip_card_face",
+  "category": "child-module",
+  "childrenName": [],
+  "attributes": {
+    "module": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "default": {
+        "meta": {
+          "adminLabel": {
+            "desktop": {
+              "value": "Face"
+            }
+          }
+        }
+      },
+      "styleProps": {
+        "border": {
+          "important": true
+        }
+      },
+      "settings": {
+        "meta": {
+          "adminLabel": {}
+        },
+        "advanced": {
+          "htmlAttributes": {},
+          "text": {
+            "component": {
+              "props": {
+                "fields": {
+                  "color": {
+                    "render": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "decoration": {
+          "layout": {},
+          "background": {},
+          "sizing": {},
+          "spacing": {},
+          "border": {},
+          "boxShadow": {},
+          "filters": {},
+          "overflow": {}
+        }
+      }
+    }
+  },
+  "customCssFields": {},
+  "settings": {
+    "content": "auto",
+    "design": "auto",
+    "advanced": "auto",
+    "groups": {}
+  }
+}

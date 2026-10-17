@@ -1,0 +1,16 @@
+// Face: starting look for a new card. `:where()` keeps the specificity at zero,
+// so any value set in the module's design settings wins.
+
+:where(.d5fc_flip_card_face) {
+  box-sizing: border-box;
+  min-height: 200px;
+  padding: 30px;
+}
+
+:where(.d5fc_flip_card__inner > .d5fc_flip_card_face:nth-child(1 of .d5fc_flip_card_face)) {
+  background-color: #f4f6f8;
+}
+
+:where(.d5fc_flip_card__inner > .d5fc_flip_card_face:nth-child(2 of .d5fc_flip_card_face)) {
+  background-color: #e3eaf2;
+}
