@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output (created by `npm run build` / `npm run zip`)
+build/
+dist/
+
+# Never commit Divi itself (proprietary) or other ZIPs
+*.zip
+
+# Misc
+.DS_Store
+npm-debug.log*
+.env

@@ -1,0 +1,16 @@
+// Flip Card: Visual Builder only styles.
+
+$face: '.d5fc_flip_card_face';
+
+// Show faces beyond the second one below the card, clearly marked as unused,
+// so they can be found and deleted.
+.d5fc_flip_card--builder .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {
+  display: block !important;
+  grid-area: auto;
+  margin-top: 10px;
+  opacity: 0.6;
+  outline: 2px dashed #e02b20;
+  outline-offset: -2px;
+  transform: none;
+  visibility: visible;
+}

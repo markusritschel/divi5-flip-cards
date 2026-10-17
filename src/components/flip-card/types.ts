@@ -1,0 +1,55 @@
+import { ModuleEditProps } from '@divi/module-library';
+import {
+  FormatBreakpointStateAttr,
+  InternalAttrs,
+  type Element,
+  type Module,
+} from '@divi/types';
+
+export type FlipCardPreview = 'front' | 'back';
+
+export type FlipCardDirection = 'left' | 'right' | 'up' | 'down';
+
+export interface FlipCardCssAttr extends Module.Css.AttributeValue {
+  inner?: string;
+}
+
+export type FlipCardCssGroupAttr = FormatBreakpointStateAttr<FlipCardCssAttr>;
+
+export interface FlipCardAttrs extends InternalAttrs {
+  css?: FlipCardCssGroupAttr;
+
+  module?: {
+    meta?: Element.Meta.Attributes;
+    advanced?: {
+      htmlAttributes?: Element.Advanced.IdClasses.Attributes;
+      text?: Element.Advanced.Text.Attributes;
+    };
+    decoration?: Element.Decoration.PickedAttributes<
+      'animation' |
+      'background' |
+      'border' |
+      'boxShadow' |
+      'disabledOn' |
+      'filters' |
+      'position' |
+      'scroll' |
+      'sizing' |
+      'spacing' |
+      'sticky' |
+      'transform' |
+      'transition' |
+      'zIndex'
+    >;
+  };
+
+  flip?: {
+    advanced?: {
+      preview?: FormatBreakpointStateAttr<FlipCardPreview>;
+      direction?: FormatBreakpointStateAttr<FlipCardDirection>;
+      duration?: FormatBreakpointStateAttr<string>;
+    };
+  };
+}
+
+export type FlipCardEditProps = ModuleEditProps<FlipCardAttrs>;
