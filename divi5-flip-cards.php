@@ -24,11 +24,11 @@ define( 'D5FC_URL', plugin_dir_url( __FILE__ ) );
 define( 'D5FC_MODULES_JSON_PATH', D5FC_PATH . 'build/modules-json/' );
 
 /**
- * PSR-4 autoloader for the `D5FC\` namespace, which maps to the `modules/` folder.
+ * PSR-4 autoloader for the `D5FC\Modules\` namespace, which maps to the `modules/` folder.
  */
 spl_autoload_register(
 	function ( $class_name ) {
-		$prefix = 'D5FC\\';
+		$prefix = 'D5FC\\Modules\\';
 
 		if ( 0 !== strpos( $class_name, $prefix ) ) {
 			return;

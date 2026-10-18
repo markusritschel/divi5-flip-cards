@@ -5,7 +5,7 @@ Decisions, milestones and the open verification checklist are in `PLAN.md`. Read
 
 ## Layout
 
-- `divi5-flip-cards.php`: bootstrap: constants, PSR-4 autoloader (`D5FC\` → `modules/`), asset enqueueing, Divi-missing notice.
+- `divi5-flip-cards.php`: bootstrap: constants, PSR-4 autoloader (`D5FC\Modules\` → `modules/`), asset enqueueing, Divi-missing notice.
 - `modules/`: PHP, front-end rendering. `Modules.php` registers the modules on `divi_module_library_modules_dependency_tree`.
 - `src/components/<module>/`: Visual Builder side (TypeScript/React) plus the `module.json` definition and styles.
   - `module.json`: the single source of the module definition; copied to `build/modules-json/` and read by PHP.
