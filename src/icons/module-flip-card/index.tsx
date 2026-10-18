@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
 
-// Icon data.
+// Icon data. Drawn on a 16x16 grid: the module picker and the layers panel render module icons
+// with a fixed `viewBox="0 0 16 16"` and ignore the icon's own viewBox.
 export const name      = 'd5fc/module-flip-card';
-export const viewBox   = '0 0 24 24';
+export const viewBox   = '0 0 16 16';
 export const component = (): ReactElement => (
-  <path d="M3 8h11v14H3zM5 10v10h7V10zM16 10h2v12h-2zM19.5 12H21v8h-1.5zM5 3.75h9V1.5L18 4.5l-4 3V5.25H5z" />
+  <path d="M2 5.333h7.333v9.334H2zM3.333 6.667v6.666h4.667V6.667zM10.667 6.667h1.333v8h-1.333zM13 8h1v5.333h-1zM3.333 2.5h6V1L12 3l-2.667 2V3.5h-6z" />
 );
