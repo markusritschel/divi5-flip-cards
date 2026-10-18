@@ -18,6 +18,11 @@ trap 'rm -rf "$staging"' EXIT
 
 mkdir -p "$staging/$slug"
 cp -R "$slug.php" readme.txt LICENSE modules build "$staging/$slug/"
+
+# Runtime Composer dependencies (the update checker), when installed with `composer install --no-dev`.
+if [ -d vendor ]; then
+  cp -R vendor "$staging/$slug/"
+fi
 find "$staging/$slug/build" -name '*.map' -delete
 
 mkdir -p dist

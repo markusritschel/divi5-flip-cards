@@ -1,0 +1,16 @@
+{
+  "name": "markusritschel/divi5-flip-cards",
+  "description": "Flip Card module for Divi 5.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4",
+    "yahnis-elsts/plugin-update-checker": "^5.5"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4.33"
+    },
+    "sort-packages": true
+  }
+}

@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name:       Flip Cards for Divi 5
+ * Plugin URI:        https://github.com/markusritschel/divi5-flip-cards
  * Description:       A flip card module for Divi 5. Put any Divi modules on the front and the back.
  * Version:           0.2.0
  * Requires at least: 6.5
@@ -10,6 +11,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       divi5-flip-cards
  * Domain Path:       /languages
+ * Update URI:        https://github.com/markusritschel/divi5-flip-cards
  *
  * @package D5FC
  */
@@ -19,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'D5FC_VERSION', '0.2.0' );
+define( 'D5FC_FILE', __FILE__ );
 define( 'D5FC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'D5FC_URL', plugin_dir_url( __FILE__ ) );
 define( 'D5FC_MODULES_JSON_PATH', D5FC_PATH . 'build/modules-json/' );
@@ -98,6 +101,14 @@ function d5fc_missing_requirements() {
 require D5FC_PATH . 'modules/Modules.php';
 
 D5FC\Modules\StarterLayouts\StarterLayouts::load();
+
+// Composer dependencies (Plugin Update Checker); absent in a plain git checkout.
+if ( is_readable( D5FC_PATH . 'vendor/autoload.php' ) ) {
+	require_once D5FC_PATH . 'vendor/autoload.php';
+}
+
+// Updates from GitHub releases; independent of Divi, so they keep working when Divi is off.
+D5FC\Modules\Updater\Updater::register();
 
 /**
  * Version string for an asset: the file's modification time, so browsers pick up new builds.
