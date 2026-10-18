@@ -38,6 +38,39 @@ $face: '.d5fc_flip_card_face';
   content: 'Back';
 }
 
+// Front/Back switch (edit.tsx), next to Divi's module toolbar in the top right corner.
+// The `#page-container .et-fb-root-area` prefix outranks Divi's rule that turns off pointer
+// events for everything inside a module in the builder.
+.d5fc_flip_card__switch {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 84px;
+  display: none;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #2b3038;
+  font-size: 11px;
+  line-height: 24px;
+}
+
+.d5fc_flip_card:hover > .d5fc_flip_card__switch {
+  display: flex;
+}
+
+#page-container .et-fb-root-area .d5fc_flip_card__switch button {
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+#page-container .et-fb-root-area .d5fc_flip_card__switch button.is-active {
+  background: #2b87da;
+}
+
 // Show faces beyond the second one below the card, clearly marked as unused,
 // so they can be found and deleted.
 .d5fc_flip_card--builder .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {
