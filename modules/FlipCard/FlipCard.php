@@ -185,6 +185,13 @@ class FlipCard implements DependencyInterface {
 
 		$classnames_instance->add( 'd5fc_flip_card--trigger-' . $trigger, true );
 
+		// Slide: how far the back face reaches ("full" needs no class).
+		$back_size = $attrs['flip']['advanced']['backSize']['desktop']['value'] ?? 'full';
+
+		if ( in_array( $back_size, [ 'content', 'fixed' ], true ) ) {
+			$classnames_instance->add( 'd5fc_flip_card--back-' . $back_size, true );
+		}
+
 		$classnames_instance->add( 'd5fc_flip_card--hint', self::has_hint( $attrs ) );
 
 		// How a flipped card returns (click and flip button triggers); read by the front-end script.
@@ -260,6 +267,13 @@ class FlipCard implements DependencyInterface {
 											'declarationFunction' => [ self::class, 'backdrop_blur_declaration' ],
 										],
 									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'attr'                => $attrs['flip']['advanced']['backSizeValue'] ?? [],
+											'declarationFunction' => [ self::class, 'back_size_declaration' ],
+										],
+									],
 								],
 							],
 						]
@@ -304,6 +318,31 @@ class FlipCard implements DependencyInterface {
 
 		if ( is_string( $duration ) && '' !== $duration ) {
 			$style_declarations->add( '--d5fc-duration', $duration );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Outputs the fixed size of the sliding back face as a CSS custom property. Mirrors
+	 * `backSizeDeclaration` in `style-declarations.ts`.
+	 *
+	 * @param array $params Declaration parameters; `attrValue` holds the size, e.g. `50%`.
+	 *
+	 * @return string
+	 */
+	public static function back_size_declaration( $params ) {
+		$size = $params['attrValue'] ?? '';
+
+		$style_declarations = new StyleDeclarations(
+			[
+				'returnType' => 'string',
+				'important'  => false,
+			]
+		);
+
+		if ( is_string( $size ) && '' !== $size ) {
+			$style_declarations->add( '--d5fc-back-size', $size );
 		}
 
 		return $style_declarations->value();

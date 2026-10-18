@@ -11,7 +11,7 @@ import {
 // Local dependencies.
 import { FlipCardAttrs } from './types';
 import { cssFields } from './custom-css';
-import { backdropBlurDeclaration, durationDeclaration } from './style-declarations';
+import { backdropBlurDeclaration, backSizeDeclaration, durationDeclaration } from './style-declarations';
 
 /**
  * Flip Card style components.
@@ -53,6 +53,13 @@ export const ModuleStyles = ({
             props:         {
               attr:                attrs?.flip?.advanced?.backdropBlur,
               declarationFunction: backdropBlurDeclaration,
+            },
+          },
+          {
+            componentName: 'divi/common',
+            props:         {
+              attr:                attrs?.flip?.advanced?.backSizeValue,
+              declarationFunction: backSizeDeclaration,
             },
           },
         ],

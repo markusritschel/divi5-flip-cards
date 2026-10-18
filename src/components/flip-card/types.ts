@@ -16,6 +16,8 @@ export type FlipCardTrigger = 'hover' | 'click' | 'button';
 
 export type FlipCardButtonPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
+export type FlipCardBackSize = 'full' | 'content' | 'fixed';
+
 export interface FlipCardCssAttr extends Module.Css.AttributeValue {
   inner?: string;
 }
@@ -59,6 +61,8 @@ export interface FlipCardAttrs extends InternalAttrs {
       hint?: FormatBreakpointStateAttr<'on' | 'off'>;
       effect?: FormatBreakpointStateAttr<FlipCardEffect>;
       backdropBlur?: FormatBreakpointStateAttr<string>;
+      backSize?: FormatBreakpointStateAttr<FlipCardBackSize>;
+      backSizeValue?: FormatBreakpointStateAttr<string>;
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
     };

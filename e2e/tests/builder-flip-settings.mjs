@@ -119,6 +119,25 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   await page.close();
 });
 
+test('Back Face Size: slide only; Fixed Size only for fixed; the stacked view stays in flow', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  const shown = (label) => page.getByText(label, { exact: true }).isVisible();
+  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [false, false], 'flip');
+  await tile(page, 'Slide').click();
+  await page.waitForTimeout(3000);
+  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [true, false], 'slide');
+  await tile(page, 'Fixed').click();
+  await page.waitForTimeout(3000);
+  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [true, true], 'fixed');
+  assert.match(await cardClasses(app), /--back-fixed\b/);
+  const position = await app.evaluate(() => getComputedStyle(document.querySelectorAll('.d5fc_flip_card > .d5fc_flip_card__inner > .d5fc_flip_card_face')[1]).position);
+  assert.notEqual(position, 'absolute', 'stacked view keeps both faces in flow');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('after a preview, the canvas keeps the "Show in Builder" view', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');
