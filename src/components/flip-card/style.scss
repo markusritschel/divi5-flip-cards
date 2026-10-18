@@ -38,6 +38,11 @@ $face: '.d5fc_flip_card_face';
   content: 'Back';
 }
 
+// Settings changes that must not animate (edit.tsx, `changeInstantly`).
+.d5fc_flip_card--instant > .d5fc_flip_card__inner > #{$face} {
+  transition: none !important;
+}
+
 // Front/Back switch (edit.tsx), next to Divi's module toolbar in the top right corner.
 // The `#page-container .et-fb-root-area` prefix outranks Divi's rule that turns off pointer
 // events for everything inside a module in the builder.

@@ -1,5 +1,5 @@
 // External dependencies.
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { ReactElement, useLayoutEffect, useRef } from 'react';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -68,15 +68,28 @@ const FaceSwitch = ({ id, preview }: { id: string; preview: FlipCardPreview }): 
   );
 };
 
+// Applies class changes to the card without animating them: `--instant` (style.scss) turns the
+// face transitions off while the browser recalculates the styles once.
+const changeInstantly = (card: HTMLElement, change: () => void): void => {
+  card.classList.add('d5fc_flip_card--instant');
+  change();
+  void card.offsetWidth; // Forces the style recalculation while transitions are off.
+  card.classList.remove('d5fc_flip_card--instant');
+};
+
 /**
  * Plays the transition once (to the other face and back) when the effect, direction or duration
  * changes, so the choice can be judged right away. Builder only: the `--play` class turns the
  * card over in module.scss, and the stacked view is suspended while it plays.
+ *
+ * The new settings first take effect instantly; otherwise the faces would animate from the old
+ * effect's position to the new one (e.g. a rotation before a slide). A layout effect, so the
+ * browser never paints that in-between state.
  */
 const usePreviewOnChange = (id: string, effect: string, direction: string, duration: string): void => {
   const isFirstRender = useRef(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return undefined;
@@ -92,18 +105,20 @@ const usePreviewOnChange = (id: string, effect: string, direction: string, durat
     const isStacked = card.classList.contains('d5fc_flip_card--preview-both');
     const timers: number[] = [];
 
-    card.classList.remove('d5fc_flip_card--preview-both');
+    const restore = () => changeInstantly(card, () => {
+      card.classList.remove('d5fc_flip_card--play');
+      card.classList.toggle('d5fc_flip_card--preview-both', isStacked);
+    });
+
+    changeInstantly(card, () => card.classList.remove('d5fc_flip_card--preview-both'));
     card.classList.add('d5fc_flip_card--play');
     // Hold the other face briefly, then turn back; restore the stacked view once settled.
     timers.push(window.setTimeout(() => card.classList.remove('d5fc_flip_card--play'), ms + 400));
-    timers.push(window.setTimeout(() => isStacked && card.classList.add('d5fc_flip_card--preview-both'), (2 * ms) + 500));
+    timers.push(window.setTimeout(restore, (2 * ms) + 500));
 
     return () => {
       timers.forEach((timer) => window.clearTimeout(timer));
-      card.classList.remove('d5fc_flip_card--play');
-      if (isStacked) {
-        card.classList.add('d5fc_flip_card--preview-both');
-      }
+      restore();
     };
   }, [id, effect, direction, duration]);
 };
