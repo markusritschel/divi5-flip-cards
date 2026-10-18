@@ -97,6 +97,31 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   --d5fc-back-in: rotateX(180deg);
 }
 
+// Diagonals turn around an axis across the card: the up/down and left/right turns combined.
+.d5fc_flip_card--up-left {
+  --d5fc-rest: rotate3d(1, -1, 0, 0deg);
+  --d5fc-front-out: rotate3d(1, -1, 0, 180deg);
+  --d5fc-back-in: rotate3d(1, -1, 0, -180deg);
+}
+
+.d5fc_flip_card--up-right {
+  --d5fc-rest: rotate3d(1, 1, 0, 0deg);
+  --d5fc-front-out: rotate3d(1, 1, 0, 180deg);
+  --d5fc-back-in: rotate3d(1, 1, 0, -180deg);
+}
+
+.d5fc_flip_card--down-left {
+  --d5fc-rest: rotate3d(-1, -1, 0, 0deg);
+  --d5fc-front-out: rotate3d(-1, -1, 0, 180deg);
+  --d5fc-back-in: rotate3d(-1, -1, 0, -180deg);
+}
+
+.d5fc_flip_card--down-right {
+  --d5fc-rest: rotate3d(-1, 1, 0, 0deg);
+  --d5fc-front-out: rotate3d(-1, 1, 0, 180deg);
+  --d5fc-back-in: rotate3d(-1, 1, 0, -180deg);
+}
+
 // Slide: the front face stays, the back face moves in over it, travelling in the chosen
 // direction. The front hides only once it is covered.
 .d5fc_flip_card.d5fc_flip_card--slide {
@@ -120,6 +145,22 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 
 .d5fc_flip_card--slide.d5fc_flip_card--down {
   --d5fc-back-in: translate(0, -100%);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--up-left {
+  --d5fc-back-in: translate(100%, 100%);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--up-right {
+  --d5fc-back-in: translate(-100%, 100%);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--down-left {
+  --d5fc-back-in: translate(100%, -100%);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--down-right {
+  --d5fc-back-in: translate(-100%, -100%);
 }
 
 // Fade: no movement; the faces cross-fade.
@@ -250,22 +291,23 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 $slide-back: ":where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both))";
 $back-face: ":where(.d5fc_flip_card__inner) > :where(#{$face}:nth-child(2 of #{$face}))";
 
-#{$slide-back}:where(.d5fc_flip_card--up) > #{$back-face} {
+// Diagonals start in a corner, so they take two of these rules.
+#{$slide-back}:where(.d5fc_flip_card--up, .d5fc_flip_card--up-left, .d5fc_flip_card--up-right) > #{$back-face} {
   align-self: end;
   height: 100%;
 }
 
-#{$slide-back}:where(.d5fc_flip_card--down) > #{$back-face} {
+#{$slide-back}:where(.d5fc_flip_card--down, .d5fc_flip_card--down-left, .d5fc_flip_card--down-right) > #{$back-face} {
   align-self: start;
   height: 100%;
 }
 
-#{$slide-back}:where(.d5fc_flip_card--left) > #{$back-face} {
+#{$slide-back}:where(.d5fc_flip_card--left, .d5fc_flip_card--up-left, .d5fc_flip_card--down-left) > #{$back-face} {
   justify-self: end;
   width: 100%;
 }
 
-#{$slide-back}:where(.d5fc_flip_card--right) > #{$back-face} {
+#{$slide-back}:where(.d5fc_flip_card--right, .d5fc_flip_card--up-right, .d5fc_flip_card--down-right) > #{$back-face} {
   justify-self: start;
   width: 100%;
 }

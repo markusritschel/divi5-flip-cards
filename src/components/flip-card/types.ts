@@ -8,7 +8,7 @@ import {
 
 export type FlipCardPreview = 'both' | 'front' | 'back';
 
-export type FlipCardDirection = 'left' | 'right' | 'up' | 'down';
+export type FlipCardDirection = 'left' | 'right' | 'up' | 'down' | 'up-left' | 'up-right' | 'down-left' | 'down-right';
 
 export type FlipCardEffect = 'flip' | 'slide' | 'fade' | 'zoom' | 'cube';
 

@@ -37,7 +37,7 @@ class FlipCard implements DependencyInterface {
 	/**
 	 * Flip directions; each one has a matching `d5fc_flip_card--{direction}` class in module.scss.
 	 */
-	const DIRECTIONS = [ 'left', 'right', 'up', 'down' ];
+	const DIRECTIONS = [ 'left', 'right', 'up', 'down', 'up-left', 'up-right', 'down-left', 'down-right' ];
 
 	/**
 	 * Effects; each one has a matching `d5fc_flip_card--{effect}` class in module.scss.

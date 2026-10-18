@@ -324,7 +324,7 @@
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.direction",
               "label": "Direction",
-              "description": "Choose the direction in which the card turns over or the back face moves.",
+              "description": "Choose the direction in which the card turns over or the back face moves. Fade and Zoom don't move sideways; with a diagonal direction, Cube turns the card over like Flip.",
               "priority": 20,
               "render": true,
               "features": {
@@ -352,6 +352,22 @@
                     "down": {
                       "icon": "d5fc/direction-down",
                       "label": "Down"
+                    },
+                    "up-left": {
+                      "icon": "d5fc/direction-up-left",
+                      "label": "Up Left"
+                    },
+                    "up-right": {
+                      "icon": "d5fc/direction-up-right",
+                      "label": "Up Right"
+                    },
+                    "down-left": {
+                      "icon": "d5fc/direction-down-left",
+                      "label": "Down Left"
+                    },
+                    "down-right": {
+                      "icon": "d5fc/direction-down-right",
+                      "label": "Down Right"
                     }
                   },
                   "justified": true,

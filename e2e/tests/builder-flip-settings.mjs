@@ -96,6 +96,7 @@ test('direction tiles with arrows; choosing one switches the card', async () => 
   const tiles = page.locator('button[name^="et-vb-field-input-button-options--flip-advanced-direction--"]');
   assert.deepEqual(await tiles.evaluateAll((bs) => bs.map((b) => [b.dataset.name, b.innerText.trim(), !!b.querySelector('.et-vb-icon svg path')])), [
     ['left', 'Left', true], ['right', 'Right', true], ['up', 'Up', true], ['down', 'Down', true],
+    ['up-left', 'Up Left', true], ['up-right', 'Up Right', true], ['down-left', 'Down Left', true], ['down-right', 'Down Right', true],
   ]);
   await tiles.nth(2).click();
   await page.waitForTimeout(800);

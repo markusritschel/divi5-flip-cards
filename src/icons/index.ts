@@ -6,4 +6,8 @@ export * as directionLeft from "./direction-left";
 export * as directionRight from "./direction-right";
 export * as directionUp from "./direction-up";
 export * as directionDown from "./direction-down";
+export * as directionUpLeft from "./direction-up-left";
+export * as directionUpRight from "./direction-up-right";
+export * as directionDownLeft from "./direction-down-left";
+export * as directionDownRight from "./direction-down-right";
 export * as effectCube from "./effect-cube";
