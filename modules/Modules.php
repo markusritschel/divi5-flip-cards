@@ -17,6 +17,11 @@ use D5FC\Modules\FlipCardFace\FlipCardFace;
 add_action(
 	'divi_module_library_modules_dependency_tree',
 	function ( $dependency_tree ) {
+		// Loading the module classes with a Divi class missing would be a fatal error on every page.
+		if ( d5fc_missing_requirements() ) {
+			return;
+		}
+
 		$dependency_tree->add_dependency( new FlipCardFace() );
 		$dependency_tree->add_dependency( new FlipCard() );
 	}

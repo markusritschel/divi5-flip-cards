@@ -42,6 +42,58 @@ spl_autoload_register(
 	}
 );
 
+/*
+ * Divi classes the modules call. If a Divi update renames or removes one, the modules stay
+ * unregistered and admins get a warning, instead of every page failing with a fatal error.
+ * Defining the constant earlier (e.g. in wp-config.php) replaces the list; the browser tests use
+ * that to simulate a missing class.
+ */
+if ( ! defined( 'D5FC_REQUIRED_CLASSES' ) ) {
+	define(
+		'D5FC_REQUIRED_CLASSES',
+		[
+			'ET\Builder\Framework\DependencyManagement\Interfaces\DependencyInterface',
+			'ET\Builder\Framework\Utility\HTMLUtility',
+			'ET\Builder\FrontEnd\BlockParser\BlockParserStore',
+			'ET\Builder\FrontEnd\Module\Style',
+			'ET\Builder\Packages\Module\Module',
+			'ET\Builder\Packages\Module\Options\Css\CssStyle',
+			'ET\Builder\Packages\Module\Options\Element\ElementScriptData',
+			'ET\Builder\Packages\Module\Options\Text\TextClassnames',
+			'ET\Builder\Packages\ModuleLibrary\ModuleRegistration',
+			'ET\Builder\Packages\ModuleUtils\ChildrenUtils',
+			'ET\Builder\Packages\ModuleUtils\ModuleUtils',
+			'ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations',
+			'ET\Builder\VisualBuilder\Assets\PackageBuildManager',
+		]
+	);
+}
+
+/**
+ * What the modules need but can't find: Divi classes from `D5FC_REQUIRED_CLASSES`, and the build
+ * output the modules are registered from.
+ *
+ * @return string[] Empty when everything is there.
+ */
+function d5fc_missing_requirements() {
+	$missing = array_values(
+		array_filter(
+			D5FC_REQUIRED_CLASSES,
+			function ( $name ) {
+				return ! class_exists( $name ) && ! interface_exists( $name );
+			}
+		)
+	);
+
+	foreach ( [ 'flip-card', 'flip-card-face' ] as $module ) {
+		if ( ! is_readable( D5FC_MODULES_JSON_PATH . $module . '/module.json' ) ) {
+			$missing[] = 'build/modules-json/' . $module . '/module.json';
+		}
+	}
+
+	return $missing;
+}
+
 require D5FC_PATH . 'modules/Modules.php';
 
 /**
@@ -69,7 +121,7 @@ add_action( 'init', 'd5fc_load_textdomain' );
  * Registers the Visual Builder script and builder-only styles.
  */
 function d5fc_enqueue_visual_builder_assets() {
-	if ( ! et_builder_d5_enabled() || ! et_core_is_fb_enabled() ) {
+	if ( ! et_builder_d5_enabled() || ! et_core_is_fb_enabled() || d5fc_missing_requirements() ) {
 		return;
 	}
 
@@ -163,3 +215,28 @@ function d5fc_missing_divi_notice() {
 	);
 }
 add_action( 'admin_notices', 'd5fc_missing_divi_notice' );
+
+/**
+ * Tells administrators when Divi 5 is there but lacks parts the modules need (see
+ * `d5fc_missing_requirements()`), so the modules are switched off.
+ */
+function d5fc_missing_requirements_notice() {
+	if ( ! current_user_can( 'activate_plugins' ) || ! d5fc_is_divi5_active() ) {
+		return;
+	}
+
+	$missing = d5fc_missing_requirements();
+
+	if ( ! $missing ) {
+		return;
+	}
+
+	printf(
+		'<div class="notice notice-error"><p><strong>%1$s</strong> %2$s</p><p>%3$s <code>%4$s</code></p></div>',
+		esc_html__( 'Flip Cards for Divi 5 is switched off.', 'divi5-flip-cards' ),
+		esc_html__( 'This Divi version lacks parts the Flip Card modules need, so they are turned off to keep your pages working. Your cards are safe: their content shows as plain modules until an updated version of the plugin is installed.', 'divi5-flip-cards' ),
+		esc_html__( 'Missing:', 'divi5-flip-cards' ),
+		esc_html( implode( ', ', $missing ) )
+	);
+}
+add_action( 'admin_notices', 'd5fc_missing_requirements_notice' );
