@@ -84,6 +84,15 @@ test('the face settings have Elements > Add Element, which adds into the face', 
   await front.hover();
   await front.locator('button').first().click();
   await page.waitForTimeout(1500);
+  // The face's Design tab offers Divi's Text Color (light text for dark faces).
+  await page.getByRole('tab', { name: 'Design' }).or(page.locator('text=Design')).first().click();
+  await page.waitForTimeout(800);
+  await page.getByText('Text', { exact: true }).filter({ visible: true }).first().click();
+  await page.waitForTimeout(800);
+  assert.ok(await page.getByText('Text Color', { exact: true }).first().isVisible(), 'Text Color field');
+  await page.getByRole('tab', { name: 'Content' }).or(page.locator('text=Content')).first().click();
+  await page.waitForTimeout(800);
+
   const add = page.getByText('Add Element', { exact: true }).first();
   const bb = await add.boundingBox();
   await page.mouse.click(bb.x + 10, bb.y + bb.height / 2);

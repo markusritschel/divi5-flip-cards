@@ -55,7 +55,7 @@
               "props": {
                 "fields": {
                   "color": {
-                    "render": false
+                    "render": true
                   }
                 }
               }
