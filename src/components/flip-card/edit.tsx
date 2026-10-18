@@ -1,5 +1,5 @@
 // External dependencies.
-import React, { ReactElement, useLayoutEffect, useRef } from 'react';
+import React, { ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -13,14 +13,27 @@ import { ModuleStyles } from './styles';
 import { ModuleScriptData } from './module-script-data';
 import { moduleClassnames } from './module-classnames';
 
-// `@divi/data` (window.divi.data) ships no types here; this is the one action the switch needs.
+// `@divi/data` (window.divi.data) ships no types here; these are the parts used below.
 type EditPostDispatch = {
   editModuleAttribute: (args: { id: string; attrName: string; value: unknown; subName: false }) => void;
 };
 
-const editPost = (): EditPostDispatch => (
-  window as unknown as { divi: { data: { dispatch: (store: string) => EditPostDispatch } } }
-).divi.data.dispatch('divi/edit-post');
+type EditPostSelectors = {
+  getModule: (id: string) => { parent?: string } | undefined;
+};
+
+type ModalLibrarySelectors = {
+  getActiveModals: () => Record<string, { isActive?: boolean; owner?: string } | undefined> | undefined;
+};
+
+type DiviData = {
+  dispatch: (store: string) => EditPostDispatch;
+  useSelect: <T>(mapSelect: (select: (store: string) => unknown) => T, deps: unknown[]) => T;
+};
+
+const diviData = (): DiviData => (window as unknown as { divi: { data: DiviData } }).divi.data;
+
+const editPost = (): EditPostDispatch => diviData().dispatch('divi/edit-post');
 
 // Sets "Show in Builder" from a click on the card, without selecting or dragging the module.
 const showInBuilder = (id: string, value: FlipCardPreview) => (event: React.MouseEvent) => {
@@ -47,26 +60,48 @@ const TOGGLE_ICON = (
  * "Show in Builder" setting, so the settings panel stays in sync. Builder only: PHP has no
  * equivalent.
  */
-const FaceSwitch = ({ id, preview }: { id: string; preview: FlipCardPreview }): ReactElement => {
-  const show = (value: FlipCardPreview) => showInBuilder(id, value);
+const FaceSwitch = ({ shown, onShow }: {
+  shown: FlipCardPreview;
+  onShow: (value: FlipCardPreview) => (event: React.MouseEvent) => void;
+}): ReactElement => (
+  <div className="d5fc_flip_card__switch et-vb-ui">
+    {(['front', 'back'] as const).map((value) => (
+      <button
+        key={value}
+        type="button"
+        className={value === shown ? 'is-active' : undefined}
+        aria-pressed={value === shown}
+        onMouseDown={(event) => event.stopPropagation()}
+        onClick={onShow(value)}
+      >
+        {'front' === value ? 'Front' : 'Back'}
+      </button>
+    ))}
+  </div>
+);
 
-  return (
-    <div className="d5fc_flip_card__switch et-vb-ui">
-      {(['front', 'back'] as const).map((value) => (
-        <button
-          key={value}
-          type="button"
-          className={value === preview ? 'is-active' : undefined}
-          aria-pressed={value === preview}
-          onMouseDown={(event) => event.stopPropagation()}
-          onClick={show(value)}
-        >
-          {'front' === value ? 'Front' : 'Back'}
-        </button>
-      ))}
-    </div>
-  );
-};
+/**
+ * The face (front or back) holding the module whose settings are open, if it is in this card:
+ * walks up from the edited module to the child of this card that contains it.
+ */
+const useEditedFace = (id: string, childrenIds: string[]): FlipCardPreview | null => diviData().useSelect((select) => {
+  const modal     = (select('divi/modal-library') as ModalLibrarySelectors).getActiveModals()?.['divi/module'];
+  const getModule = (select('divi/edit-post') as EditPostSelectors).getModule;
+  let current     = modal?.isActive ? modal.owner : undefined;
+
+  for (let depth = 0; current && depth < 50; depth++) {
+    const parent = getModule(current)?.parent;
+
+    if (parent === id) {
+      const index = childrenIds.indexOf(current);
+      return 0 === index ? 'front' : (1 === index ? 'back' : null);
+    }
+
+    current = parent;
+  }
+
+  return null;
+}, [id, childrenIds]);
 
 // Applies class changes to the card without animating them: `--instant` (style.scss) turns the
 // face transitions off while the browser recalculates the styles once.
@@ -143,6 +178,25 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
 
   const preview = attrs?.flip?.advanced?.preview?.desktop?.value ?? 'both';
 
+  // In the Front/Back view, show the face holding the module being edited. View only (the setting
+  // is not changed); the switch and the flip button take over again.
+  const editedFace              = useEditedFace(id, childrenIds ?? []);
+  const [autoFace, setAutoFace] = useState<FlipCardPreview | null>(null);
+
+  useEffect(() => setAutoFace(null), [preview]);
+  useEffect(() => {
+    if (editedFace) {
+      setAutoFace(editedFace);
+    }
+  }, [editedFace]);
+
+  const shown = 'both' === preview ? 'both' : (autoFace ?? preview);
+
+  const show = (value: FlipCardPreview) => (event: React.MouseEvent) => {
+    setAutoFace(null);
+    showInBuilder(id, value)(event);
+  };
+
   usePreviewOnChange(
     id,
     attrs?.flip?.advanced?.effect?.desktop?.value ?? 'flip',
@@ -166,8 +220,8 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
       {elements.styleComponents({
         attrName: 'module',
       })}
-      {'both' !== preview && <FaceSwitch id={id} preview={preview} />}
-      <div className="d5fc_flip_card__inner">
+      {'both' !== shown && <FaceSwitch shown={shown} onShow={show} />}
+      <div className={shown === preview ? 'd5fc_flip_card__inner' : `d5fc_flip_card__inner d5fc_flip_card__inner--show-${shown}`}>
         {childrenIds && childrenIds.length > 0 && (
           <ChildModulesContainer ids={childrenIds} isLooped={isLooped} loopIndex={loopIndex} canvasId={canvasId} />
         )}
@@ -180,9 +234,9 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
       <button
         type="button"
         className="d5fc_flip_card__toggle"
-        aria-pressed={'back' === preview}
+        aria-pressed={'back' === shown}
         onMouseDown={(event) => event.stopPropagation()}
-        onClick={showInBuilder(id, 'back' === preview ? 'front' : 'back')}
+        onClick={show('back' === shown ? 'front' : 'back')}
       >
         {TOGGLE_ICON}
         <span className="d5fc_flip_card__toggle-label">{__('Flip card', 'divi5-flip-cards')}</span>

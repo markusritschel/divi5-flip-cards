@@ -38,6 +38,36 @@ $face: '.d5fc_flip_card_face';
   content: 'Back';
 }
 
+// The face holding the module being edited (edit.tsx, `useEditedFace`), shown instead of the
+// "Show in Builder" face. Outranks the flipped-state rules in module.scss (0,8,0 against 0,7,0).
+.d5fc_flip_card.d5fc_flip_card--builder:not(.d5fc_flip_card--play) > .d5fc_flip_card__inner.d5fc_flip_card__inner--show-back {
+  > #{$face}:nth-child(1 of #{$face}) {
+    transform: var(--d5fc-front-out);
+    visibility: hidden;
+    transition-delay: 0s, var(--d5fc-hide-delay);
+  }
+
+  > #{$face}:nth-child(2 of #{$face}) {
+    transform: var(--d5fc-rest);
+    visibility: visible;
+    transition-delay: 0s, var(--d5fc-show-delay);
+  }
+}
+
+.d5fc_flip_card.d5fc_flip_card--builder:not(.d5fc_flip_card--play) > .d5fc_flip_card__inner.d5fc_flip_card__inner--show-front {
+  > #{$face}:nth-child(1 of #{$face}) {
+    transform: var(--d5fc-rest);
+    visibility: visible;
+    transition-delay: 0s, var(--d5fc-show-delay);
+  }
+
+  > #{$face}:nth-child(2 of #{$face}) {
+    transform: var(--d5fc-back-in);
+    visibility: hidden;
+    transition-delay: 0s, var(--d5fc-hide-delay);
+  }
+}
+
 // Settings changes that must not animate (edit.tsx, `changeInstantly`).
 .d5fc_flip_card--instant > .d5fc_flip_card__inner > #{$face} {
   transition: none !important;

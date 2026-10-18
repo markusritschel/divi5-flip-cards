@@ -45,6 +45,37 @@ test('Front/Back switch next to the toolbar flips the preview and syncs the sett
   await page.close();
 });
 
+test('editing a module on the hidden face shows that face, without changing the setting', async () => {
+  resetPage('flip-switch');
+  const { page, app, errors } = await builder(context, 'flip-switch');
+  const card = app.locator('.d5fc_flip_card').first();
+  await card.hover();
+  await page.waitForTimeout(500);
+  await app.locator('.d5fc_flip_card__switch button', { hasText: 'Front' }).click();
+  await page.waitForTimeout(1000);
+  assert.deepEqual(await faceVisibility(app), ['visible', 'hidden']);
+
+  // Open the Back face's settings from the card's face list.
+  await card.hover({ force: true });
+  await page.waitForTimeout(400);
+  await app.locator('.d5fc_flip_card > .et-vb-module-options button.et-vb-module-options-button').first().click();
+  await page.waitForTimeout(1500);
+  const back = page.locator('.et-vb-draggable-list-item', { hasText: 'Back' }).first();
+  await back.hover();
+  await back.locator('button').first().click();
+  await page.waitForTimeout(1500);
+  assert.deepEqual(await faceVisibility(app), ['hidden', 'visible'], 'back face shown while it is edited');
+  assert.ok(!(await card.getAttribute('class')).includes('preview-back'), 'setting still Front');
+  await card.hover({ force: true });
+  assert.equal(await app.locator('.d5fc_flip_card__switch .is-active').innerText(), 'Back');
+
+  await app.locator('.d5fc_flip_card__switch button', { hasText: 'Front' }).click();
+  await page.waitForTimeout(1000);
+  assert.deepEqual(await faceVisibility(app), ['visible', 'hidden'], 'the switch takes over again');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('settings survive save and reload, and reach the live page', async () => {
   resetPage('flip-edit');
   const fields = (page) => page.evaluate(() => ({
