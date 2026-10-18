@@ -222,22 +222,28 @@
               },
               "component": {
                 "type": "field",
-                "name": "divi/select",
+                "name": "divi/button-options",
                 "props": {
                   "options": {
                     "left": {
+                      "icon": "d5fc/direction-left",
                       "label": "Left"
                     },
                     "right": {
+                      "icon": "d5fc/direction-right",
                       "label": "Right"
                     },
                     "up": {
+                      "icon": "d5fc/direction-up",
                       "label": "Up"
                     },
                     "down": {
+                      "icon": "d5fc/direction-down",
                       "label": "Down"
                     }
-                  }
+                  },
+                  "justified": true,
+                  "allowClickToUnset": false
                 }
               }
             }

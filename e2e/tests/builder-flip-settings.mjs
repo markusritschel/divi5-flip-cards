@@ -32,6 +32,21 @@ test('trigger tiles; with "Button" the canvas shows the flip button, which switc
   await page.close();
 });
 
+test('direction tiles with arrows; choosing one switches the card', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  const tiles = page.locator('button[name^="et-vb-field-input-button-options--flip-advanced-direction--"]');
+  assert.deepEqual(await tiles.evaluateAll((bs) => bs.map((b) => [b.dataset.name, b.innerText.trim(), !!b.querySelector('.et-vb-icon svg path')])), [
+    ['left', 'Left', true], ['right', 'Right', true], ['up', 'Up', true], ['down', 'Down', true],
+  ]);
+  await tiles.nth(2).click();
+  await page.waitForTimeout(800);
+  assert.match(await cardClasses(app), /d5fc_flip_card--up\b/);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('effect tiles; choosing one plays the preview once and restores the stacked view', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');

@@ -49,18 +49,18 @@ test('settings survive save and reload, and reach the live page', async () => {
   resetPage('flip-edit');
   const fields = (page) => page.evaluate(() => ({
     preview:   document.querySelector('#et-vb-flip-advanced-preview')?.innerText.trim(),
-    direction: document.querySelector('#et-vb-flip-advanced-direction')?.innerText.trim(),
+    direction: document.querySelector('button.et-vb-field-input-button-option--selected[name*="flip-advanced-direction"] .et-vb-field-input-button-option-label')?.innerText.trim(),
     duration:  document.querySelector('input#et-vb-field-common-numeric-input--range--flip-advanced-duration, #et-vb-field-common-numeric-input--range--flip-advanced-duration input')?.value,
   }));
   {
     const { page, app, errors } = await builder(context, 'flip-edit');
     await openFlipSettings(page, app);
-    for (const [id, val] of [['preview', 'back'], ['direction', 'down']]) {
-      await page.locator(`#et-vb-flip-advanced-${id}`).click();
-      await page.waitForTimeout(400);
-      await page.locator(`#et-vb-flip-advanced-${id} li[data-value="${val}"]`).click();
-      await page.waitForTimeout(800);
-    }
+    await page.locator('#et-vb-flip-advanced-preview').click();
+    await page.waitForTimeout(400);
+    await page.locator('#et-vb-flip-advanced-preview li[data-value="back"]').click();
+    await page.waitForTimeout(800);
+    await page.locator('button[name="et-vb-field-input-button-options--flip-advanced-direction--down"]').click();
+    await page.waitForTimeout(800);
     const num = page.locator('input#et-vb-field-common-numeric-input--range--flip-advanced-duration, #et-vb-field-common-numeric-input--range--flip-advanced-duration input').first();
     await num.click({ clickCount: 3 });
     await num.fill('900');

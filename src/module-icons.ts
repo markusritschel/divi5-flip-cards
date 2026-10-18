@@ -1,6 +1,10 @@
 import { addFilter } from "@wordpress/hooks";
 
 import {
+  directionDown,
+  directionLeft,
+  directionRight,
+  directionUp,
   moduleFlipCard,
   triggerButton,
   triggerClick,
@@ -14,4 +18,8 @@ addFilter("divi.iconLibrary.icon.map", "divi5FlipCards", (icons) => ({
   [triggerHover.name]: triggerHover,
   [triggerClick.name]: triggerClick,
   [triggerButton.name]: triggerButton,
+  [directionLeft.name]: directionLeft,
+  [directionRight.name]: directionRight,
+  [directionUp.name]: directionUp,
+  [directionDown.name]: directionDown,
 }));
