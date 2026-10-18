@@ -81,6 +81,11 @@
               "value": "hover"
             }
           },
+          "hint": {
+            "desktop": {
+              "value": "off"
+            }
+          },
           "effect": {
             "desktop": {
               "value": "flip"
@@ -169,6 +174,26 @@
                   "justified": true,
                   "allowClickToUnset": false
                 }
+              }
+            }
+          },
+          "hint": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.hint",
+              "label": "Show Flip Hint",
+              "description": "Shows a small flip icon in the corner of the card, which wiggles once when the card scrolls into view, so visitors see the card can be turned. Not shown with the flip button trigger.",
+              "priority": 13,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
               }
             }
           },

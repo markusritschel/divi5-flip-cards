@@ -32,6 +32,19 @@ test('trigger tiles; with "Button" the canvas shows the flip button, which switc
   await page.close();
 });
 
+test('"Show Flip Hint" adds the badge on the canvas', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  assert.equal(await app.locator('.d5fc_flip_card > .d5fc_flip_card__hint').count(), 0);
+  await page.locator('[aria-label="Toggle flip-advanced-hint"]').click();
+  await page.waitForTimeout(1000);
+  assert.equal(await app.locator('.d5fc_flip_card > .d5fc_flip_card__hint').count(), 1);
+  assert.match(await cardClasses(app), /d5fc_flip_card--hint\b/);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('direction tiles with arrows; choosing one switches the card', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');

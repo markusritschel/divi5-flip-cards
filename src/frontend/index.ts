@@ -51,3 +51,22 @@ document.addEventListener("click", (event) => {
     toggle(card);
   }
 });
+
+// "Show Flip Hint": wiggle the hint once, the first time a card is half in view.
+if ("IntersectionObserver" in window) {
+  const hintObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("d5fc_flip_card--hint-played");
+          hintObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  document
+    .querySelectorAll(`${CARD}.d5fc_flip_card--hint`)
+    .forEach((card) => hintObserver.observe(card));
+}

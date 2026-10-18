@@ -208,6 +208,74 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   position: absolute;
 }
 
+// Flip hint ("Show Flip Hint"): a badge in the corner, gone while the back is showing and with the
+// flip button trigger (the button already shows the card can be turned).
+.d5fc_flip_card__hint {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.d5fc_flip_card--trigger-button > .d5fc_flip_card__hint {
+  display: none;
+}
+
+#{$flipped} {
+  > .d5fc_flip_card__hint {
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) {
+  #{$hover-flipped} {
+    > .d5fc_flip_card__hint {
+      opacity: 0;
+    }
+  }
+}
+
+// One wiggle when the card first scrolls into view (`--hint-played`, set by the front-end script).
+@media (prefers-reduced-motion: no-preference) {
+  .d5fc_flip_card--hint-played > .d5fc_flip_card__hint {
+    animation: d5fc-hint-wiggle 0.9s ease-in-out 0.3s 1;
+  }
+}
+
+@keyframes d5fc-hint-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  20% {
+    transform: rotate(-25deg) scale(1.15);
+  }
+
+  45% {
+    transform: rotate(20deg) scale(1.15);
+  }
+
+  70% {
+    transform: rotate(-10deg);
+  }
+}
+
 // No movement for people who asked for less motion: cross-fade instead.
 @media (prefers-reduced-motion: reduce) {
   .d5fc_flip_card__inner > #{$face} {

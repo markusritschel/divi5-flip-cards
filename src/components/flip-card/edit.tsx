@@ -172,6 +172,10 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
           <ChildModulesContainer ids={childrenIds} isLooped={isLooped} loopIndex={loopIndex} canvasId={canvasId} />
         )}
       </div>
+      {/* Flip hint; same markup as in PHP (`FlipCard::has_hint()`). */}
+      {'on' === attrs?.flip?.advanced?.hint?.desktop?.value && (
+        <span className="d5fc_flip_card__hint" aria-hidden="true">{TOGGLE_ICON}</span>
+      )}
       {/* Same markup as in PHP. In the builder it switches the face shown. */}
       <button
         type="button"

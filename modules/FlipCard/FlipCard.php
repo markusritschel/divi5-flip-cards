@@ -103,6 +103,9 @@ class FlipCard implements DependencyInterface {
 			esc_html__( 'Flip card', 'divi5-flip-cards' )
 		);
 
+		// Decorative flip hint in the corner; the front-end script wiggles it once.
+		$hint = self::has_hint( $attrs ) ? '<span class="d5fc_flip_card__hint" aria-hidden="true">' . self::TOGGLE_ICON . '</span>' : '';
+
 		return Module::render(
 			[
 				// Front end only.
@@ -125,7 +128,7 @@ class FlipCard implements DependencyInterface {
 					[
 						'attrName' => 'module',
 					]
-				) . $inner . $toggle,
+				) . $inner . $hint . $toggle,
 				'childrenIds'         => ChildrenUtils::extract_children_ids( $block ),
 			]
 		);
@@ -172,6 +175,19 @@ class FlipCard implements DependencyInterface {
 		}
 
 		$classnames_instance->add( 'd5fc_flip_card--trigger-' . $trigger, true );
+
+		$classnames_instance->add( 'd5fc_flip_card--hint', self::has_hint( $attrs ) );
+	}
+
+	/**
+	 * Whether the "Show Flip Hint" setting is on. Mirrors the `hint` check in `edit.tsx`.
+	 *
+	 * @param array $attrs Module attributes.
+	 *
+	 * @return bool
+	 */
+	public static function has_hint( $attrs ) {
+		return 'on' === ( $attrs['flip']['advanced']['hint']['desktop']['value'] ?? 'off' );
 	}
 
 	/**
