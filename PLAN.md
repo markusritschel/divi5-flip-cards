@@ -37,32 +37,45 @@
 
 Nothing below could be checked without Divi. Test with `WP_DEBUG` and `WP_DEBUG_LOG` on.
 
-- [ ] The plugin activates without PHP errors or notices.
-- [ ] "Flip Card" appears in the module picker, with its icon.
-- [ ] Inserting a Flip Card creates two faces labelled "Front" and "Back".
+Run on 2026-10-18 against Divi 5.15.1 (Docker WordPress, headless Chromium). Fixed along the way:
+autoloader fatal, ~28px gutter margin on the front face in block-layout columns, default face
+look lost to Divi's CSS reset, module icon clipped in the picker.
+
+- [x] The plugin activates without PHP errors or notices.
+- [x] "Flip Card" appears in the module picker, with its icon.
+- [x] Inserting a Flip Card creates two faces labelled "Front" and "Back".
 - [ ] A face accepts any module: Text, Image, Button, Blurb, Group, a nested row.
-- [ ] A Flip Card only accepts Faces, and a Face can't be added outside a Flip Card.
-- [ ] Content > Flip > *Show in Builder: Back* shows the back face in the builder.
-- [ ] *Flip Direction* (left/right/up/down) changes the flip on the live page.
-- [ ] *Flip Duration* changes the speed (the page CSS contains `--d5fc-duration`).
-- [ ] On the live page, hovering flips the card, and the card is as tall as the taller face.
-- [ ] Per-face design settings work: background, padding, border, rounded corners, shadow, layout.
-- [ ] A third face is hidden on the live page and has a red dashed outline in the builder.
-- [ ] Several cards in a Group with grid layout line up correctly.
-- [ ] Saving, reloading and editing the page again keeps all settings.
+  All of them render inside a face (builder and live page), and a module's "+" inside a face
+  offers every module. **Open:** an empty face has no "+" of its own, so a new card's faces can't
+  get their first module from the canvas (Divi only draws that button for its own structural
+  modules; its Accordion Items have the same gap). Drag and drop is untested.
+- [x] A Flip Card only accepts Faces, and a Face can't be added outside a Flip Card.
+  (Checked through the "+" buttons and the module picker; drag and drop untested.)
+- [x] Content > Flip > *Show in Builder: Back* shows the back face in the builder.
+- [x] *Flip Direction* (left/right/up/down) changes the flip on the live page.
+- [x] *Flip Duration* changes the speed (the page CSS contains `--d5fc-duration`).
+- [x] On the live page, hovering flips the card, and the card is as tall as the taller face.
+- [x] Per-face design settings work: background, padding, border, rounded corners, shadow, layout.
+- [x] A third face is hidden on the live page and has a red dashed outline in the builder.
+- [x] Several cards in a Group with grid layout line up correctly.
+- [x] Saving, reloading and editing the page again keeps all settings.
 
 ### Assumptions to confirm while testing
 
-- In both the builder and on the live page, the faces are **direct children** of
+- [x] In both the builder and on the live page, the faces are **direct children** of
   `.d5fc_flip_card__inner`. The CSS relies on this (`> .d5fc_flip_card_face:nth-child(1 of ...)`).
-  Check with the browser dev tools. If the builder adds a wrapper, the selectors need adjusting.
-- The face's default layout (Divi's flex default) arranges child modules sensibly. If they line up
-  side by side, set a better default (column direction).
-- `divi/range` with `allowedUnits: ["ms"]` stores values like `600ms`.
-- `StyleDeclarations` accepts the custom property name `--d5fc-duration`.
+- [x] The face's default layout (Divi's flex default) arranges child modules sensibly: they stack
+  in a column.
+- [x] `divi/range` with `allowedUnits: ["ms"]` stores values like `600ms` (saved as `"900ms"`).
+- [x] `StyleDeclarations` accepts the custom property name `--d5fc-duration`.
 
 ## Known limitations of milestone 1
 
 - Hover only; on touch devices it depends on the browser's tap-to-hover behaviour (fixed in milestone 3).
 - Links on the back face can't be reached by keyboard (fixed in milestone 3).
 - A Flip Card nested inside another card's face also flips when the outer card is hovered.
+- An empty face has no "+" button in the builder, so the first module has to get into it some
+  other way (see the checklist).
+- In the builder, empty faces are only as tall as their padding: Divi's builder CSS
+  (`.et_pb_module { min-height: 10px }`) outranks the default 200px minimum height. The live page
+  is not affected.
