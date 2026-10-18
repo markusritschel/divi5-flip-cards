@@ -96,6 +96,8 @@ function d5fc_missing_requirements() {
 
 require D5FC_PATH . 'modules/Modules.php';
 
+D5FC\Modules\StarterLayouts\StarterLayouts::load();
+
 /**
  * Version string for an asset: the file's modification time, so browsers pick up new builds.
  *
