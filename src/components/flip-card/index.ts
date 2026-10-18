@@ -17,8 +17,9 @@ import './style.scss';
  * Flip Card module.
  *
  * Only accepts `d5fc/flip-card-face` children (no `allowAllElements`). A new card starts
- * with two faces; the first one is the front and the second one the back. Any further
- * faces are hidden on the front end and flagged in the builder.
+ * with two faces; the first one is the front and the second one the back. "Add New Face"
+ * disappears at two faces; further faces (e.g. from older content) are hidden on the front end
+ * and flagged in the builder.
  */
 export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = {
   // Imported JSON has no inferred type, hence the cast.
@@ -30,5 +31,12 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
   ],
   renderers: {
     edit: FlipCardEdit,
+  },
+  callbacks: {
+    content: {
+      'd5fc/flip-card-face': {
+        maxItemsCallback: () => 2,
+      },
+    },
   },
 };

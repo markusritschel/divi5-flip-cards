@@ -33,15 +33,22 @@ test('the picker offers Flip Card with a whole icon, never a bare Face', async (
   await page.close();
 });
 
-test('a face\'s own "+" offers only Faces', async () => {
+test('a card with two faces offers no way to add a third', async () => {
   resetPage('empty-containers');
   const { page, app } = await builder(context, 'empty-containers');
   const face = app.locator('.d5fc_flip_card_face').first();
   await face.hover({ force: true });
   await page.waitForTimeout(600);
-  await face.evaluate((f) => f.querySelector(':scope > .et-vb-add-module-wrap > button').click());
+  const addFace = face.locator(':scope > .et-vb-add-module-wrap > button');
+  assert.equal(await addFace.count(), 1, 'Divi renders the button');
+  assert.equal(await addFace.isVisible(), false, 'but it is hidden');
+
+  await app.locator('.d5fc_flip_card').first().hover({ force: true });
+  await page.waitForTimeout(500);
+  await app.locator('.d5fc_flip_card > .et-vb-module-options button.et-vb-module-options-button').first().click();
   await page.waitForTimeout(1500);
-  assert.deepEqual(await pickerOptions(page), ['d5fc/flip-card-face']);
+  assert.deepEqual(await page.locator('.et-vb-draggable-list-item--title').allInnerTexts(), ['Front', 'Back']);
+  assert.equal(await page.getByText('Add New Face', { exact: true }).count(), 0, 'no "Add New Face" in the settings');
   await page.close();
 });
 

@@ -80,6 +80,11 @@ $face: '.d5fc_flip_card_face';
   background: #2b87da;
 }
 
+// A card holds two faces: once it has them, hide the faces' "add a face after this one" buttons.
+.d5fc_flip_card__inner:has(> #{$face}:nth-child(2 of #{$face})) > #{$face} > .et-vb-add-module-wrap--module {
+  display: none;
+}
+
 // Show faces beyond the second one below the card, clearly marked as unused,
 // so they can be found and deleted.
 .d5fc_flip_card--builder .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {
