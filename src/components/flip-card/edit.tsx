@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { ChildModulesContainer, ModuleContainer } from '@divi/module';
 
 // Local dependencies.
-import { FlipCardEditProps, FlipCardPreview } from './types';
+import { FlipCardEditProps, FlipCardIcon, FlipCardPreview } from './types';
 import { ModuleStyles } from './styles';
 import { ModuleScriptData } from './module-script-data';
 import { moduleClassnames } from './module-classnames';
@@ -54,6 +54,34 @@ const TOGGLE_ICON = (
     <path d="M4 12a8 8 0 0 1 13.7-5.7L20 8.6M20 4v4.6h-4.6M20 12a8 8 0 0 1-13.7 5.7L4 15.4M4 20v-4.6h4.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+// `@divi/icon-library` (window.divi.iconLibrary) ships no types here; these are the parts used.
+type IconLibrary = {
+  processFontIcon: (icon: FlipCardIcon) => string;
+  getIconFontFamily: (type?: string) => string;
+};
+
+/**
+ * Icon of the flip button: the icon picked in Design > Flip Button, or the turning arrows.
+ * Mirrors `FlipCard::toggle_icon()`.
+ */
+const ToggleIcon = ({ icon }: { icon?: FlipCardIcon }): ReactElement => {
+  if (! icon?.unicode) {
+    return TOGGLE_ICON;
+  }
+
+  const iconLibrary = (window as unknown as { divi: { iconLibrary: IconLibrary } }).divi.iconLibrary;
+
+  return (
+    <span
+      className="d5fc_flip_card__toggle-icon"
+      aria-hidden="true"
+      style={{ fontFamily: iconLibrary.getIconFontFamily(icon.type), fontWeight: icon.weight ? Number(icon.weight) : undefined }}
+    >
+      {iconLibrary.processFontIcon(icon)}
+    </span>
+  );
+};
 
 /**
  * Front/Back switch shown on the card in the builder (not in the stacked view). It changes the
@@ -253,7 +281,7 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
         onMouseDown={(event) => event.stopPropagation()}
         onClick={show('back' === shown ? 'front' : 'back')}
       >
-        {TOGGLE_ICON}
+        <ToggleIcon icon={attrs?.flipButton?.advanced?.icon?.desktop?.value} />
         <span className="d5fc_flip_card__toggle-label">{buttonLabel || __('Flip card', 'divi5-flip-cards')}</span>
       </button>
     </ModuleContainer>

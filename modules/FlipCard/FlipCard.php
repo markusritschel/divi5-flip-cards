@@ -20,6 +20,7 @@ use ET\Builder\Framework\DependencyManagement\Interfaces\DependencyInterface;
 use ET\Builder\Framework\Utility\HTMLUtility;
 use ET\Builder\FrontEnd\BlockParser\BlockParserStore;
 use ET\Builder\FrontEnd\Module\Style;
+use ET\Builder\Packages\IconLibrary\IconFont\Utils as IconFontUtils;
 use ET\Builder\Packages\Module\Module;
 use ET\Builder\Packages\Module\Options\Css\CssStyle;
 use ET\Builder\Packages\Module\Options\Element\ElementScriptData;
@@ -108,7 +109,7 @@ class FlipCard implements DependencyInterface {
 		$toggle = sprintf(
 			'<button type="button" class="%1$s" aria-pressed="false">%2$s<span class="d5fc_flip_card__toggle-label">%3$s</span></button>',
 			'' === $button_label ? 'd5fc_flip_card__toggle' : 'd5fc_flip_card__toggle d5fc_flip_card__toggle--labelled',
-			self::TOGGLE_ICON,
+			self::toggle_icon( $attrs['flipButton']['advanced']['icon']['desktop']['value'] ?? [] ),
 			'' === $button_label ? esc_html__( 'Flip card', 'divi5-flip-cards' ) : esc_html( $button_label )
 		);
 
@@ -207,6 +208,35 @@ class FlipCard implements DependencyInterface {
 		}
 
 		$classnames_instance->add( 'd5fc_flip_card--button-' . $button_position, true );
+	}
+
+	/**
+	 * Icon of the flip button: the icon picked in Design > Flip Button (a Divi or Font Awesome
+	 * icon, whose font Divi loads when it finds the icon in the content), or the turning arrows.
+	 * Mirrors `ToggleIcon` in `edit.tsx`.
+	 *
+	 * @param array $icon Icon picker value (`unicode`, `type`, `weight`).
+	 *
+	 * @return string
+	 */
+	public static function toggle_icon( $icon ) {
+		$character = is_array( $icon ) && ! empty( $icon['unicode'] ) ? IconFontUtils::process_font_icon( $icon ) : '';
+
+		if ( ! is_string( $character ) || '' === $character ) {
+			return self::TOGGLE_ICON;
+		}
+
+		$style = 'font-family:' . IconFontUtils::get_icon_font_family( $icon['type'] ?? null ) . ';';
+
+		if ( ! empty( $icon['weight'] ) ) {
+			$style .= 'font-weight:' . $icon['weight'] . ';';
+		}
+
+		return sprintf(
+			'<span class="d5fc_flip_card__toggle-icon" aria-hidden="true" style="%1$s">%2$s</span>',
+			esc_attr( $style ),
+			esc_html( $character )
+		);
 	}
 
 	/**

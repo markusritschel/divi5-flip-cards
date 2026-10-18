@@ -18,6 +18,13 @@ export type FlipCardButtonPosition = 'top-left' | 'top-right' | 'bottom-left' | 
 
 export type FlipCardBackSize = 'full' | 'content' | 'fixed';
 
+// Value of Divi's icon picker.
+export interface FlipCardIcon {
+  unicode?: string;
+  type?: string;
+  weight?: string;
+}
+
 export interface FlipCardCssAttr extends Module.Css.AttributeValue {
   inner?: string;
 }
@@ -72,6 +79,7 @@ export interface FlipCardAttrs extends InternalAttrs {
     advanced?: {
       position?: FormatBreakpointStateAttr<FlipCardButtonPosition>;
       label?: FormatBreakpointStateAttr<string>;
+      icon?: FormatBreakpointStateAttr<FlipCardIcon>;
     };
     decoration?: Element.Decoration.PickedAttributes<'background' | 'font'>;
   };

@@ -279,6 +279,13 @@ div:where(#{$sized-back}) > div:where(.d5fc_flip_card__inner) > div:where(#{$fac
   position: absolute;
 }
 
+// Design > Flip Button > Icon: a Divi or Font Awesome icon instead of the arrows.
+.d5fc_flip_card__toggle-icon {
+  font-size: 18px;
+  font-style: normal;
+  line-height: 1;
+}
+
 // Design > Flip Button > Position (bottom right by default).
 .d5fc_flip_card--button-top-left > .d5fc_flip_card__toggle,
 .d5fc_flip_card--button-top-right > .d5fc_flip_card__toggle {

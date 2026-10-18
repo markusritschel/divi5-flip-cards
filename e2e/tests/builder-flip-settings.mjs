@@ -57,6 +57,12 @@ test('Design tab: Flip Button groups; button text updates the canvas button', as
   assert.ok(await page.getByText('Flip Button Text', { exact: true }).count(), 'text group');
   await page.getByText('Flip Button', { exact: true }).first().click();
   await page.waitForTimeout(800);
+  // Icon picker: picking an icon replaces the arrows on the canvas button.
+  assert.ok(await page.getByPlaceholder('Search Icons').isVisible(), 'icon picker in the Flip Button group');
+  assert.equal(await app.locator('.d5fc_flip_card > .d5fc_flip_card__toggle svg').count(), 1, 'arrows by default');
+  await page.locator('[id^="icon-"]').filter({ visible: true }).first().click();
+  await page.waitForTimeout(1000);
+  assert.equal(await app.locator('.d5fc_flip_card > .d5fc_flip_card__toggle .d5fc_flip_card__toggle-icon').count(), 1, 'picked icon on the canvas');
   const input = page.locator('input[id*="flipButton-advanced-label"], input[name*="flipButton-advanced-label"]').first();
   assert.equal(await input.count(), 1, 'Button Text field');
   await input.fill('More');

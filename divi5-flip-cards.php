@@ -56,6 +56,7 @@ if ( ! defined( 'D5FC_REQUIRED_CLASSES' ) ) {
 			'ET\Builder\Framework\Utility\HTMLUtility',
 			'ET\Builder\FrontEnd\BlockParser\BlockParserStore',
 			'ET\Builder\FrontEnd\Module\Style',
+			'ET\Builder\Packages\IconLibrary\IconFont\Utils',
 			'ET\Builder\Packages\Module\Module',
 			'ET\Builder\Packages\Module\Options\Css\CssStyle',
 			'ET\Builder\Packages\Module\Options\Element\ElementScriptData',

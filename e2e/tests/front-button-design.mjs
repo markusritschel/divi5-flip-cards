@@ -50,3 +50,16 @@ test('without settings: round icon button in the bottom right corner', async () 
   assert.equal(b.labelWidth, 1, 'the label is only for screen readers');
   assert.equal(b.bg, 'rgba(0, 0, 0, 0.6)');
 });
+
+test('a picked icon replaces the arrows, in the Divi icon font', async () => {
+  const r = await page.locator('.d5fc_flip_card').nth(2).evaluate((c) => {
+    const b = c.querySelector(':scope > .d5fc_flip_card__toggle');
+    const i = b.querySelector('.d5fc_flip_card__toggle-icon');
+    return { svg: !!b.querySelector('svg'), text: i?.textContent, family: i && getComputedStyle(i).fontFamily };
+  });
+  assert.equal(r.svg, false, 'no arrows');
+  assert.equal(r.text, '\ue030', 'the picked glyph');
+  assert.match(r.family, /ETmodules/);
+  await page.evaluate(() => document.fonts.ready);
+  assert.ok(await page.evaluate(() => document.fonts.check('18px ETmodules')), 'Divi loaded its icon font');
+});

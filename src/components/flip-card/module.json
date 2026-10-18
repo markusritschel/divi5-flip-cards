@@ -554,6 +554,26 @@
                 "name": "divi/text"
               }
             }
+          },
+          "icon": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designFlipButton",
+              "attrName": "flipButton.advanced.icon",
+              "label": "Icon",
+              "description": "The icon on the flip button. Leave empty for the two turning arrows.",
+              "priority": 25,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/icon-picker"
+              }
+            }
           }
         },
         "decoration": {
