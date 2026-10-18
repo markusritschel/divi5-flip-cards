@@ -2,7 +2,7 @@
 import React, { ReactElement } from 'react';
 
 // Divi dependencies.
-import { ChildModulesContainer, ModuleContainer } from '@divi/module';
+import { ChildModulesContainer, ModuleAdd, ModuleContainer } from '@divi/module';
 
 // Local dependencies.
 import { FlipCardFaceEditProps } from './types';
@@ -15,6 +15,9 @@ import { moduleClassnames } from './module-classnames';
  *
  * A face is a container like Divi's Group module: `childrenName: []` in module.json lets
  * it hold any regular Divi module.
+ *
+ * Divi only draws the "add a module inside" button for its own structural modules (Group,
+ * Column, ...), so an empty face renders that button itself.
  */
 export const FlipCardFaceEdit = (props: FlipCardFaceEditProps): ReactElement => {
   const {
@@ -27,6 +30,7 @@ export const FlipCardFaceEdit = (props: FlipCardFaceEditProps): ReactElement => 
     isLooped,
     loopIndex,
     canvasId,
+    layout,
   } = props;
 
   return (
@@ -47,8 +51,21 @@ export const FlipCardFaceEdit = (props: FlipCardFaceEditProps): ReactElement => 
       {elements.styleComponents({
         attrName: 'module',
       })}
-      {childrenIds && childrenIds.length > 0 && (
+      {childrenIds && childrenIds.length > 0 ? (
         <ChildModulesContainer ids={childrenIds} isLooped={isLooped} loopIndex={loopIndex} canvasId={canvasId} />
+      ) : (
+        <ModuleAdd
+          moduleId={id}
+          basicModuleType="module"
+          basicModuleTypeLabel="Module"
+          addChild
+          isRow={false}
+          isSection={false}
+          isColumnInner={false}
+          isNestedModule
+          isSpecialtyColumn={false}
+          layout={layout}
+        />
       )}
     </ModuleContainer>
   );
