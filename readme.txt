@@ -1,4 +1,4 @@
-=== Divi 5 Flip Cards ===
+=== Flip Cards for Divi 5 ===
 Contributors: markusritschel
 Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5

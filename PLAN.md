@@ -1,4 +1,4 @@
-# Divi 5 Flip Cards: plan
+# Flip Cards for Divi 5: plan
 
 ## Decisions
 
@@ -15,7 +15,7 @@
 | Directions | Left, right, up, down first; diagonal later. |
 | Design | Every face has its own full design settings (background, spacing, border, shadow, layout, ...). |
 | Accessibility | Keyboard flipping, correct ARIA states, hidden face not focusable, `prefers-reduced-motion` gives a cross-fade. |
-| Naming | "Divi 5 Flip Cards", slug/text domain `divi5-flip-cards`, prefix `d5fc`, GPL-2.0-or-later. |
+| Naming | "Flip Cards for Divi 5", slug/text domain `divi5-flip-cards`, prefix `d5fc`, GPL-2.0-or-later. |
 | Distribution | For now the author and one client; public distribution later. |
 | Development | Code that doesn't need Divi can be written anywhere; everything else is tested locally in **LocalWP** with Divi 5.15 (see `docs/local-development.md`). |
 

@@ -1,4 +1,4 @@
-# Divi 5 Flip Cards
+# Flip Cards for Divi 5
 
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.

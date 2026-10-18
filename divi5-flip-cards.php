@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Divi 5 Flip Cards
+ * Plugin Name:       Flip Cards for Divi 5
  * Description:       A flip card module for Divi 5. Put any Divi modules on the front and the back.
  * Version:           0.1.0
  * Requires at least: 6.5
@@ -211,7 +211,7 @@ function d5fc_missing_divi_notice() {
 
 	printf(
 		'<div class="notice notice-warning"><p>%s</p></div>',
-		esc_html__( 'Divi 5 Flip Cards needs Divi 5. The Flip Card module is only available while a Divi 5 theme or builder is active.', 'divi5-flip-cards' )
+		esc_html__( 'Flip Cards for Divi 5 needs Divi 5. The Flip Card module is only available while a Divi 5 theme or builder is active.', 'divi5-flip-cards' )
 	);
 }
 add_action( 'admin_notices', 'd5fc_missing_divi_notice' );

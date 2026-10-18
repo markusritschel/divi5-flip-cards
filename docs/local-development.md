@@ -26,7 +26,7 @@ npm install
 npm run build        # or: npm start (rebuilds on every change)
 ```
 
-Then activate **Divi 5 Flip Cards** under **Plugins**.
+Then activate **Flip Cards for Divi 5** under **Plugins**.
 
 After a change: with `npm start` running, reload the Visual Builder. PHP changes take effect on reload; changes to a `module.json` need a rebuild (which `npm start` does automatically).
 
