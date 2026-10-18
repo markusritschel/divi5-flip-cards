@@ -7,11 +7,11 @@
 | Platform | Divi 5 only (native Divi 5 module API, no Divi 4 support). Developed against Divi 5.15. |
 | Structure | **Flip Card** module (`d5fc/flip-card`) with exactly two **Face** child modules (`d5fc/flip-card-face`). |
 | Face content | Each face holds **any** Divi module, like Divi's Group module (`childrenName: []`). Front and back hold different modules. |
-| Front/back | A new card comes with a "Front" and a "Back" face. The first face is the front, the second the back. Further faces are hidden on the live page and marked with a red dashed outline in the builder. |
+| Front/back | A new card comes with a "Front" and a "Back" face. The first face is the front, the second the back. Further faces are hidden on the live page and marked with a red dashed outline in the builder. In the builder, both faces are shown stacked by default; *Front*/*Back* show the turning card, switchable next to the module toolbar. |
 | Height | The card is always as tall as the taller face (both faces share one CSS grid cell). |
 | Grid of cards | No dedicated grid module for now. Put cards in a Divi Group/row with grid or flex layout. Can be revisited. |
-| Trigger | A setting: *Hover*, *Click anywhere* (clicks on links/buttons inside still work), *Flip button*. Hover falls back to tap on touch devices. |
-| Effects | User-selectable. Flip first; then fade, slide, zoom and possibly cube. |
+| Trigger | A setting: *Hover*, *Click anywhere* (clicks on links/buttons inside still work), *Flip button*. Hover falls back to tap on touch devices. Every card has a real flip button; with the other triggers it only shows on keyboard focus. |
+| Effects | User-selectable from tiles (like Divi's Animation Style). Flip and Slide (the back face slides in over the front) exist; fade, zoom and possibly cube later. Changing effect, direction or duration plays the transition once in the builder. |
 | Directions | Left, right, up, down first; diagonal later. |
 | Design | Every face has its own full design settings (background, spacing, border, shadow, layout, ...). |
 | Accessibility | Keyboard flipping, correct ARIA states, hidden face not focusable, `prefers-reduced-motion` gives a cross-fade. |
@@ -21,16 +21,20 @@
 
 ## Milestones
 
-1. **Scaffold + core** (done, *not yet tested in Divi*)
+1. **Scaffold + core** (done)
    - Plugin bootstrap, build setup adapted from Elegant Themes' official example, release ZIP, CI.
    - Flip Card + Face modules, faces hold any modules, height fits the taller face.
    - 3D flip on hover in four directions, adjustable duration.
    - "Show in Builder: Front/Back" setting, hover flipping turned off in the builder.
    - Reduced motion: cross-fade instead of rotation.
-2. **Verify in Divi 5.15** (next, locally): run the checklist below and fix what breaks.
-3. **Triggers**: hover / click anywhere / flip button, touch fallback, keyboard (Enter/Space), ARIA, small front-end script.
-4. **Effects and timing**: flip, fade, slide, zoom, cube; easing, delay, perspective; diagonal directions.
-5. **Builder usability**: polish the front/back switch, warnings for extra faces, sensible defaults and presets.
+2. **Verify in Divi 5.15** (done 2026-10-18): checklist below; four bugs fixed.
+3. **Triggers** (done, needs a manual pass in LocalWP): hover / click anywhere / flip button, touch
+   fallback, keyboard (flip button, Enter/Space), `aria-pressed`, small front-end script.
+4. **Effects and timing** (started): flip and slide, with a builder preview. Still to do: fade, zoom,
+   cube; easing, delay, perspective; diagonal directions.
+5. **Builder usability** (started): "+" inside empty faces, Elements list in the face settings,
+   stacked view, Front/Back switch next to the toolbar. Still to do: warnings for extra faces,
+   sensible defaults and presets.
 6. **Release**: translations (PHP and JS), readme, versioning, tested ZIP for the client site.
 
 ## Milestone 1 verification checklist (Divi 5.15, LocalWP)
@@ -44,11 +48,9 @@ look lost to Divi's CSS reset, module icon clipped in the picker.
 - [x] The plugin activates without PHP errors or notices.
 - [x] "Flip Card" appears in the module picker, with its icon.
 - [x] Inserting a Flip Card creates two faces labelled "Front" and "Back".
-- [ ] A face accepts any module: Text, Image, Button, Blurb, Group, a nested row.
-  All of them render inside a face (builder and live page), and a module's "+" inside a face
-  offers every module. **Open:** an empty face has no "+" of its own, so a new card's faces can't
-  get their first module from the canvas (Divi only draws that button for its own structural
-  modules; its Accordion Items have the same gap). Drag and drop is untested.
+- [x] A face accepts any module: Text, Image, Button, Blurb, Group, a nested row.
+  An empty face now draws Divi's "+" itself (Divi only does that for its own structural modules),
+  and the face settings have an Elements list with "Add Element", like a Group.
 - [x] A Flip Card only accepts Faces, and a Face can't be added outside a Flip Card.
   (Checked through the "+" buttons and the module picker; drag and drop untested.)
 - [x] Content > Flip > *Show in Builder: Back* shows the back face in the builder.
@@ -69,13 +71,16 @@ look lost to Divi's CSS reset, module icon clipped in the picker.
 - [x] `divi/range` with `allowedUnits: ["ms"]` stores values like `600ms` (saved as `"900ms"`).
 - [x] `StyleDeclarations` accepts the custom property name `--d5fc-duration`.
 
-## Known limitations of milestone 1
+## Known limitations
 
-- Hover only; on touch devices it depends on the browser's tap-to-hover behaviour (fixed in milestone 3).
-- Links on the back face can't be reached by keyboard (fixed in milestone 3).
-- A Flip Card nested inside another card's face also flips when the outer card is hovered.
-- An empty face has no "+" button in the builder, so the first module has to get into it some
-  other way (see the checklist).
 - In the builder, empty faces are only as tall as their padding: Divi's builder CSS
   (`.et_pb_module { min-height: 10px }`) outranks the default 200px minimum height. The live page
   is not affected.
+- The front-end script (under 1 KB, deferred) is loaded on every front-end page, not only on
+  pages with a card.
+- The "Front"/"Back" labels of the stacked builder view come from CSS `content` and can't be
+  translated yet.
+- With the *Hover* trigger, devices that report hover support (e.g. touch laptops) don't get the
+  tap fallback; keyboard and the flip button still work.
+- Divi's own "+" buttons and "Add Element" can't be clicked in a headless browser; their wiring was
+  tested by dispatching the events, and the real clicks need a manual check in LocalWP.
