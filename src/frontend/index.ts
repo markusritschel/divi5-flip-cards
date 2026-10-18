@@ -14,11 +14,35 @@ const INTERACTIVE =
 
 const canHover = window.matchMedia("(hover: hover)");
 
+// Slide: the front stays visible under the back face. Where the back face covers it completely,
+// the front becomes inert (no focus, no clicks), so keyboard users don't tab into hidden links. A
+// smaller back face leaves the visible part of the front usable.
+const updateCoveredFront = (card: Element, flipped: boolean): void => {
+  const [front, back] = card.querySelectorAll<HTMLElement>(
+    ":scope > .d5fc_flip_card__inner > .d5fc_flip_card_face",
+  );
+
+  if (!front || !back) {
+    return;
+  }
+
+  // Layout sizes, unaffected by the slide transform.
+  const covered =
+    back.offsetWidth >= front.offsetWidth &&
+    back.offsetHeight >= front.offsetHeight;
+
+  front.toggleAttribute(
+    "inert",
+    flipped && card.classList.contains("d5fc_flip_card--slide") && covered,
+  );
+};
+
 const setFlipped = (card: Element, flipped: boolean): void => {
   card.classList.toggle("d5fc_flip_card--flipped", flipped);
   card
     .querySelector(":scope > .d5fc_flip_card__toggle")
     ?.setAttribute("aria-pressed", String(flipped));
+  updateCoveredFront(card, flipped);
 };
 
 const isFlipped = (card: Element): boolean =>
