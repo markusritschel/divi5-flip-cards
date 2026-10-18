@@ -7,13 +7,13 @@
 | Platform | Divi 5 only (native Divi 5 module API, no Divi 4 support). Developed against Divi 5.15. |
 | Structure | **Flip Card** module (`d5fc/flip-card`) with exactly two **Face** child modules (`d5fc/flip-card-face`). |
 | Face content | Each face holds **any** Divi module, like Divi's Group module (`childrenName: []`). Front and back hold different modules. |
-| Front/back | A new card comes with a "Front" and a "Back" face. The first face is the front, the second the back. Further faces are hidden on the live page and marked with a red dashed outline in the builder. In the builder, both faces are shown stacked by default; *Front*/*Back* show the turning card, switchable next to the module toolbar. |
+| Front/back | A new card comes with a "Front" and a "Back" face. The first face is the front, the second the back. A card offers no third face; one from older content is hidden on the live page and marked with a red dashed outline in the builder. In the builder, both faces are shown stacked by default; *Front*/*Back* show the turning card, switchable next to the module toolbar, and editing a module on the hidden face shows that face. |
 | Height | The card is always as tall as the taller face (both faces share one CSS grid cell). |
 | Grid of cards | No dedicated grid module for now. Put cards in a Divi Group/row with grid or flex layout. Can be revisited. |
-| Trigger | A setting: *Hover*, *Click anywhere* (clicks on links/buttons inside still work), *Flip button*. Hover falls back to tap on touch devices. Every card has a real flip button; with the other triggers it only shows on keyboard focus. |
+| Trigger | A setting: *Hover*, *Click anywhere* (clicks on links/buttons inside still work), *Flip button*. Hover falls back to tap on touch devices. Every card has a real flip button; with the other triggers it only shows on keyboard focus. Click/button cards return on a second click, Escape and/or when the pointer leaves (each a switch). An optional flip hint shows that a card can be turned. |
 | Effects | User-selectable from tiles (like Divi's Animation Style). Flip and Slide (the back face slides in over the front) exist; fade, zoom and possibly cube later. Changing effect, direction or duration plays the transition once in the builder. |
 | Directions | Left, right, up, down first; diagonal later. |
-| Design | Every face has its own full design settings (background, spacing, border, shadow, layout, ...). |
+| Design | Every face has its own full design settings (background, spacing, border, shadow, layout, text color, ...). The flip button has its own Design group (position, text, colors). |
 | Accessibility | Keyboard flipping, correct ARIA states, hidden face not focusable, `prefers-reduced-motion` gives a cross-fade. |
 | Naming | "Flip Cards for Divi 5", slug/text domain `divi5-flip-cards`, prefix `d5fc`, GPL-2.0-or-later. |
 | Distribution | For now the author and one client; public distribution later. |
@@ -29,12 +29,14 @@
    - Reduced motion: cross-fade instead of rotation.
 2. **Verify in Divi 5.15** (done 2026-10-18): checklist below; four bugs fixed.
 3. **Triggers** (done, needs a manual pass in LocalWP): hover / click anywhere / flip button, touch
-   fallback, keyboard (flip button, Enter/Space), `aria-pressed`, small front-end script.
+   fallback, keyboard (flip button, Enter/Space), `aria-pressed`, small front-end script; how a
+   flipped card returns (second click, Escape, pointer leaving); optional flip hint.
 4. **Effects and timing** (started): flip and slide, with a builder preview. Still to do: fade, zoom,
    cube; easing, delay, perspective; diagonal directions.
-5. **Builder usability** (started): "+" inside empty faces, Elements list in the face settings,
-   stacked view, Front/Back switch next to the toolbar. Still to do: warnings for extra faces,
-   sensible defaults and presets.
+5. **Builder usability** (done in 0.2.0): "+" inside empty faces, Elements list in the face
+   settings, at most two faces, stacked view, Front/Back switch next to the toolbar, the edited
+   module's face shown automatically, tiles for trigger/effect/direction, flip button design
+   options, four ready-made cards in the Divi Library.
 6. **Release**: translations (PHP and JS), readme, versioning, tested ZIP for the client site.
 
 ## Milestone 1 verification checklist (Divi 5.15, LocalWP)
@@ -84,3 +86,8 @@ look lost to Divi's CSS reset, module icon clipped in the picker.
   tap fallback; keyboard and the flip button still work.
 - Divi's own "+" buttons and "Add Element" can't be clicked in a headless browser; their wiring was
   tested by dispatching the events, and the real clicks need a manual check in LocalWP.
+- The ready-made cards are created on the first request where Divi loads its library (the Visual
+  Builder, an "Add New" screen, the Divi Library or Divi's options), not on activation; a plain
+  dashboard visit does not load Divi's library.
+- Divi's default button style (blue text and border) does not adapt to dark faces; the ready-made
+  cards keep buttons on light faces.

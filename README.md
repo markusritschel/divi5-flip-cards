@@ -3,18 +3,26 @@
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.
 
-> **Status:** early development (milestone 1). The module builds and packages, but has not been
-> tested in Divi yet. See [`PLAN.md`](PLAN.md) for the roadmap and the test checklist.
+> **Status:** 0.2.0, in development and tested against Divi 5.15.1 (browser test suite in
+> [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
-## Features (so far)
+## Features
 
-- **Flip Card** module with a **Front** and a **Back** face.
-- Each face holds any Divi modules and has its own design settings.
-- 3D flip on hover: left, right, up or down, with adjustable duration.
-- *Show in Builder: Front/Back* to edit the back side in the Visual Builder.
-- Cross-fade instead of rotation for visitors who prefer reduced motion.
+- **Flip Card** module with a **Front** and a **Back** face; each face holds any Divi modules and has
+  its own design settings.
+- **Triggers:** hover (tap on touch screens), click anywhere, or a flip button. Click and button
+  cards turn back on a second click, with Escape and/or when the pointer leaves.
+- **Effects:** 3D flip or slide-in, in four directions, with adjustable duration.
+- **Accessible:** every card has a real flip button for keyboard users, `aria-pressed`, hidden faces
+  stay out of the tab order, and reduced motion gives a cross-fade.
+- **Flip button design:** corner, optional text, background and text colors.
+- **Optional flip hint:** a small icon that wiggles once when the card scrolls into view.
+- **Builder:** both faces stacked for editing, or the real card with a Front/Back switch; "+" and an
+  Elements list for filling faces; tiles for trigger, effect and direction with a live preview.
+- **Ready-made cards** in the Divi Library ("Add From Library"): Icon + Text, Bold Statement,
+  Feature List, Call to Action.
 
-Planned: click/tap and flip-button triggers, keyboard support, more effects (fade, slide, zoom, cube), easing and delay settings.
+Planned: fade, zoom and cube effects, easing and delay settings, diagonal directions, translations.
 
 ## Requirements
 
