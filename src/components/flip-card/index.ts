@@ -51,7 +51,6 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
           flipAdvancedBackclick:  { visible: isClickOrButton },
           flipAdvancedBackescape: { visible: isClickOrButton },
           flipAdvancedBackleave:  { visible: isClickOrButton },
-          flipAdvancedBackdropblur:  { visible: isSlide },
           flipAdvancedBacksize:      { visible: isSlide },
           flipAdvancedBacksizevalue: {
             visible: (params) => isSlide(params) && 'fixed' === (params.attrs as FlipCardAttrs)?.flip?.advanced?.backSize?.desktop?.value,

@@ -41,8 +41,9 @@ test('back face slides in over the front, which stays visible', async () => {
   await browser.close();
 });
 
-test('Backdrop Blur blurs the front through a see-through back face', async () => {
+test('the back face\'s Design > Filters > Backdrop Blur blurs the front showing through', async () => {
   const browser = await launch();
+  try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
   await page.goto(`${BASE}/slide/`, { waitUntil: 'networkidle' });
   const backdrop = (i) => page.locator('.d5fc_flip_card').nth(i).evaluate((c) => getComputedStyle(c.querySelectorAll('.d5fc_flip_card_face')[1]).backdropFilter);
@@ -52,5 +53,8 @@ test('Backdrop Blur blurs the front through a see-through back face', async () =
   await page.waitForTimeout(600);
   const vis = await page.locator('.d5fc_flip_card').nth(2).evaluate((c) => [...c.querySelectorAll('.d5fc_flip_card_face')].map((f) => getComputedStyle(f).visibility));
   assert.deepEqual(vis, ['visible', 'visible']);
-  await browser.close();
+  } finally {
+    // Always close, or a failed assertion leaves the browser (and the test run) hanging.
+    await browser.close();
+  }
 });

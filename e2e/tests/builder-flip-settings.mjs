@@ -109,7 +109,6 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   const { page, app, errors } = await builder(context, 'flip-edit');
   await openFlipSettings(page, app);
   assert.deepEqual(await tileLabels(page, 'Slide'), ['Flip', 'Slide']);
-  assert.equal(await page.getByText('Backdrop Blur', { exact: true }).isVisible(), false, 'no backdrop blur for the flip');
   await tile(page, 'Slide').click();
   const samples = [];
   for (let i = 0; i < 12; i++) {
@@ -120,7 +119,6 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   assert.ok(samples.at(-1).includes('--slide') && !samples.at(-1).includes('--play'));
   await page.waitForTimeout(1500);
   assert.match(await cardClasses(app), /preview-both/);
-  assert.equal(await page.getByText('Backdrop Blur', { exact: true }).isVisible(), true, 'backdrop blur for the slide');
   assert.deepEqual(errors, []);
   await page.close();
 });

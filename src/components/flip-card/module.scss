@@ -163,14 +163,12 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   transition-delay: 0s, var(--d5fc-hide-delay);
 }
 
-// The sliding back face lies over the front; "Backdrop Blur" (`--d5fc-backdrop`) blurs what shows
-// through a see-through background.
+// The sliding back face lies over the front. A see-through background and Design > Filters >
+// Backdrop Blur on the back face let the front show through, frosted.
 .d5fc_flip_card--slide
   > .d5fc_flip_card__inner
   > #{$face}:nth-child(2 of #{$face}) {
   z-index: 1;
-  -webkit-backdrop-filter: var(--d5fc-backdrop, none);
-  backdrop-filter: var(--d5fc-backdrop, none);
 }
 
 // Slide > "Back Face Size": Content or Fixed. The back face leaves the grid (the card takes the

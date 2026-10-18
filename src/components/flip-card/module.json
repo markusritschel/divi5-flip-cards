@@ -106,11 +106,6 @@
               "value": "flip"
             }
           },
-          "backdropBlur": {
-            "desktop": {
-              "value": "0px"
-            }
-          },
           "backSize": {
             "desktop": {
               "value": "full"
@@ -293,7 +288,7 @@
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.effect",
               "label": "Effect",
-              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front, which stays visible behind it (give the back face a see-through background to let it show through).",
+              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front, which stays visible behind it. For a frosted-glass look, give the back face a see-through background color and a backdrop blur (Design > Filters).",
               "priority": 16,
               "render": true,
               "features": {
@@ -317,33 +312,6 @@
                   },
                   "justified": true,
                   "allowClickToUnset": false
-                }
-              }
-            }
-          },
-          "backdropBlur": {
-            "groupType": "group-item",
-            "item": {
-              "groupSlug": "contentFlip",
-              "attrName": "flip.advanced.backdropBlur",
-              "label": "Backdrop Blur",
-              "description": "Blurs the front face where it shows through the sliding back face. Give the back face a see-through background color (Design > Background) to use it.",
-              "priority": 17,
-              "render": true,
-              "features": {
-                "responsive": false,
-                "hover": false,
-                "sticky": false
-              },
-              "component": {
-                "type": "field",
-                "name": "divi/range",
-                "props": {
-                  "min": 0,
-                  "max": 40,
-                  "allowedUnits": [
-                    "px"
-                  ]
                 }
               }
             }
