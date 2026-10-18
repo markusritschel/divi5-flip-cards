@@ -20,7 +20,7 @@ You need [Node.js](https://nodejs.org/) 20.18 or newer and Git.
 
 ```bash
 cd "<site folder>/app/public/wp-content/plugins"
-git clone -b claude/divi-flip-card-plugin-w0gfks https://github.com/markusritschel/divi5-flip-cards.git
+git clone https://github.com/markusritschel/divi5-flip-cards.git
 cd divi5-flip-cards
 npm install
 npm run build        # or: npm start (rebuilds on every change)
