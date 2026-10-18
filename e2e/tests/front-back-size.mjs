@@ -1,4 +1,5 @@
-// Live page: Slide > Back Face Size (content, fixed) and the card height.
+// Live page: a sliding back face sits at the edge it comes from; its size comes from the back
+// face's own Design > Sizing, and without one it fills the card.
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { launch, BASE, wp, resetPage } from '../lib.mjs';
@@ -27,7 +28,7 @@ const flipped = async (i) => {
     return {
       card: [Math.round(cr.width), Math.round(cr.height)], front: Math.round(front.getBoundingClientRect().height),
       back: [Math.round(b.left - cr.left), Math.round(b.top - cr.top), Math.round(b.width), Math.round(b.height)],
-      overflow: getComputedStyle(back).overflowY, scrollable: back.scrollHeight > back.clientHeight,
+      backContent: back.scrollHeight,
     };
   });
   await page.mouse.move(2, 2);
@@ -35,7 +36,7 @@ const flipped = async (i) => {
   return r;
 };
 
-test('content, sliding up: only as tall as its content, at the bottom; the card keeps the front height', async () => {
+test('Sizing height auto, sliding up: as tall as its content, at the bottom edge', async () => {
   const r = await flipped(0);
   assert.equal(r.card[1], r.front, 'card height = front height');
   assert.ok(r.back[3] < r.card[1] / 2, `back is short (${r.back[3]}px)`);
@@ -43,25 +44,25 @@ test('content, sliding up: only as tall as its content, at the bottom; the card 
   assert.equal(r.back[2], r.card[0], 'full width');
 });
 
-test('fixed 40%, sliding left: 40% wide, at the right edge, full height', async () => {
+test('Sizing width 40%, sliding left: 40% wide, at the right edge, full height', async () => {
   const r = await flipped(1);
   assert.ok(Math.abs(r.back[2] - r.card[0] * 0.4) <= 1, `width ${r.back[2]} of ${r.card[0]}`);
   assert.equal(r.back[0] + r.back[2], r.card[0], 'right edge');
   assert.equal(r.back[3], r.card[1], 'full height');
 });
 
-test('content longer than the card: capped at the card and scrollable', async () => {
+test('no Sizing: the back face fills the card, and the card grows to the taller face', async () => {
   const r = await flipped(2);
-  assert.equal(r.card[1], r.front, 'card height = front height');
-  assert.equal(r.back[3], r.card[1], 'capped');
-  assert.ok(r.scrollable, 'scrolls');
+  assert.equal(r.back[3], r.card[1], 'full height');
+  assert.equal(r.backContent, r.card[1], 'the card grows with the long back face (nothing clipped)');
+  assert.ok(r.card[1] > 400, `taller than the short front alone (${r.card[1]}px)`);
+  assert.deepEqual([r.back[0], r.back[1], r.back[2]], [0, 0, r.card[0]]);
 });
 
-test('with the flip effect the size option has no effect', async () => {
+test('the flip effect is unaffected', async () => {
   const r = await page.locator('.d5fc_flip_card').nth(3).evaluate((c) => {
     const [front, back] = c.querySelectorAll(':scope > .d5fc_flip_card__inner > .d5fc_flip_card_face');
-    return [getComputedStyle(back).position, Math.round(back.getBoundingClientRect().width), Math.round(front.getBoundingClientRect().width)];
+    return [Math.round(back.getBoundingClientRect().width), Math.round(front.getBoundingClientRect().width), Math.round(back.getBoundingClientRect().height), Math.round(front.getBoundingClientRect().height)];
   });
-  assert.notEqual(r[0], 'absolute', 'stays in the grid');
-  assert.equal(r[1], r[2], 'same width as the front');
+  assert.deepEqual([r[0], r[2]], [r[1], r[3]], 'same size as the front');
 });

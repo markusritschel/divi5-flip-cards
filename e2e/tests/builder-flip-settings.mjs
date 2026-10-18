@@ -123,21 +123,18 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   await page.close();
 });
 
-test('Back Face Size: slide only; Fixed Size only for fixed; the stacked view stays in flow', async () => {
+test('slide: no size option of its own; the stacked view shows both faces full width, one below the other', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');
   await openFlipSettings(page, app);
-  const shown = (label) => page.getByText(label, { exact: true }).isVisible();
-  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [false, false], 'flip');
   await tile(page, 'Slide').click();
   await page.waitForTimeout(3000);
-  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [true, false], 'slide');
-  await tile(page, 'Fixed').click();
-  await page.waitForTimeout(3000);
-  assert.deepEqual([await shown('Back Face Size'), await shown('Fixed Size')], [true, true], 'fixed');
-  assert.match(await cardClasses(app), /--back-fixed\b/);
-  const position = await app.evaluate(() => getComputedStyle(document.querySelectorAll('.d5fc_flip_card > .d5fc_flip_card__inner > .d5fc_flip_card_face')[1]).position);
-  assert.notEqual(position, 'absolute', 'stacked view keeps both faces in flow');
+  assert.equal(await page.getByText('Back Face Size', { exact: true }).count(), 0, 'size comes from Design > Sizing');
+  const faces = await app.evaluate(() => [...document.querySelectorAll('.d5fc_flip_card > .d5fc_flip_card__inner > .d5fc_flip_card_face')].map((f) => { const r = f.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.bottom)]; }));
+  assert.match(await cardClasses(app), /preview-both/);
+  assert.equal(faces[1][2], faces[0][2], 'same width');
+  assert.equal(faces[1][0], faces[0][0], 'same left edge');
+  assert.ok(faces[1][1] >= faces[0][3], 'back face below the front');
   assert.deepEqual(errors, []);
   await page.close();
 });

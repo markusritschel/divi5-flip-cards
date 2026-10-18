@@ -171,61 +171,35 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   z-index: 1;
 }
 
-// Slide > "Back Face Size": Content or Fixed. The back face leaves the grid (the card takes the
-// front's height), sits at the edge it slides in from, and never exceeds the card. Not in the
-// stacked builder view.
-$sized-back: ".d5fc_flip_card--slide:is(.d5fc_flip_card--back-content, .d5fc_flip_card--back-fixed):not(.d5fc_flip_card--preview-both)";
+// Slide: the back face sits at the edge it slides in from and fills the card by default. A height
+// or width set in the back face's Design > Sizing (e.g. auto, to fit its content) takes over:
+// these rules have zero specificity. Not in the stacked builder view.
+$slide-back: ":where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both))";
+$back-face: ":where(.d5fc_flip_card__inner) > :where(#{$face}:nth-child(2 of #{$face}))";
 
-#{$sized-back} > .d5fc_flip_card__inner {
-  position: relative;
+#{$slide-back}:where(.d5fc_flip_card--up) > #{$back-face} {
+  align-self: end;
+  height: 100%;
 }
 
-#{$sized-back} > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  position: absolute;
-  overflow: auto;
-  max-width: 100%;
-  max-height: 100%;
+#{$slide-back}:where(.d5fc_flip_card--down) > #{$back-face} {
+  align-self: start;
+  height: 100%;
 }
 
-// Sliding up or down: full width, height from the content or the fixed size.
-#{$sized-back}:is(.d5fc_flip_card--up, .d5fc_flip_card--down) > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  right: 0;
-  left: 0;
+#{$slide-back}:where(.d5fc_flip_card--left) > #{$back-face} {
+  justify-self: end;
+  width: 100%;
 }
 
-#{$sized-back}.d5fc_flip_card--up > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  bottom: 0;
+#{$slide-back}:where(.d5fc_flip_card--right) > #{$back-face} {
+  justify-self: start;
+  width: 100%;
 }
 
-#{$sized-back}.d5fc_flip_card--down > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  top: 0;
-}
-
-// Sliding left or right: full height, width from the content or the fixed size.
-#{$sized-back}:is(.d5fc_flip_card--left, .d5fc_flip_card--right) > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  top: 0;
-  bottom: 0;
-}
-
-#{$sized-back}.d5fc_flip_card--left > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  right: 0;
-}
-
-#{$sized-back}.d5fc_flip_card--right > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  left: 0;
-}
-
-#{$sized-back}.d5fc_flip_card--back-fixed:is(.d5fc_flip_card--up, .d5fc_flip_card--down) > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  height: var(--d5fc-back-size, 50%);
-}
-
-#{$sized-back}.d5fc_flip_card--back-fixed:is(.d5fc_flip_card--left, .d5fc_flip_card--right) > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-  width: var(--d5fc-back-size, 50%);
-}
-
-// The face's default 200px minimum height would stop a small back face; type selectors only
-// (0,0,3), so a size set in the face's design settings still wins.
-div:where(#{$sized-back}) > div:where(.d5fc_flip_card__inner) > div:where(#{$face}:nth-child(2 of #{$face})) {
+// The face's default 200px minimum height (flip-card-face/module.scss) would stop a smaller back
+// face; type selectors only (0,0,3), so a minimum height set in Design > Sizing still wins.
+div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where(.d5fc_flip_card__inner) > div:where(#{$face}:nth-child(2 of #{$face})) {
   min-height: 0;
 }
 

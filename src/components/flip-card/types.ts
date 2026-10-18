@@ -16,8 +16,6 @@ export type FlipCardTrigger = 'hover' | 'click' | 'button';
 
 export type FlipCardButtonPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
-export type FlipCardBackSize = 'full' | 'content' | 'fixed';
-
 // Value of Divi's icon picker.
 export interface FlipCardIcon {
   unicode?: string;
@@ -67,8 +65,6 @@ export interface FlipCardAttrs extends InternalAttrs {
       backLeave?: FormatBreakpointStateAttr<'on' | 'off'>;
       hint?: FormatBreakpointStateAttr<'on' | 'off'>;
       effect?: FormatBreakpointStateAttr<FlipCardEffect>;
-      backSize?: FormatBreakpointStateAttr<FlipCardBackSize>;
-      backSizeValue?: FormatBreakpointStateAttr<string>;
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
     };

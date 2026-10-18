@@ -9,9 +9,6 @@ import metadata from './module.json';
 import { FlipCardEdit } from './edit';
 import { FlipCardAttrs } from './types';
 
-// Options of the slide effect.
-const isSlide = ({ attrs }: { attrs: unknown }): boolean => 'slide' === (attrs as FlipCardAttrs)?.flip?.advanced?.effect?.desktop?.value;
-
 // The "flip back" options only apply to cards turned by a click or the flip button.
 const isClickOrButton = ({ attrs }: { attrs: unknown }): boolean => ['click', 'button'].includes(
   (attrs as FlipCardAttrs)?.flip?.advanced?.trigger?.desktop?.value ?? 'hover',
@@ -51,10 +48,6 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
           flipAdvancedBackclick:  { visible: isClickOrButton },
           flipAdvancedBackescape: { visible: isClickOrButton },
           flipAdvancedBackleave:  { visible: isClickOrButton },
-          flipAdvancedBacksize:      { visible: isSlide },
-          flipAdvancedBacksizevalue: {
-            visible: (params) => isSlide(params) && 'fixed' === (params.attrs as FlipCardAttrs)?.flip?.advanced?.backSize?.desktop?.value,
-          },
           // The flip button already shows the card can be turned.
           flipAdvancedHint:       { visible: ({ attrs }) => 'button' !== (attrs as FlipCardAttrs)?.flip?.advanced?.trigger?.desktop?.value },
         },

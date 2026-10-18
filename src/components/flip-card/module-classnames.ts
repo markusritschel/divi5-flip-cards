@@ -21,12 +21,7 @@ export const moduleClassnames = ({
   classnamesInstance.add(textOptionsClassnames(attrs?.module?.advanced?.text ?? {}));
   classnamesInstance.add(`d5fc_flip_card--${direction}`);
   classnamesInstance.add(`d5fc_flip_card--${effect}`);
-  classnamesInstance.add(`d5fc_flip_card--trigger-${trigger}`);
-
-  // Slide: how far the back face reaches ("full" needs no class).
-  const backSize = attrs?.flip?.advanced?.backSize?.desktop?.value ?? 'full';
-  classnamesInstance.add(`d5fc_flip_card--back-${backSize}`, 'full' !== backSize);
-  classnamesInstance.add('d5fc_flip_card--hint', 'on' === attrs?.flip?.advanced?.hint?.desktop?.value);
+  classnamesInstance.add(`d5fc_flip_card--trigger-${trigger}`);  classnamesInstance.add('d5fc_flip_card--hint', 'on' === attrs?.flip?.advanced?.hint?.desktop?.value);
   classnamesInstance.add('d5fc_flip_card--back-click', 'off' !== attrs?.flip?.advanced?.backClick?.desktop?.value);
   classnamesInstance.add('d5fc_flip_card--back-escape', 'off' !== attrs?.flip?.advanced?.backEscape?.desktop?.value);
   classnamesInstance.add('d5fc_flip_card--back-leave', 'on' === attrs?.flip?.advanced?.backLeave?.desktop?.value);

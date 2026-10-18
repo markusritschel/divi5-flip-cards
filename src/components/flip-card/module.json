@@ -106,16 +106,6 @@
               "value": "flip"
             }
           },
-          "backSize": {
-            "desktop": {
-              "value": "full"
-            }
-          },
-          "backSizeValue": {
-            "desktop": {
-              "value": "50%"
-            }
-          },
           "direction": {
             "desktop": {
               "value": "left"
@@ -288,7 +278,7 @@
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.effect",
               "label": "Effect",
-              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front, which stays visible behind it. For a frosted-glass look, give the back face a see-through background color and a backdrop blur (Design > Filters).",
+              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front, which stays visible behind it. With the slide, the back face covers the whole card unless you give it a height or width (Design > Sizing, e.g. auto to fit its content); for a frosted-glass look, give it a see-through background color and a backdrop blur (Design > Filters).",
               "priority": 16,
               "render": true,
               "features": {
@@ -312,71 +302,6 @@
                   },
                   "justified": true,
                   "allowClickToUnset": false
-                }
-              }
-            }
-          },
-          "backSize": {
-            "groupType": "group-item",
-            "item": {
-              "groupSlug": "contentFlip",
-              "attrName": "flip.advanced.backSize",
-              "label": "Back Face Size",
-              "description": "How far the back face slides over the front: the whole card, only as far as its content needs, or a fixed size. This is the height when it slides up or down, and the width when it slides left or right.",
-              "priority": 18,
-              "render": true,
-              "features": {
-                "responsive": false,
-                "hover": false,
-                "sticky": false
-              },
-              "component": {
-                "type": "field",
-                "name": "divi/button-options",
-                "props": {
-                  "options": {
-                    "full": {
-                      "label": "Full"
-                    },
-                    "content": {
-                      "label": "Content"
-                    },
-                    "fixed": {
-                      "label": "Fixed"
-                    }
-                  },
-                  "justified": true,
-                  "allowClickToUnset": false
-                }
-              }
-            }
-          },
-          "backSizeValue": {
-            "groupType": "group-item",
-            "item": {
-              "groupSlug": "contentFlip",
-              "attrName": "flip.advanced.backSizeValue",
-              "label": "Fixed Size",
-              "description": "Height or width of the back face, e.g. 50%, 180px or 30vh. It never exceeds the card.",
-              "priority": 19,
-              "render": true,
-              "features": {
-                "responsive": false,
-                "hover": false,
-                "sticky": false
-              },
-              "component": {
-                "type": "field",
-                "name": "divi/range",
-                "props": {
-                  "min": 0,
-                  "max": 100,
-                  "allowedUnits": [
-                    "%",
-                    "px",
-                    "vh",
-                    "vw"
-                  ]
                 }
               }
             }
