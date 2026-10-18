@@ -2,6 +2,42 @@
 
 $face: '.d5fc_flip_card_face';
 
+// "Show in Builder: Both": the faces stacked below each other, unrotated, so both can be edited.
+// The selectors outrank the flip rules in module.scss (0,5,0 against 0,4,0).
+.d5fc_flip_card--preview-both > .d5fc_flip_card__inner {
+  grid-template-rows: none;
+  grid-auto-rows: auto;
+  row-gap: 20px;
+}
+
+.d5fc_flip_card--preview-both > .d5fc_flip_card__inner > #{$face}:nth-child(n of #{$face}) {
+  grid-area: auto;
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+// Face labels, in the corner away from Divi's module toolbars.
+.d5fc_flip_card--preview-both > .d5fc_flip_card__inner > #{$face}::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  pointer-events: none;
+}
+
+.d5fc_flip_card--preview-both > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face})::after {
+  content: 'Front';
+}
+
+.d5fc_flip_card--preview-both > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face})::after {
+  content: 'Back';
+}
+
 // Show faces beyond the second one below the card, clearly marked as unused,
 // so they can be found and deleted.
 .d5fc_flip_card--builder .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {

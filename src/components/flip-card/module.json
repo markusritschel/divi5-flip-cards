@@ -73,7 +73,7 @@
         "advanced": {
           "preview": {
             "desktop": {
-              "value": "front"
+              "value": "both"
             }
           },
           "direction": {
@@ -96,7 +96,7 @@
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.preview",
               "label": "Show in Builder",
-              "description": "Choose which face is shown while you edit this card in the Visual Builder. This has no effect on the live page.",
+              "description": "Choose how the card is shown while you edit it in the Visual Builder: both faces stacked, or the card showing its front or back. This has no effect on the live page.",
               "priority": 10,
               "render": true,
               "features": {
@@ -110,6 +110,9 @@
                 "name": "divi/select",
                 "props": {
                   "options": {
+                    "both": {
+                      "label": "Both (stacked)"
+                    },
                     "front": {
                       "label": "Front"
                     },

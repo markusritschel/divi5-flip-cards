@@ -6,7 +6,7 @@ import {
   type Module,
 } from '@divi/types';
 
-export type FlipCardPreview = 'front' | 'back';
+export type FlipCardPreview = 'both' | 'front' | 'back';
 
 export type FlipCardDirection = 'left' | 'right' | 'up' | 'down';
 
