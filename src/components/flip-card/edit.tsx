@@ -1,5 +1,5 @@
 // External dependencies.
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useRef } from 'react';
 
 // Divi dependencies.
 import { ChildModulesContainer, ModuleContainer } from '@divi/module';
@@ -55,6 +55,46 @@ const FaceSwitch = ({ id, preview }: { id: string; preview: FlipCardPreview }): 
 };
 
 /**
+ * Plays the transition once (to the other face and back) when the effect, direction or duration
+ * changes, so the choice can be judged right away. Builder only: the `--play` class turns the
+ * card over in module.scss, and the stacked view is suspended while it plays.
+ */
+const usePreviewOnChange = (id: string, effect: string, direction: string, duration: string): void => {
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+
+    const card = document.querySelector<HTMLElement>(`.d5fc_flip_card_${id}`);
+
+    if (! card) {
+      return undefined;
+    }
+
+    const ms       = parseFloat(getComputedStyle(card).getPropertyValue('--d5fc-duration')) || 600;
+    const isStacked = card.classList.contains('d5fc_flip_card--preview-both');
+    const timers: number[] = [];
+
+    card.classList.remove('d5fc_flip_card--preview-both');
+    card.classList.add('d5fc_flip_card--play');
+    // Hold the other face briefly, then turn back; restore the stacked view once settled.
+    timers.push(window.setTimeout(() => card.classList.remove('d5fc_flip_card--play'), ms + 400));
+    timers.push(window.setTimeout(() => isStacked && card.classList.add('d5fc_flip_card--preview-both'), (2 * ms) + 500));
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      card.classList.remove('d5fc_flip_card--play');
+      if (isStacked) {
+        card.classList.add('d5fc_flip_card--preview-both');
+      }
+    };
+  }, [id, effect, direction, duration]);
+};
+
+/**
  * Flip Card edit component of the Visual Builder.
  *
  * The faces are rendered inside `.d5fc_flip_card__inner`, which stacks them in a single
@@ -73,6 +113,13 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
   } = props;
 
   const preview = attrs?.flip?.advanced?.preview?.desktop?.value ?? 'both';
+
+  usePreviewOnChange(
+    id,
+    attrs?.flip?.advanced?.effect?.desktop?.value ?? 'flip',
+    attrs?.flip?.advanced?.direction?.desktop?.value ?? 'left',
+    attrs?.flip?.advanced?.duration?.desktop?.value ?? '',
+  );
 
   return (
     <ModuleContainer

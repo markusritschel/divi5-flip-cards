@@ -76,6 +76,11 @@
               "value": "both"
             }
           },
+          "effect": {
+            "desktop": {
+              "value": "flip"
+            }
+          },
           "direction": {
             "desktop": {
               "value": "left"
@@ -124,13 +129,47 @@
               }
             }
           },
+          "effect": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.effect",
+              "label": "Effect",
+              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front.",
+              "priority": 15,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/button-options",
+                "props": {
+                  "options": {
+                    "flip": {
+                      "icon": "divi/animation-flip",
+                      "label": "Flip"
+                    },
+                    "slide": {
+                      "icon": "divi/animation-slide",
+                      "label": "Slide"
+                    }
+                  },
+                  "justified": true,
+                  "allowClickToUnset": false
+                }
+              }
+            }
+          },
           "direction": {
             "groupType": "group-item",
             "item": {
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.direction",
-              "label": "Flip Direction",
-              "description": "Choose the direction in which the card turns over.",
+              "label": "Direction",
+              "description": "Choose the direction in which the card turns over or the back face moves.",
               "priority": 20,
               "render": true,
               "features": {
@@ -165,8 +204,8 @@
             "item": {
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.duration",
-              "label": "Flip Duration",
-              "description": "How long the flip animation takes.",
+              "label": "Duration",
+              "description": "How long the transition takes.",
               "priority": 30,
               "render": true,
               "features": {

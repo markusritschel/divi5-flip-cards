@@ -39,6 +39,11 @@ class FlipCard implements DependencyInterface {
 	const DIRECTIONS = [ 'left', 'right', 'up', 'down' ];
 
 	/**
+	 * Effects; each one has a matching `d5fc_flip_card--{effect}` class in module.scss.
+	 */
+	const EFFECTS = [ 'flip', 'slide' ];
+
+	/**
 	 * Registers the module and its render callback.
 	 */
 	public function load() {
@@ -132,6 +137,14 @@ class FlipCard implements DependencyInterface {
 		}
 
 		$classnames_instance->add( 'd5fc_flip_card--' . $direction, true );
+
+		$effect = $attrs['flip']['advanced']['effect']['desktop']['value'] ?? 'flip';
+
+		if ( ! in_array( $effect, self::EFFECTS, true ) ) {
+			$effect = 'flip';
+		}
+
+		$classnames_instance->add( 'd5fc_flip_card--' . $effect, true );
 	}
 
 	/**

@@ -10,6 +10,8 @@ export type FlipCardPreview = 'both' | 'front' | 'back';
 
 export type FlipCardDirection = 'left' | 'right' | 'up' | 'down';
 
+export type FlipCardEffect = 'flip' | 'slide';
+
 export interface FlipCardCssAttr extends Module.Css.AttributeValue {
   inner?: string;
 }
@@ -46,6 +48,7 @@ export interface FlipCardAttrs extends InternalAttrs {
   flip?: {
     advanced?: {
       preview?: FormatBreakpointStateAttr<FlipCardPreview>;
+      effect?: FormatBreakpointStateAttr<FlipCardEffect>;
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
     };

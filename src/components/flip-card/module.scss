@@ -1,20 +1,31 @@
 // Flip Card: front-end and Visual Builder styles.
 //
 // Both faces sit in the same grid cell, so the card is always as tall as the taller face.
-// Each face rotates on its own; `backface-visibility` hides whichever face points away and
-// `visibility` (switched at the half-way point) keeps the hidden face out of clicks and tab order.
+// Each face moves on its own, driven by per-direction and per-effect transforms. `visibility`
+// keeps the hidden face out of clicks and tab order; it switches at the moment the face can no
+// longer be seen (half-way for a flip, at the end for a slide).
 //
 // The first face is the front, the second face the back. Further faces are ignored.
 
-$face: '.d5fc_flip_card_face';
+$face: ".d5fc_flip_card_face";
+
+// Cards showing their back face. Hover is turned off in the builder, where "Show in Builder"
+// decides the face, and the builder-only `--play` class previews the transition once.
+$flipped: ".d5fc_flip_card:not(.d5fc_flip_card--builder):hover, " +
+  ".d5fc_flip_card.d5fc_flip_card--preview-back:not(.d5fc_flip_card--play), " +
+  ".d5fc_flip_card.d5fc_flip_card--play:not(.d5fc_flip_card--preview-back)";
 
 .d5fc_flip_card {
   --d5fc-duration: 600ms;
   --d5fc-easing: ease-in-out;
   --d5fc-perspective: 1200px;
 
+  // When a face hides and shows, as a fraction of the duration.
+  --d5fc-hide-at: 0.5;
+  --d5fc-show-at: 0.5;
+
   // Transforms per direction. `rest` is the facing-the-viewer state; it uses the same
-  // rotate function as the other two so the browser interpolates around one axis.
+  // function as the other two so the browser interpolates along one axis.
   --d5fc-rest: rotateY(0deg);
   --d5fc-front-out: rotateY(-180deg);
   --d5fc-back-in: rotateY(180deg);
@@ -38,12 +49,42 @@ $face: '.d5fc_flip_card_face';
   --d5fc-back-in: rotateX(180deg);
 }
 
+// Slide: the front face stays, the back face moves in over it, travelling in the chosen
+// direction. The front hides only once it is covered.
+.d5fc_flip_card.d5fc_flip_card--slide {
+  --d5fc-hide-at: 1;
+  --d5fc-show-at: 0;
+  --d5fc-rest: translate(0, 0);
+  --d5fc-front-out: translate(0, 0);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--left {
+  --d5fc-back-in: translate(100%, 0);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--right {
+  --d5fc-back-in: translate(-100%, 0);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--up {
+  --d5fc-back-in: translate(0, 100%);
+}
+
+.d5fc_flip_card--slide.d5fc_flip_card--down {
+  --d5fc-back-in: translate(0, -100%);
+}
+
 .d5fc_flip_card__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr;
   height: 100%;
   perspective: var(--d5fc-perspective);
+}
+
+// The sliding back face is clipped to the card while it is outside.
+.d5fc_flip_card--slide > .d5fc_flip_card__inner {
+  overflow: hidden;
 }
 
 // `:not(#d5fc)` lifts the specificity above Divi's column gutter rules (e.g.
@@ -55,23 +96,34 @@ $face: '.d5fc_flip_card_face';
 }
 
 .d5fc_flip_card__inner > #{$face} {
+  --d5fc-hide-delay: calc(var(--d5fc-duration) * var(--d5fc-hide-at));
+  --d5fc-show-delay: calc(var(--d5fc-duration) * var(--d5fc-show-at));
+
   grid-area: 1 / 1;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition:
     transform var(--d5fc-duration) var(--d5fc-easing),
-    visibility 0s linear calc(var(--d5fc-duration) / 2);
+    visibility 0s linear var(--d5fc-hide-delay);
 }
 
-// Resting state: front visible, back turned away.
+// Resting state: front visible, back turned or moved away.
 .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
   transform: var(--d5fc-rest);
   visibility: visible;
+  transition-delay: 0s, var(--d5fc-show-delay);
 }
 
 .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
   transform: var(--d5fc-back-in);
   visibility: hidden;
+  transition-delay: 0s, var(--d5fc-hide-delay);
+}
+
+.d5fc_flip_card--slide
+  > .d5fc_flip_card__inner
+  > #{$face}:nth-child(2 of #{$face}) {
+  z-index: 1;
 }
 
 // Only two faces are used. The builder shows the extra ones (see style.scss).
@@ -79,36 +131,34 @@ $face: '.d5fc_flip_card_face';
   display: none !important;
 }
 
-// Flipped state. Hover is turned off in the builder, where the "Show in Builder" setting
-// decides which face is visible.
-.d5fc_flip_card:not(.d5fc_flip_card--builder):hover,
-.d5fc_flip_card.d5fc_flip_card--preview-back {
+#{$flipped} {
   .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
     transform: var(--d5fc-front-out);
     visibility: hidden;
+    transition-delay: 0s, var(--d5fc-hide-delay);
   }
 
   .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
     transform: var(--d5fc-rest);
     visibility: visible;
+    transition-delay: 0s, var(--d5fc-show-delay);
   }
 }
 
-// No rotation for people who asked for less motion: cross-fade instead.
+// No movement for people who asked for less motion: cross-fade instead.
 @media (prefers-reduced-motion: reduce) {
   .d5fc_flip_card__inner > #{$face} {
     transform: none !important;
     transition:
       opacity var(--d5fc-duration) ease,
-      visibility 0s linear calc(var(--d5fc-duration) / 2);
+      visibility 0s linear calc(var(--d5fc-duration) / 2) !important;
   }
 
   .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
     opacity: 0;
   }
 
-  .d5fc_flip_card:not(.d5fc_flip_card--builder):hover,
-  .d5fc_flip_card.d5fc_flip_card--preview-back {
+  #{$flipped} {
     .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
       opacity: 0;
     }
