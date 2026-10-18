@@ -187,6 +187,12 @@ class FlipCard implements DependencyInterface {
 
 		$classnames_instance->add( 'd5fc_flip_card--hint', self::has_hint( $attrs ) );
 
+		// How a flipped card returns (click and flip button triggers); read by the front-end script.
+		$flip = $attrs['flip']['advanced'] ?? [];
+		$classnames_instance->add( 'd5fc_flip_card--back-click', 'off' !== ( $flip['backClick']['desktop']['value'] ?? 'on' ) );
+		$classnames_instance->add( 'd5fc_flip_card--back-escape', 'off' !== ( $flip['backEscape']['desktop']['value'] ?? 'on' ) );
+		$classnames_instance->add( 'd5fc_flip_card--back-leave', 'on' === ( $flip['backLeave']['desktop']['value'] ?? 'off' ) );
+
 		$button_position = $attrs['flipButton']['advanced']['position']['desktop']['value'] ?? 'bottom-right';
 
 		if ( ! in_array( $button_position, self::BUTTON_POSITIONS, true ) ) {

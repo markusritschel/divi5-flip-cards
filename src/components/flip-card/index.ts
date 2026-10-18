@@ -9,6 +9,11 @@ import metadata from './module.json';
 import { FlipCardEdit } from './edit';
 import { FlipCardAttrs } from './types';
 
+// The "flip back" options only apply to cards turned by a click or the flip button.
+const isClickOrButton = ({ attrs }: { attrs: unknown }): boolean => ['click', 'button'].includes(
+  (attrs as FlipCardAttrs)?.flip?.advanced?.trigger?.desktop?.value ?? 'hover',
+);
+
 // Styles.
 import './module.scss';
 import './style.scss';
@@ -36,6 +41,14 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
     content: {
       'd5fc/flip-card-face': {
         maxItemsCallback: () => 2,
+      },
+      // Field keys: the attribute path in Divi's notation (`flip.advanced.backClick`).
+      contentFlip: {
+        fields: {
+          flipAdvancedBackclick:  { visible: isClickOrButton },
+          flipAdvancedBackescape: { visible: isClickOrButton },
+          flipAdvancedBackleave:  { visible: isClickOrButton },
+        },
       },
     },
   },

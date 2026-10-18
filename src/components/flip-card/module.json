@@ -81,6 +81,21 @@
               "value": "hover"
             }
           },
+          "backClick": {
+            "desktop": {
+              "value": "on"
+            }
+          },
+          "backEscape": {
+            "desktop": {
+              "value": "on"
+            }
+          },
+          "backLeave": {
+            "desktop": {
+              "value": "off"
+            }
+          },
           "hint": {
             "desktop": {
               "value": "off"
@@ -146,7 +161,7 @@
               "attrName": "flip.advanced.trigger",
               "label": "Trigger",
               "description": "Choose what turns the card over: hovering (tapping on touch screens), a click anywhere on the card (links and buttons on it still work), or a flip button in the corner.",
-              "priority": 12,
+              "priority": 11,
               "render": true,
               "features": {
                 "responsive": false,
@@ -177,6 +192,66 @@
               }
             }
           },
+          "backClick": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.backClick",
+              "label": "Flip Back on Second Click",
+              "description": "Clicking the card (or the flip button) again turns it back to the front. Only for the click and flip button triggers.",
+              "priority": 12,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            }
+          },
+          "backEscape": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.backEscape",
+              "label": "Flip Back with Escape",
+              "description": "Pressing the Escape key turns the card back to the front. Only for the click and flip button triggers.",
+              "priority": 13,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            }
+          },
+          "backLeave": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.backLeave",
+              "label": "Flip Back When the Pointer Leaves",
+              "description": "The card turns back as soon as the mouse pointer leaves it. Only for the click and flip button triggers.",
+              "priority": 14,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/toggle"
+              }
+            }
+          },
           "hint": {
             "groupType": "group-item",
             "item": {
@@ -184,7 +259,7 @@
               "attrName": "flip.advanced.hint",
               "label": "Show Flip Hint",
               "description": "Shows a small flip icon in the corner of the card, which wiggles once when the card scrolls into view, so visitors see the card can be turned. Not shown with the flip button trigger.",
-              "priority": 13,
+              "priority": 15,
               "render": true,
               "features": {
                 "responsive": false,
@@ -204,7 +279,7 @@
               "attrName": "flip.advanced.effect",
               "label": "Effect",
               "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front.",
-              "priority": 15,
+              "priority": 16,
               "render": true,
               "features": {
                 "responsive": false,

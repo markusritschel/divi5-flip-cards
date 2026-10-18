@@ -21,8 +21,17 @@ const setFlipped = (card: Element, flipped: boolean): void => {
     ?.setAttribute("aria-pressed", String(flipped));
 };
 
-const toggle = (card: Element): void =>
-  setFlipped(card, !card.classList.contains("d5fc_flip_card--flipped"));
+const isFlipped = (card: Element): boolean =>
+  card.classList.contains("d5fc_flip_card--flipped");
+
+// A click turns the card over; turning it back is up to "Flip Back on Second Click".
+const toggle = (card: Element): void => {
+  if (!isFlipped(card)) {
+    setFlipped(card, true);
+  } else if (card.classList.contains("d5fc_flip_card--back-click")) {
+    setFlipped(card, false);
+  }
+};
 
 document.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
@@ -48,7 +57,45 @@ document.addEventListener("click", (event) => {
   const interactive = target.closest(INTERACTIVE);
 
   if (clickAnywhere && !(interactive && card.contains(interactive))) {
-    toggle(card);
+    // Taps on hover cards always turn back and forth; the "flip back" options are for clicks.
+    if (card.classList.contains("d5fc_flip_card--trigger-hover")) {
+      setFlipped(card, !isFlipped(card));
+    } else {
+      toggle(card);
+    }
+  }
+});
+
+// "Flip Back with Escape". Focus on the (now hidden) back face moves to the card's flip button.
+document.addEventListener("keydown", (event) => {
+  if ("Escape" !== event.key) {
+    return;
+  }
+
+  document
+    .querySelectorAll(`${CARD}.d5fc_flip_card--flipped.d5fc_flip_card--back-escape`)
+    .forEach((card) => {
+      const hadFocus = card.contains(document.activeElement);
+      setFlipped(card, false);
+
+      if (hadFocus) {
+        card.querySelector<HTMLElement>(":scope > .d5fc_flip_card__toggle")?.focus();
+      }
+    });
+});
+
+// "Flip Back When the Pointer Leaves".
+document.addEventListener("mouseout", (event) => {
+  const card = event.target instanceof Element ? event.target.closest(CARD) : null;
+  const to = event.relatedTarget instanceof Node ? event.relatedTarget : null;
+
+  if (
+    card &&
+    isFlipped(card) &&
+    card.classList.contains("d5fc_flip_card--back-leave") &&
+    !(to && card.contains(to))
+  ) {
+    setFlipped(card, false);
   }
 });
 

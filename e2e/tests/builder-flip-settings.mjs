@@ -65,6 +65,21 @@ test('Design tab: Flip Button groups; button text updates the canvas button', as
   await page.close();
 });
 
+test('"flip back" options appear only for the click and button triggers', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  const labels = ['Flip Back on Second Click', 'Flip Back with Escape', 'Flip Back When the Pointer Leaves'];
+  const visible = () => Promise.all(labels.map((l) => page.getByText(l, { exact: true }).isVisible()));
+  assert.deepEqual(await visible(), [false, false, false], 'hidden with hover');
+  await tile(page, 'Click').click();
+  await page.waitForTimeout(800);
+  assert.deepEqual(await visible(), [true, true, true], 'shown with click');
+  assert.match(await cardClasses(app), /--back-click\b.*--back-escape\b|--back-escape\b.*--back-click\b/);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('direction tiles with arrows; choosing one switches the card', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');
