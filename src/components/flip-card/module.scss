@@ -290,12 +290,14 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
 }
 
 // Flip hint ("Show Flip Hint"): a badge in the corner, gone while the back is showing and with the
-// flip button trigger (the button already shows the card can be turned).
+// flip button trigger (the button already shows the card can be turned). It takes the Flip Button
+// design (colors and icon through the flipButton attribute, corner below), without the text, and
+// is a little smaller, centred where the button would sit.
 .d5fc_flip_card__hint {
   position: absolute;
   z-index: 2;
-  top: 10px;
-  right: 10px;
+  right: 14px;
+  bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,16 +313,32 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
     width: 16px;
     height: 16px;
   }
+
+  .d5fc_flip_card__toggle-icon {
+    font-size: 16px;
+  }
 }
 
 .d5fc_flip_card--trigger-button > .d5fc_flip_card__hint {
   display: none;
 }
 
-// Keep clear of a flip button placed in the same corner.
+// Design > Flip Button > Position.
+.d5fc_flip_card--button-top-left > .d5fc_flip_card__hint,
 .d5fc_flip_card--button-top-right > .d5fc_flip_card__hint {
+  top: 14px;
+  bottom: auto;
+}
+
+.d5fc_flip_card--button-top-left > .d5fc_flip_card__hint,
+.d5fc_flip_card--button-bottom-left > .d5fc_flip_card__hint {
   right: auto;
-  left: 10px;
+  left: 14px;
+}
+
+// The flip button appears in the same corner while it has keyboard focus.
+.d5fc_flip_card:has(> .d5fc_flip_card__toggle:focus-visible) > .d5fc_flip_card__hint {
+  opacity: 0;
 }
 
 #{$flipped} {

@@ -114,7 +114,7 @@ class FlipCard implements DependencyInterface {
 		);
 
 		// Decorative flip hint in the corner; the front-end script wiggles it once.
-		$hint = self::has_hint( $attrs ) ? '<span class="d5fc_flip_card__hint" aria-hidden="true">' . self::TOGGLE_ICON . '</span>' : '';
+		$hint = self::has_hint( $attrs ) ? '<span class="d5fc_flip_card__hint" aria-hidden="true">' . self::toggle_icon( $attrs['flipButton']['advanced']['icon']['desktop']['value'] ?? [] ) . '</span>' : '';
 
 		return Module::render(
 			[

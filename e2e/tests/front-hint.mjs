@@ -54,3 +54,29 @@ test('no wiggle for reduced motion', async () => {
   assert.equal((await hint(page, 0)).animation, 'none');
   await ctx.close();
 });
+
+test('the hint takes the Flip Button design: corner, colors and icon, but not the text', async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 700 } });
+  await page.goto(`${BASE}/hint/`, { waitUntil: 'networkidle' });
+  const card = page.locator('.d5fc_flip_card').nth(4);
+  await card.scrollIntoViewIfNeeded();
+  const r = await card.evaluate((c) => {
+    const h = c.querySelector(':scope > .d5fc_flip_card__hint');
+    const s = getComputedStyle(h);
+    const cr = c.getBoundingClientRect();
+    const hr = h.getBoundingClientRect();
+    return {
+      corner: [Math.round(hr.left - cr.left), Math.round(hr.top - cr.top)],
+      bg: s.backgroundColor, color: s.color,
+      icon: h.querySelector('.d5fc_flip_card__toggle-icon')?.textContent, svg: !!h.querySelector('svg'),
+      text: h.textContent.includes('More'),
+    };
+  });
+  assert.deepEqual(r.corner, [14, 14], 'top left, where the button would be');
+  assert.equal(r.bg, 'rgb(255, 0, 0)');
+  assert.equal(r.color, 'rgb(0, 255, 0)');
+  assert.equal(r.icon, '\ue030');
+  assert.equal(r.svg, false);
+  assert.equal(r.text, false, 'no button text on the hint');
+  await page.close();
+});

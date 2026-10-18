@@ -380,7 +380,7 @@
     },
     "flipButton": {
       "type": "object",
-      "selector": "{{selector}} > .d5fc_flip_card__toggle",
+      "selector": "{{selector}} > .d5fc_flip_card__toggle, {{selector}} > .d5fc_flip_card__hint",
       "default": {
         "advanced": {
           "position": {
@@ -398,7 +398,7 @@
               "groupSlug": "designFlipButton",
               "attrName": "flipButton.advanced.position",
               "label": "Position",
-              "description": "The corner of the card where the flip button sits. The button is visible with the flip button trigger, and with the other triggers while it has keyboard focus.",
+              "description": "The corner of the card where the flip button and the flip hint sit. The button is visible with the flip button trigger, and with the other triggers while it has keyboard focus.",
               "priority": 10,
               "render": true,
               "features": {
@@ -454,7 +454,7 @@
               "groupSlug": "designFlipButton",
               "attrName": "flipButton.advanced.icon",
               "label": "Icon",
-              "description": "The icon on the flip button. Leave empty for the two turning arrows.",
+              "description": "The icon on the flip button and the flip hint. Leave empty for the two turning arrows.",
               "priority": 25,
               "render": true,
               "features": {
@@ -477,7 +477,7 @@
               "attrName": "flipButton.decoration.background",
               "subName": "color",
               "label": "Background Color",
-              "description": "Background color of the flip button.",
+              "description": "Background color of the flip button and the flip hint.",
               "priority": 30,
               "render": true,
               "features": {
