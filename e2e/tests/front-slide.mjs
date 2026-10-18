@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { launch, BASE, resetPage } from '../lib.mjs';
 
-test('back face slides in over the front, which hides only once covered', async () => {
+test('back face slides in over the front, which stays visible', async () => {
   resetPage('slide');
   const browser = await launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
@@ -25,7 +25,7 @@ test('back face slides in over the front, which hides only once covered', async 
   assert.ok(mid[1].tx > 0 && mid[1].tx < rest[1].tx, 'back face on its way in');
   assert.equal(mid[1].z, '1');
   await page.waitForTimeout(800);
-  assert.deepEqual((await faces(0)).map((f) => [f.vis, f.tx]), [['hidden', 0], ['visible', 0]]);
+  assert.deepEqual((await faces(0)).map((f) => [f.vis, f.tx]), [['visible', 0], ['visible', 0]], 'the front stays visible under the back');
 
   await page.mouse.move(2, 2);
   await page.waitForTimeout(500);
@@ -38,5 +38,19 @@ test('back face slides in over the front, which hides only once covered', async 
   const up = await faces(1);
   assert.ok(up[1].ty > 0 && up[1].tx === 0, 'up: back face comes from below');
   assert.deepEqual(errors, []);
+  await browser.close();
+});
+
+test('Backdrop Blur blurs the front through a see-through back face', async () => {
+  const browser = await launch();
+  const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
+  await page.goto(`${BASE}/slide/`, { waitUntil: 'networkidle' });
+  const backdrop = (i) => page.locator('.d5fc_flip_card').nth(i).evaluate((c) => getComputedStyle(c.querySelectorAll('.d5fc_flip_card_face')[1]).backdropFilter);
+  assert.equal(await backdrop(2), 'blur(8px)');
+  assert.equal(await backdrop(0), 'none', 'no blur unless set');
+  await page.locator('.d5fc_flip_card').nth(2).hover();
+  await page.waitForTimeout(600);
+  const vis = await page.locator('.d5fc_flip_card').nth(2).evaluate((c) => [...c.querySelectorAll('.d5fc_flip_card_face')].map((f) => getComputedStyle(f).visibility));
+  assert.deepEqual(vis, ['visible', 'visible']);
   await browser.close();
 });

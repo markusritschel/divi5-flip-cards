@@ -58,6 +58,7 @@ export interface FlipCardAttrs extends InternalAttrs {
       backLeave?: FormatBreakpointStateAttr<'on' | 'off'>;
       hint?: FormatBreakpointStateAttr<'on' | 'off'>;
       effect?: FormatBreakpointStateAttr<FlipCardEffect>;
+      backdropBlur?: FormatBreakpointStateAttr<string>;
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
     };

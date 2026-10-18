@@ -20,3 +20,24 @@ export const durationDeclaration = ({
 
   return declarations.value as string;
 };
+
+/**
+ * Outputs the backdrop blur of the sliding back face ("Backdrop Blur") as a CSS custom property;
+ * nothing for 0, so no backdrop filter is applied.
+ *
+ * The PHP equivalent is `FlipCard::backdrop_blur_declaration()`.
+ */
+export const backdropBlurDeclaration = ({
+  attrValue,
+}: DeclarationFunctionProps<string>): string => {
+  const declarations = new StyleDeclarations({
+    returnType: 'string',
+    important:  false,
+  });
+
+  if (attrValue && 0 !== parseFloat(attrValue)) {
+    declarations.add('--d5fc-backdrop', `blur(${attrValue})`);
+  }
+
+  return declarations.value as string;
+};

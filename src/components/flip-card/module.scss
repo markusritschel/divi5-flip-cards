@@ -32,6 +32,11 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
     visibility: visible;
     transition-delay: 0s, var(--d5fc-show-delay);
   }
+
+  // Slide: the front stays, so it shows through a see-through back face.
+  &.d5fc_flip_card--slide > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
+    visibility: visible;
+  }
 }
 
 @mixin flipped-faces-reduced-motion {
@@ -40,6 +45,10 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   }
 
   > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+    opacity: 1;
+  }
+
+  &.d5fc_flip_card--slide > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
     opacity: 1;
   }
 }
@@ -154,10 +163,14 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   transition-delay: 0s, var(--d5fc-hide-delay);
 }
 
+// The sliding back face lies over the front; "Backdrop Blur" (`--d5fc-backdrop`) blurs what shows
+// through a see-through background.
 .d5fc_flip_card--slide
   > .d5fc_flip_card__inner
   > #{$face}:nth-child(2 of #{$face}) {
   z-index: 1;
+  -webkit-backdrop-filter: var(--d5fc-backdrop, none);
+  backdrop-filter: var(--d5fc-backdrop, none);
 }
 
 // Only two faces are used. The builder shows the extra ones (see style.scss).

@@ -253,6 +253,13 @@ class FlipCard implements DependencyInterface {
 											'declarationFunction' => [ self::class, 'duration_declaration' ],
 										],
 									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'attr'                => $attrs['flip']['advanced']['backdropBlur'] ?? [],
+											'declarationFunction' => [ self::class, 'backdrop_blur_declaration' ],
+										],
+									],
 								],
 							],
 						]
@@ -297,6 +304,31 @@ class FlipCard implements DependencyInterface {
 
 		if ( is_string( $duration ) && '' !== $duration ) {
 			$style_declarations->add( '--d5fc-duration', $duration );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Outputs the backdrop blur of the sliding back face as a CSS custom property; nothing for 0.
+	 * Mirrors `backdropBlurDeclaration` in `style-declarations.ts`.
+	 *
+	 * @param array $params Declaration parameters; `attrValue` holds the blur, e.g. `8px`.
+	 *
+	 * @return string
+	 */
+	public static function backdrop_blur_declaration( $params ) {
+		$blur = $params['attrValue'] ?? '';
+
+		$style_declarations = new StyleDeclarations(
+			[
+				'returnType' => 'string',
+				'important'  => false,
+			]
+		);
+
+		if ( is_string( $blur ) && 0.0 !== (float) $blur ) {
+			$style_declarations->add( '--d5fc-backdrop', 'blur(' . $blur . ')' );
 		}
 
 		return $style_declarations->value();
