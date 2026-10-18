@@ -14,6 +14,8 @@ export type FlipCardEffect = 'flip' | 'slide';
 
 export type FlipCardTrigger = 'hover' | 'click' | 'button';
 
+export type FlipCardButtonPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
 export interface FlipCardCssAttr extends Module.Css.AttributeValue {
   inner?: string;
 }
@@ -56,6 +58,14 @@ export interface FlipCardAttrs extends InternalAttrs {
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
     };
+  };
+
+  flipButton?: {
+    advanced?: {
+      position?: FormatBreakpointStateAttr<FlipCardButtonPosition>;
+      label?: FormatBreakpointStateAttr<string>;
+    };
+    decoration?: Element.Decoration.PickedAttributes<'background' | 'font'>;
   };
 }
 

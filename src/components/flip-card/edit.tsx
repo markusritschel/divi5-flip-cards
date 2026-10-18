@@ -192,6 +192,9 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
 
   const shown = 'both' === preview ? 'both' : (autoFace ?? preview);
 
+  // Design > Flip Button > Button Text; mirrors `FlipCard::render_callback()`.
+  const buttonLabel = attrs?.flipButton?.advanced?.label?.desktop?.value?.trim() ?? '';
+
   const show = (value: FlipCardPreview) => (event: React.MouseEvent) => {
     setAutoFace(null);
     showInBuilder(id, value)(event);
@@ -233,13 +236,13 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
       {/* Same markup as in PHP. In the builder it switches the face shown. */}
       <button
         type="button"
-        className="d5fc_flip_card__toggle"
+        className={buttonLabel ? 'd5fc_flip_card__toggle d5fc_flip_card__toggle--labelled' : 'd5fc_flip_card__toggle'}
         aria-pressed={'back' === shown}
         onMouseDown={(event) => event.stopPropagation()}
         onClick={show('back' === shown ? 'front' : 'back')}
       >
         {TOGGLE_ICON}
-        <span className="d5fc_flip_card__toggle-label">{__('Flip card', 'divi5-flip-cards')}</span>
+        <span className="d5fc_flip_card__toggle-label">{buttonLabel || __('Flip card', 'divi5-flip-cards')}</span>
       </button>
     </ModuleContainer>
   );

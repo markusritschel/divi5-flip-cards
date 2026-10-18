@@ -208,6 +208,37 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   position: absolute;
 }
 
+// Design > Flip Button > Position (bottom right by default).
+.d5fc_flip_card--button-top-left > .d5fc_flip_card__toggle,
+.d5fc_flip_card--button-top-right > .d5fc_flip_card__toggle {
+  top: 10px;
+  bottom: auto;
+}
+
+.d5fc_flip_card--button-top-left > .d5fc_flip_card__toggle,
+.d5fc_flip_card--button-bottom-left > .d5fc_flip_card__toggle {
+  right: auto;
+  left: 10px;
+}
+
+// Design > Flip Button > Button Text: a pill with the icon and the text.
+.d5fc_flip_card__toggle--labelled {
+  width: auto;
+  gap: 6px;
+  padding: 0 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1;
+
+  > .d5fc_flip_card__toggle-label {
+    position: static;
+    overflow: visible;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+}
+
 // Flip hint ("Show Flip Hint"): a badge in the corner, gone while the back is showing and with the
 // flip button trigger (the button already shows the card can be turned).
 .d5fc_flip_card__hint {
@@ -234,6 +265,12 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 
 .d5fc_flip_card--trigger-button > .d5fc_flip_card__hint {
   display: none;
+}
+
+// Keep clear of a flip button placed in the same corner.
+.d5fc_flip_card--button-top-right > .d5fc_flip_card__hint {
+  right: auto;
+  left: 10px;
 }
 
 #{$flipped} {

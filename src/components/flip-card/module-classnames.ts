@@ -23,6 +23,7 @@ export const moduleClassnames = ({
   classnamesInstance.add(`d5fc_flip_card--${effect}`);
   classnamesInstance.add(`d5fc_flip_card--trigger-${trigger}`);
   classnamesInstance.add('d5fc_flip_card--hint', 'on' === attrs?.flip?.advanced?.hint?.desktop?.value);
+  classnamesInstance.add(`d5fc_flip_card--button-${attrs?.flipButton?.advanced?.position?.desktop?.value ?? 'bottom-right'}`);
   classnamesInstance.add('d5fc_flip_card--builder');
   classnamesInstance.add('d5fc_flip_card--preview-both', 'both' === preview);
   classnamesInstance.add('d5fc_flip_card--preview-back', 'back' === preview);

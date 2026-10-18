@@ -52,6 +52,11 @@ export const ModuleStyles = ({
       },
     })}
 
+    {/* Design tab > Flip Button / Flip Button Text, applied to the button. */}
+    {elements.style({
+      attrName: 'flipButton',
+    })}
+
     {/* Custom CSS goes last so it can override the module styles. */}
     <CssStyle
       selector={orderClass}

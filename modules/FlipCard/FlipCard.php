@@ -50,6 +50,11 @@ class FlipCard implements DependencyInterface {
 	const TRIGGERS = [ 'hover', 'click', 'button' ];
 
 	/**
+	 * Flip button corners; each one has a matching `d5fc_flip_card--button-{position}` class.
+	 */
+	const BUTTON_POSITIONS = [ 'top-left', 'top-right', 'bottom-left', 'bottom-right' ];
+
+	/**
 	 * Icon of the flip button (two turning arrows). Mirrors `TOGGLE_ICON` in `edit.tsx`.
 	 */
 	const TOGGLE_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8.6M20 4v4.6h-4.6M20 12a8 8 0 0 1-13.7 5.7L4 15.4M4 20v-4.6h4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -97,10 +102,14 @@ class FlipCard implements DependencyInterface {
 
 		// The flip button: visible with the "Flip button" trigger, otherwise shown only while
 		// focused, so keyboard users can turn every card. The front-end script makes it work.
+		// Design > Flip Button > Button Text: shown next to the icon; otherwise a hidden label.
+		$button_label = trim( (string) ( $attrs['flipButton']['advanced']['label']['desktop']['value'] ?? '' ) );
+
 		$toggle = sprintf(
-			'<button type="button" class="d5fc_flip_card__toggle" aria-pressed="false">%1$s<span class="d5fc_flip_card__toggle-label">%2$s</span></button>',
+			'<button type="button" class="%1$s" aria-pressed="false">%2$s<span class="d5fc_flip_card__toggle-label">%3$s</span></button>',
+			'' === $button_label ? 'd5fc_flip_card__toggle' : 'd5fc_flip_card__toggle d5fc_flip_card__toggle--labelled',
 			self::TOGGLE_ICON,
-			esc_html__( 'Flip card', 'divi5-flip-cards' )
+			'' === $button_label ? esc_html__( 'Flip card', 'divi5-flip-cards' ) : esc_html( $button_label )
 		);
 
 		// Decorative flip hint in the corner; the front-end script wiggles it once.
@@ -177,6 +186,14 @@ class FlipCard implements DependencyInterface {
 		$classnames_instance->add( 'd5fc_flip_card--trigger-' . $trigger, true );
 
 		$classnames_instance->add( 'd5fc_flip_card--hint', self::has_hint( $attrs ) );
+
+		$button_position = $attrs['flipButton']['advanced']['position']['desktop']['value'] ?? 'bottom-right';
+
+		if ( ! in_array( $button_position, self::BUTTON_POSITIONS, true ) ) {
+			$button_position = 'bottom-right';
+		}
+
+		$classnames_instance->add( 'd5fc_flip_card--button-' . $button_position, true );
 	}
 
 	/**
@@ -232,6 +249,13 @@ class FlipCard implements DependencyInterface {
 									],
 								],
 							],
+						]
+					),
+
+					// Design tab > Flip Button / Flip Button Text, applied to the button.
+					$elements->style(
+						[
+							'attrName' => 'flipButton',
 						]
 					),
 

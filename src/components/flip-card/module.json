@@ -302,6 +302,126 @@
           }
         }
       }
+    },
+    "flipButton": {
+      "type": "object",
+      "selector": "{{selector}} > .d5fc_flip_card__toggle",
+      "default": {
+        "advanced": {
+          "position": {
+            "desktop": {
+              "value": "bottom-right"
+            }
+          }
+        }
+      },
+      "settings": {
+        "advanced": {
+          "position": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designFlipButton",
+              "attrName": "flipButton.advanced.position",
+              "label": "Position",
+              "description": "The corner of the card where the flip button sits. The button is visible with the flip button trigger, and with the other triggers while it has keyboard focus.",
+              "priority": 10,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "top-left": {
+                      "label": "Top Left"
+                    },
+                    "top-right": {
+                      "label": "Top Right"
+                    },
+                    "bottom-left": {
+                      "label": "Bottom Left"
+                    },
+                    "bottom-right": {
+                      "label": "Bottom Right"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "label": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designFlipButton",
+              "attrName": "flipButton.advanced.label",
+              "label": "Button Text",
+              "description": "Optional text next to the flip icon, e.g. \"More\". Leave empty for a round icon button.",
+              "priority": 20,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/text"
+              }
+            }
+          }
+        },
+        "decoration": {
+          "background": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designFlipButton",
+              "attrName": "flipButton.decoration.background",
+              "subName": "color",
+              "label": "Background Color",
+              "description": "Background color of the flip button.",
+              "priority": 30,
+              "render": true,
+              "features": {
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/color-picker"
+              }
+            }
+          },
+          "font": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designFlipButtonText",
+              "priority": 10,
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/font",
+                "props": {
+                  "grouped": false,
+                  "groupLabel": "Flip Button Text",
+                  "fieldLabel": "Flip Button",
+                  "fields": {
+                    "color": {
+                      "priority": 5,
+                      "render": true
+                    },
+                    "headingLevel": {
+                      "render": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "customCssFields": {
@@ -324,6 +444,29 @@
           "name": "divi/composite",
           "props": {
             "groupLabel": "Flip"
+          }
+        }
+      },
+      "designFlipButton": {
+        "panel": "design",
+        "priority": 15,
+        "groupName": "designFlipButton",
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Flip Button"
+          }
+        }
+      },
+      "designFlipButtonText": {
+        "panel": "design",
+        "priority": 16,
+        "groupName": "designFlipButtonText",
+        "component": {
+          "name": "divi/composite",
+          "props": {
+            "groupLabel": "Flip Button Text",
+            "presetGroup": "divi/font"
           }
         }
       }

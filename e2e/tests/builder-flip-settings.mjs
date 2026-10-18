@@ -45,6 +45,26 @@ test('"Show Flip Hint" adds the badge on the canvas', async () => {
   await page.close();
 });
 
+test('Design tab: Flip Button groups; button text updates the canvas button', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  await page.getByRole('tab', { name: 'Design' }).or(page.locator('text=Design')).first().click();
+  await page.waitForTimeout(800);
+  assert.ok(await page.getByText('Flip Button Text', { exact: true }).count(), 'text group');
+  await page.getByText('Flip Button', { exact: true }).first().click();
+  await page.waitForTimeout(800);
+  const input = page.locator('input[id*="flipButton-advanced-label"], input[name*="flipButton-advanced-label"]').first();
+  assert.equal(await input.count(), 1, 'Button Text field');
+  await input.fill('More');
+  await input.press('Tab');
+  await page.waitForTimeout(1200);
+  const b = await app.evaluate(() => { const t = document.querySelector('.d5fc_flip_card > .d5fc_flip_card__toggle'); return [t.classList.contains('d5fc_flip_card__toggle--labelled'), t.querySelector('.d5fc_flip_card__toggle-label').textContent]; });
+  assert.deepEqual(b, [true, 'More']);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('direction tiles with arrows; choosing one switches the card', async () => {
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');
