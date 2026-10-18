@@ -46,9 +46,16 @@ $face: '.d5fc_flip_card_face';
   perspective: var(--d5fc-perspective);
 }
 
+// `:not(#d5fc)` lifts the specificity above Divi's column gutter rules (e.g.
+// `.et_pb_gutters3 .et_pb_column_4_4.et_block_column .et_pb_module`), which would otherwise give
+// the first face a bottom margin in block-layout columns. A margin set in the face's design
+// settings still wins, because Divi prints module spacing with `!important`.
+.d5fc_flip_card__inner > #{$face}:not(#d5fc) {
+  margin: 0;
+}
+
 .d5fc_flip_card__inner > #{$face} {
   grid-area: 1 / 1;
-  margin: 0;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition:

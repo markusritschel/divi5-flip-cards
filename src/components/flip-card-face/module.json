@@ -24,6 +24,9 @@
       "styleProps": {
         "border": {
           "important": true
+        },
+        "spacing": {
+          "important": true
         }
       },
       "settings": {
