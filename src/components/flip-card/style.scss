@@ -58,6 +58,10 @@ $face: '.d5fc_flip_card_face';
   display: flex;
 }
 
+#page-container .et-fb-root-area .d5fc_flip_card__toggle {
+  pointer-events: auto;
+}
+
 #page-container .et-fb-root-area .d5fc_flip_card__switch button {
   padding: 0 8px;
   border: 0;

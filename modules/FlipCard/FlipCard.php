@@ -44,6 +44,17 @@ class FlipCard implements DependencyInterface {
 	const EFFECTS = [ 'flip', 'slide' ];
 
 	/**
+	 * Triggers; each one has a matching `d5fc_flip_card--trigger-{trigger}` class, used by
+	 * module.scss and the front-end script.
+	 */
+	const TRIGGERS = [ 'hover', 'click', 'button' ];
+
+	/**
+	 * Icon of the flip button (two turning arrows). Mirrors `TOGGLE_ICON` in `edit.tsx`.
+	 */
+	const TOGGLE_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8.6M20 4v4.6h-4.6M20 12a8 8 0 0 1-13.7 5.7L4 15.4M4 20v-4.6h4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+	/**
 	 * Registers the module and its render callback.
 	 */
 	public function load() {
@@ -84,6 +95,14 @@ class FlipCard implements DependencyInterface {
 			]
 		);
 
+		// The flip button: visible with the "Flip button" trigger, otherwise shown only while
+		// focused, so keyboard users can turn every card. The front-end script makes it work.
+		$toggle = sprintf(
+			'<button type="button" class="d5fc_flip_card__toggle" aria-pressed="false">%1$s<span class="d5fc_flip_card__toggle-label">%2$s</span></button>',
+			self::TOGGLE_ICON,
+			esc_html__( 'Flip card', 'divi5-flip-cards' )
+		);
+
 		return Module::render(
 			[
 				// Front end only.
@@ -106,7 +125,7 @@ class FlipCard implements DependencyInterface {
 					[
 						'attrName' => 'module',
 					]
-				) . $inner,
+				) . $inner . $toggle,
 				'childrenIds'         => ChildrenUtils::extract_children_ids( $block ),
 			]
 		);
@@ -145,6 +164,14 @@ class FlipCard implements DependencyInterface {
 		}
 
 		$classnames_instance->add( 'd5fc_flip_card--' . $effect, true );
+
+		$trigger = $attrs['flip']['advanced']['trigger']['desktop']['value'] ?? 'hover';
+
+		if ( ! in_array( $trigger, self::TRIGGERS, true ) ) {
+			$trigger = 'hover';
+		}
+
+		$classnames_instance->add( 'd5fc_flip_card--trigger-' . $trigger, true );
 	}
 
 	/**

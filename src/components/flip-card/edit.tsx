@@ -1,6 +1,9 @@
 // External dependencies.
 import React, { ReactElement, useEffect, useRef } from 'react';
 
+// WordPress dependencies.
+import { __ } from '@wordpress/i18n';
+
 // Divi dependencies.
 import { ChildModulesContainer, ModuleContainer } from '@divi/module';
 
@@ -19,22 +22,33 @@ const editPost = (): EditPostDispatch => (
   window as unknown as { divi: { data: { dispatch: (store: string) => EditPostDispatch } } }
 ).divi.data.dispatch('divi/edit-post');
 
+// Sets "Show in Builder" from a click on the card, without selecting or dragging the module.
+const showInBuilder = (id: string, value: FlipCardPreview) => (event: React.MouseEvent) => {
+  event.stopPropagation();
+  editPost().editModuleAttribute({
+    id,
+    attrName: 'flip.advanced.preview',
+    value:    { desktop: { value } },
+    subName:  false,
+  });
+};
+
+/**
+ * Icon of the flip button (two turning arrows). Mirrors `FlipCard::TOGGLE_ICON`.
+ */
+const TOGGLE_ICON = (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <path d="M4 12a8 8 0 0 1 13.7-5.7L20 8.6M20 4v4.6h-4.6M20 12a8 8 0 0 1-13.7 5.7L4 15.4M4 20v-4.6h4.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 /**
  * Front/Back switch shown on the card in the builder (not in the stacked view). It changes the
  * "Show in Builder" setting, so the settings panel stays in sync. Builder only: PHP has no
  * equivalent.
  */
 const FaceSwitch = ({ id, preview }: { id: string; preview: FlipCardPreview }): ReactElement => {
-  const show = (value: FlipCardPreview) => (event: React.MouseEvent) => {
-    // Keep the click from selecting or dragging the module.
-    event.stopPropagation();
-    editPost().editModuleAttribute({
-      id,
-      attrName: 'flip.advanced.preview',
-      value:    { desktop: { value } },
-      subName:  false,
-    });
-  };
+  const show = (value: FlipCardPreview) => showInBuilder(id, value);
 
   return (
     <div className="d5fc_flip_card__switch et-vb-ui">
@@ -143,6 +157,17 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
           <ChildModulesContainer ids={childrenIds} isLooped={isLooped} loopIndex={loopIndex} canvasId={canvasId} />
         )}
       </div>
+      {/* Same markup as in PHP. In the builder it switches the face shown. */}
+      <button
+        type="button"
+        className="d5fc_flip_card__toggle"
+        aria-pressed={'back' === preview}
+        onMouseDown={(event) => event.stopPropagation()}
+        onClick={showInBuilder(id, 'back' === preview ? 'front' : 'back')}
+      >
+        {TOGGLE_ICON}
+        <span className="d5fc_flip_card__toggle-label">{__('Flip card', 'divi5-flip-cards')}</span>
+      </button>
     </ModuleContainer>
   );
 };

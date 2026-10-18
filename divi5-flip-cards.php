@@ -105,7 +105,8 @@ function d5fc_enqueue_visual_builder_assets() {
 add_action( 'divi_visual_builder_assets_before_enqueue_scripts', 'd5fc_enqueue_visual_builder_assets' );
 
 /**
- * Enqueues the module styles on the front end (the builder's app window is a front-end page too).
+ * Enqueues the module styles on the front end (the builder's app window is a front-end page too),
+ * and the front-end script outside the builder.
  */
 function d5fc_enqueue_frontend_assets() {
 	wp_enqueue_style(
@@ -113,6 +114,21 @@ function d5fc_enqueue_frontend_assets() {
 		D5FC_URL . 'build/bundle.css',
 		[],
 		d5fc_asset_version( 'build/bundle.css' )
+	);
+
+	if ( function_exists( 'et_core_is_fb_enabled' ) && et_core_is_fb_enabled() ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'divi5-flip-cards-frontend',
+		D5FC_URL . 'build/frontend.js',
+		[],
+		d5fc_asset_version( 'build/frontend.js' ),
+		[
+			'strategy'  => 'defer',
+			'in_footer' => true,
+		]
 	);
 }
 add_action( 'wp_enqueue_scripts', 'd5fc_enqueue_frontend_assets' );

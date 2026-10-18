@@ -3,6 +3,7 @@
  *
  * Output (all in build/):
  * - bundle.js             Visual Builder script (registers the modules).
+ * - frontend.js           Front-end script (click, tap and flip button triggers).
  * - bundle.css            Front-end + builder styles, from every `module.scss`.
  * - vb-bundle.css         Builder-only styles, from every `style.scss`.
  * - modules-json/<name>/  Copies of `module.json`, read by PHP to register the modules.
@@ -16,7 +17,8 @@ module.exports = {
   devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
 
   entry: {
-    bundle: './src/index.ts',
+    bundle:   './src/index.ts',
+    frontend: './src/frontend/index.ts',
   },
 
   // The Visual Builder already loads these, so they must not be bundled.

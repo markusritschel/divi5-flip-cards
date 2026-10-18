@@ -9,11 +9,45 @@
 
 $face: ".d5fc_flip_card_face";
 
-// Cards showing their back face. Hover is turned off in the builder, where "Show in Builder"
-// decides the face, and the builder-only `--play` class previews the transition once.
-$flipped: ".d5fc_flip_card:not(.d5fc_flip_card--builder):hover, " +
+// Cards showing their back face: `--flipped` is set by the front-end script (click, flip
+// button, tap). In the builder, "Show in Builder" decides the face and the builder-only `--play`
+// class previews the transition once.
+$flipped: ".d5fc_flip_card.d5fc_flip_card--flipped, " +
   ".d5fc_flip_card.d5fc_flip_card--preview-back:not(.d5fc_flip_card--play), " +
   ".d5fc_flip_card.d5fc_flip_card--play:not(.d5fc_flip_card--preview-back)";
+
+// Hover only on devices that can hover (touch screens flip on tap instead), never in the builder.
+$hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_card--builder):hover";
+
+// The faces of a card showing its back. `>` keeps cards nested in a face out of it.
+@mixin flipped-faces {
+  > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
+    transform: var(--d5fc-front-out);
+    visibility: hidden;
+    transition-delay: 0s, var(--d5fc-hide-delay);
+  }
+
+  > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+    transform: var(--d5fc-rest);
+    visibility: visible;
+    transition-delay: 0s, var(--d5fc-show-delay);
+  }
+}
+
+@mixin flipped-faces-reduced-motion {
+  > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
+    opacity: 0;
+  }
+
+  > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+    opacity: 1;
+  }
+}
+
+// Positioning context for the flip button; zero specificity, so Divi's Position settings win.
+:where(.d5fc_flip_card) {
+  position: relative;
+}
 
 .d5fc_flip_card {
   --d5fc-duration: 600ms;
@@ -132,17 +166,46 @@ $flipped: ".d5fc_flip_card:not(.d5fc_flip_card--builder):hover, " +
 }
 
 #{$flipped} {
-  .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
-    transform: var(--d5fc-front-out);
-    visibility: hidden;
-    transition-delay: 0s, var(--d5fc-hide-delay);
-  }
+  @include flipped-faces;
+}
 
-  .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-    transform: var(--d5fc-rest);
-    visibility: visible;
-    transition-delay: 0s, var(--d5fc-show-delay);
+@media (hover: hover) {
+  #{$hover-flipped} {
+    @include flipped-faces;
   }
+}
+
+// Flip button. Visible with the "Flip button" trigger; with the other triggers it only appears
+// while focused, so keyboard users can still turn the card.
+.d5fc_flip_card__toggle {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  cursor: pointer;
+}
+
+.d5fc_flip_card__toggle-label,
+.d5fc_flip_card:not(.d5fc_flip_card--trigger-button) > .d5fc_flip_card__toggle:not(:focus-visible) {
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.d5fc_flip_card__toggle-label {
+  position: absolute;
 }
 
 // No movement for people who asked for less motion: cross-fade instead.
@@ -159,12 +222,12 @@ $flipped: ".d5fc_flip_card:not(.d5fc_flip_card--builder):hover, " +
   }
 
   #{$flipped} {
-    .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
-      opacity: 0;
-    }
+    @include flipped-faces-reduced-motion;
+  }
+}
 
-    .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
-      opacity: 1;
-    }
+@media (prefers-reduced-motion: reduce) and (hover: hover) {
+  #{$hover-flipped} {
+    @include flipped-faces-reduced-motion;
   }
 }

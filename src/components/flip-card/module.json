@@ -76,6 +76,11 @@
               "value": "both"
             }
           },
+          "trigger": {
+            "desktop": {
+              "value": "hover"
+            }
+          },
           "effect": {
             "desktop": {
               "value": "flip"
@@ -125,6 +130,44 @@
                       "label": "Back"
                     }
                   }
+                }
+              }
+            }
+          },
+          "trigger": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.trigger",
+              "label": "Trigger",
+              "description": "Choose what turns the card over: hovering (tapping on touch screens), a click anywhere on the card (links and buttons on it still work), or a flip button in the corner.",
+              "priority": 12,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/button-options",
+                "props": {
+                  "options": {
+                    "hover": {
+                      "icon": "d5fc/trigger-hover",
+                      "label": "Hover"
+                    },
+                    "click": {
+                      "icon": "d5fc/trigger-click",
+                      "label": "Click"
+                    },
+                    "button": {
+                      "icon": "d5fc/trigger-button",
+                      "label": "Button"
+                    }
+                  },
+                  "justified": true,
+                  "allowClickToUnset": false
                 }
               }
             }
