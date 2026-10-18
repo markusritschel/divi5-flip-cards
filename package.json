@@ -24,7 +24,7 @@
     "@types/react": "18.3.1",
     "@wordpress/hooks": "^3.57.0",
     "@wordpress/i18n": "^4.57.0",
-    "copy-webpack-plugin": "^12.0.2",
+    "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.1",
     "mini-css-extract-plugin": "^2.9.0",
     "react": "^18.2.0",
