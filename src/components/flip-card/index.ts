@@ -48,6 +48,8 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
           flipAdvancedBackclick:  { visible: isClickOrButton },
           flipAdvancedBackescape: { visible: isClickOrButton },
           flipAdvancedBackleave:  { visible: isClickOrButton },
+          // The flip button already shows the card can be turned.
+          flipAdvancedHint:       { visible: ({ attrs }) => 'button' !== (attrs as FlipCardAttrs)?.flip?.advanced?.trigger?.desktop?.value },
         },
       },
     },

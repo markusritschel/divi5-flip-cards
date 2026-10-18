@@ -41,6 +41,9 @@ test('"Show Flip Hint" adds the badge on the canvas', async () => {
   await page.waitForTimeout(1000);
   assert.equal(await app.locator('.d5fc_flip_card > .d5fc_flip_card__hint').count(), 1);
   assert.match(await cardClasses(app), /d5fc_flip_card--hint\b/);
+  await tile(page, 'Button').click();
+  await page.waitForTimeout(800);
+  assert.equal(await page.getByText('Show Flip Hint', { exact: true }).isVisible(), false, 'no hint setting with the flip button');
   assert.deepEqual(errors, []);
   await page.close();
 });
