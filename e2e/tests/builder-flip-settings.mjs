@@ -117,6 +117,27 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   await page.close();
 });
 
+test('after a preview, the canvas keeps the "Show in Builder" view', async () => {
+  resetPage('flip-edit');
+  const { page, app, errors } = await builder(context, 'flip-edit');
+  await openFlipSettings(page, app);
+  const directionTile = (name) => page.locator(`button[name="et-vb-field-input-button-options--flip-advanced-direction--${name}"]`);
+  // A preview while the faces are stacked...
+  await directionTile('up').click();
+  await page.waitForTimeout(2500);
+  assert.match(await cardClasses(app), /preview-both/);
+  // ...then switch to Front and preview again.
+  await page.locator('#et-vb-flip-advanced-preview').click();
+  await page.locator('#et-vb-flip-advanced-preview li[data-value="front"]').click();
+  await page.waitForTimeout(800);
+  await directionTile('down').click();
+  await page.waitForTimeout(2500);
+  assert.doesNotMatch(await cardClasses(app), /preview-both/, 'not stacked again');
+  assert.deepEqual(await app.evaluate(() => [...document.querySelectorAll('.d5fc_flip_card > .d5fc_flip_card__inner > .d5fc_flip_card_face')].map((f) => getComputedStyle(f).visibility)), ['visible', 'hidden'], 'shows the front');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 // Every animation frame after a tile click: a slide preview must not rotate a visible face, a flip
 // preview must not move one sideways (the old effect's position must not animate into the new one).
 test('the preview shows only the chosen effect', async () => {

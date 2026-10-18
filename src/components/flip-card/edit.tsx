@@ -121,8 +121,11 @@ const changeInstantly = (card: HTMLElement, change: () => void): void => {
  * effect's position to the new one (e.g. a rotation before a slide). A layout effect, so the
  * browser never paints that in-between state.
  */
-const usePreviewOnChange = (id: string, effect: string, direction: string, duration: string): void => {
+const usePreviewOnChange = (id: string, stacked: boolean, effect: string, direction: string, duration: string): void => {
   const isFirstRender = useRef(true);
+  // The current "Show in Builder" view, read when the preview ends (it may have changed since).
+  const stackedRef    = useRef(stacked);
+  stackedRef.current  = stacked;
 
   useLayoutEffect(() => {
     if (isFirstRender.current) {
@@ -137,13 +140,21 @@ const usePreviewOnChange = (id: string, effect: string, direction: string, durat
     }
 
     const ms       = parseFloat(getComputedStyle(card).getPropertyValue('--d5fc-duration')) || 600;
-    const isStacked = card.classList.contains('d5fc_flip_card--preview-both');
     const timers: number[] = [];
+    let restored   = false;
 
-    const restore = () => changeInstantly(card, () => {
-      card.classList.remove('d5fc_flip_card--play');
-      card.classList.toggle('d5fc_flip_card--preview-both', isStacked);
-    });
+    // Back to the "Show in Builder" view, once per preview.
+    const restore = () => {
+      if (restored) {
+        return;
+      }
+
+      restored = true;
+      changeInstantly(card, () => {
+        card.classList.remove('d5fc_flip_card--play');
+        card.classList.toggle('d5fc_flip_card--preview-both', stackedRef.current);
+      });
+    };
 
     changeInstantly(card, () => card.classList.remove('d5fc_flip_card--preview-both'));
     card.classList.add('d5fc_flip_card--play');
@@ -202,6 +213,7 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
 
   usePreviewOnChange(
     id,
+    'both' === preview,
     attrs?.flip?.advanced?.effect?.desktop?.value ?? 'flip',
     attrs?.flip?.advanced?.direction?.desktop?.value ?? 'left',
     attrs?.flip?.advanced?.duration?.desktop?.value ?? '',
