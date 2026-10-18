@@ -4,7 +4,7 @@ Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,11 @@ always as tall as its taller face.
 Requires Divi 5.
 
 == Changelog ==
+
+= 0.3.1 =
+* Slide: the back face's own Design > Filters > Backdrop Blur works now; the extra Backdrop Blur slider is gone.
+* Slide: the back face's size comes from its own Design > Sizing (it sits at the edge it slides in from); the Back Face Size option is gone.
+* The flip hint takes the Flip Button design (colors, icon, corner).
 
 = 0.3.0 =
 * Slide: the front face stays visible, so a see-through back face lets it show through; optional backdrop blur.

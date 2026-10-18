@@ -3,7 +3,7 @@
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.
 
-> **Status:** 0.3.0, in development and tested against Divi 5.15.1 (browser test suite in
+> **Status:** 0.3.1, in development and tested against Divi 5.15.1 (browser test suite in
 > [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
 ## Features
@@ -13,11 +13,13 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
 - **Triggers:** hover (tap on touch screens), click anywhere, or a flip button. Click and button
   cards turn back on a second click, with Escape and/or when the pointer leaves.
 - **Effects:** 3D flip or slide-in, in four directions, with adjustable duration. With the slide, the
-  front can show through a see-through back face (optional backdrop blur), and the back face can
-  cover the whole card, only as much as its content needs, or a fixed size.
+  front stays visible behind the back face, so a see-through background with a backdrop blur
+  (Design > Filters) gives a frosted-glass look; the back face covers the whole card unless its
+  Design > Sizing says otherwise.
 - **Accessible:** every card has a real flip button for keyboard users, `aria-pressed`, hidden faces
   stay out of the tab order, and reduced motion gives a cross-fade.
-- **Flip button design:** corner, icon, optional text, background and text colors.
+- **Flip button design:** corner, icon, optional text, background and text colors (the flip hint
+  follows the same design).
 - **Optional flip hint:** a small icon that wiggles once when the card scrolls into view.
 - **Builder:** both faces stacked for editing, or the real card with a Front/Back switch; "+" and an
   Elements list for filling faces; tiles for trigger, effect and direction with a live preview.
