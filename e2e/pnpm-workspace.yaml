@@ -1,0 +1,1 @@
+# Makes e2e/ its own pnpm root, independent of any workspace file above it.

@@ -42,5 +42,15 @@ CI (`.github/workflows/build.yml`) runs typecheck, PHP lint and the ZIP build, a
 ## Testing
 
 The real check is the Visual Builder and the front end in WordPress with Divi 5.15 (LocalWP; see `docs/local-development.md`).
+
+`e2e/` drives both with Playwright against a Docker WordPress (port 8087) that mounts this repo read-only; Divi is unpacked outside the repo. Not in CI (Divi is licensed). Run it before updating Divi on a live site:
+
+```bash
+npm run build
+e2e/setup.sh /path/to/Divi.zip                 # once; again to reset the fixture pages
+cd e2e && pnpm install && pnpm test             # CHROMIUM_PATH=/usr/bin/chromium for a system browser
+```
+
+Fixture pages are `e2e/fixtures/<slug>.html` (Divi block markup; every block needs `"builderVersion"`, or Divi's Flexbox migration renders it as legacy block layout). Divi's own "+" buttons ignore clicks in a headless browser, so tests dispatch the mousedown instead.
 When Divi is installed locally, its source is at `../../themes/Divi/`; look there for how core modules do things before guessing at the API.
 Never commit Divi itself or any ZIP (`*.zip` is git-ignored); it is proprietary.

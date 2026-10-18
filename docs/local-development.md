@@ -41,6 +41,20 @@ After a change: with `npm start` running, reload the Visual Builder. PHP changes
 Work through the checklist in [`PLAN.md`](../PLAN.md#milestone-1-verification-checklist-divi-515-localwp).
 Check `wp-content/debug.log` and the browser console for errors.
 
+### Automated browser tests
+
+`e2e/` runs the same checks automatically against a separate Docker WordPress (Docker and
+[pnpm](https://pnpm.io/) needed; your LocalWP site is not touched):
+
+```bash
+npm run build
+e2e/setup.sh /path/to/Divi.zip     # unpacks Divi to ~/.cache/d5fc-e2e, starts http://localhost:8087
+cd e2e && pnpm install && pnpm test
+```
+
+The site is reachable at <http://localhost:8087> (admin / admin) for trying things by hand.
+Stop it with `docker compose -f e2e/docker-compose.yml down` (add `-v` to delete the site).
+
 ## 4. Continue with Claude Code locally
 
 Open a terminal in the plugin folder and run `claude`. `CLAUDE.md` gives it the project context.
