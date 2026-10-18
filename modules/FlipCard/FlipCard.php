@@ -42,7 +42,7 @@ class FlipCard implements DependencyInterface {
 	/**
 	 * Effects; each one has a matching `d5fc_flip_card--{effect}` class in module.scss.
 	 */
-	const EFFECTS = [ 'flip', 'slide' ];
+	const EFFECTS = [ 'flip', 'slide', 'fade', 'zoom', 'cube' ];
 
 	/**
 	 * Triggers; each one has a matching `d5fc_flip_card--trigger-{trigger}` class, used by

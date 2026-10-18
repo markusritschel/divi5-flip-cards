@@ -10,7 +10,7 @@ export type FlipCardPreview = 'both' | 'front' | 'back';
 
 export type FlipCardDirection = 'left' | 'right' | 'up' | 'down';
 
-export type FlipCardEffect = 'flip' | 'slide';
+export type FlipCardEffect = 'flip' | 'slide' | 'fade' | 'zoom' | 'cube';
 
 export type FlipCardTrigger = 'hover' | 'click' | 'button';
 

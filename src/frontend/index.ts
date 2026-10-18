@@ -123,6 +123,23 @@ document.addEventListener("mouseout", (event) => {
   }
 });
 
+// Cube, up and down: the faces turn around an axis half the card's height behind them. CSS has no
+// unit for that, so the height is measured into `--d5fc-depth-y` (module.scss).
+if ("ResizeObserver" in window) {
+  const depthObserver = new ResizeObserver((entries) => {
+    entries.forEach((entry) => {
+      (entry.target as HTMLElement).style.setProperty(
+        "--d5fc-depth-y",
+        `${entry.contentRect.height / 2}px`,
+      );
+    });
+  });
+
+  document
+    .querySelectorAll(`${CARD}.d5fc_flip_card--cube > .d5fc_flip_card__inner`)
+    .forEach((inner) => depthObserver.observe(inner));
+}
+
 // "Show Flip Hint": wiggle the hint once, the first time a card is half in view.
 if ("IntersectionObserver" in window) {
   const hintObserver = new IntersectionObserver(

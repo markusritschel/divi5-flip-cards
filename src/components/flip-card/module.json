@@ -278,7 +278,7 @@
               "groupSlug": "contentFlip",
               "attrName": "flip.advanced.effect",
               "label": "Effect",
-              "description": "Choose how the back face replaces the front face: the card turns over, or the back face slides in over the front, which stays visible behind it. With the slide, the back face covers the whole card unless you give it a height or width (Design > Sizing, e.g. auto to fit its content); for a frosted-glass look, give it a see-through background color and a backdrop blur (Design > Filters).",
+              "description": "Choose how the back face replaces the front face: the card turns over (Flip), the back face slides in over the front, which stays visible behind it (Slide), the faces cross-fade (Fade), the front shrinks away as the back grows in (Zoom), or the card turns like a cube (Cube). With the slide, the back face covers the whole card unless you give it a height or width (Design > Sizing, e.g. auto to fit its content); for a frosted-glass look, give it a see-through background color and a backdrop blur (Design > Filters).",
               "priority": 16,
               "render": true,
               "features": {
@@ -298,6 +298,18 @@
                     "slide": {
                       "icon": "divi/animation-slide",
                       "label": "Slide"
+                    },
+                    "fade": {
+                      "icon": "divi/animation-fade",
+                      "label": "Fade"
+                    },
+                    "zoom": {
+                      "icon": "divi/animation-zoom",
+                      "label": "Zoom"
+                    },
+                    "cube": {
+                      "icon": "d5fc/effect-cube",
+                      "label": "Cube"
                     }
                   },
                   "justified": true,

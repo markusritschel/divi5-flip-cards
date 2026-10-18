@@ -114,7 +114,7 @@ test('settings survive save and reload, and reach the live page', async () => {
   }
   const { page: live } = await frontend(context, 'flip-edit');
   const c = await live.evaluate(() => { const card = document.querySelector('.d5fc_flip_card'); return [card.classList.contains('d5fc_flip_card--down'), getComputedStyle(card.querySelector('.d5fc_flip_card_face')).transitionDuration]; });
-  assert.deepEqual(c, [true, '0.9s, 0s']);
+  assert.deepEqual(c, [true, '0.9s, 0.9s, 0s']);
   assert.deepEqual(await faceVisibility(live), ['visible', 'hidden']);
   await live.close();
 });

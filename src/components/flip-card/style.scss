@@ -43,28 +43,37 @@ $face: '.d5fc_flip_card_face';
 .d5fc_flip_card.d5fc_flip_card--builder:not(.d5fc_flip_card--play) > .d5fc_flip_card__inner.d5fc_flip_card__inner--show-back {
   > #{$face}:nth-child(1 of #{$face}) {
     transform: var(--d5fc-front-out);
+    opacity: var(--d5fc-out-opacity);
     visibility: hidden;
-    transition-delay: 0s, var(--d5fc-hide-delay);
+    transition-delay: 0s, 0s, var(--d5fc-hide-delay);
   }
 
   > #{$face}:nth-child(2 of #{$face}) {
     transform: var(--d5fc-rest);
+    opacity: 1;
     visibility: visible;
-    transition-delay: 0s, var(--d5fc-show-delay);
+    transition-delay: 0s, 0s, var(--d5fc-show-delay);
   }
+}
+
+// Slide: the front stays under the back face (as in module.scss).
+.d5fc_flip_card.d5fc_flip_card--builder.d5fc_flip_card--slide:not(.d5fc_flip_card--play) > .d5fc_flip_card__inner.d5fc_flip_card__inner--show-back > #{$face}:nth-child(1 of #{$face}) {
+  visibility: visible;
 }
 
 .d5fc_flip_card.d5fc_flip_card--builder:not(.d5fc_flip_card--play) > .d5fc_flip_card__inner.d5fc_flip_card__inner--show-front {
   > #{$face}:nth-child(1 of #{$face}) {
     transform: var(--d5fc-rest);
+    opacity: 1;
     visibility: visible;
-    transition-delay: 0s, var(--d5fc-show-delay);
+    transition-delay: 0s, 0s, var(--d5fc-show-delay);
   }
 
   > #{$face}:nth-child(2 of #{$face}) {
     transform: var(--d5fc-back-in);
+    opacity: var(--d5fc-out-opacity);
     visibility: hidden;
-    transition-delay: 0s, var(--d5fc-hide-delay);
+    transition-delay: 0s, 0s, var(--d5fc-hide-delay);
   }
 }
 

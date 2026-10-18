@@ -23,14 +23,16 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 @mixin flipped-faces {
   > .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
     transform: var(--d5fc-front-out);
+    opacity: var(--d5fc-out-opacity);
     visibility: hidden;
-    transition-delay: 0s, var(--d5fc-hide-delay);
+    transition-delay: 0s, 0s, var(--d5fc-hide-delay);
   }
 
   > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
     transform: var(--d5fc-rest);
+    opacity: 1;
     visibility: visible;
-    transition-delay: 0s, var(--d5fc-show-delay);
+    transition-delay: 0s, 0s, var(--d5fc-show-delay);
   }
 
   // Slide: the front stays, so it shows through a see-through back face.
@@ -66,6 +68,9 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   // When a face hides and shows, as a fraction of the duration.
   --d5fc-hide-at: 0.5;
   --d5fc-show-at: 0.5;
+
+  // Opacity of the face that is out of view (fade and zoom fade it out).
+  --d5fc-out-opacity: 1;
 
   // Transforms per direction. `rest` is the facing-the-viewer state; it uses the same
   // function as the other two so the browser interpolates along one axis.
@@ -117,6 +122,70 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   --d5fc-back-in: translate(0, -100%);
 }
 
+// Fade: no movement; the faces cross-fade.
+.d5fc_flip_card.d5fc_flip_card--fade {
+  --d5fc-hide-at: 1;
+  --d5fc-show-at: 0;
+  --d5fc-out-opacity: 0;
+  --d5fc-rest: none;
+  --d5fc-front-out: none;
+  --d5fc-back-in: none;
+}
+
+// Zoom: the front shrinks and fades, the back grows in from a little larger.
+.d5fc_flip_card.d5fc_flip_card--zoom {
+  --d5fc-hide-at: 1;
+  --d5fc-show-at: 0;
+  --d5fc-out-opacity: 0;
+  --d5fc-rest: scale(1);
+  --d5fc-front-out: scale(0.85);
+  --d5fc-back-in: scale(1.15);
+}
+
+// Cube: each face turns around an axis half the card's depth behind it, so the card turns like a
+// cube; both faces stay visible while it turns. Left/right use half the width (container units);
+// up/down use half the height, which the front-end script and the builder measure into
+// `--d5fc-depth-y` on the inner wrapper (without it, a plain quarter turn). The up/down transforms
+// are set on the faces, so they read that value. Diagonal directions flip instead.
+.d5fc_flip_card.d5fc_flip_card--cube:is(.d5fc_flip_card--left, .d5fc_flip_card--right, .d5fc_flip_card--up, .d5fc_flip_card--down) {
+  --d5fc-hide-at: 1;
+  --d5fc-show-at: 0;
+}
+
+.d5fc_flip_card--cube.d5fc_flip_card--left {
+  --d5fc-rest: translateZ(-50cqw) rotateY(0deg) translateZ(50cqw);
+  --d5fc-front-out: translateZ(-50cqw) rotateY(-90deg) translateZ(50cqw);
+  --d5fc-back-in: translateZ(-50cqw) rotateY(90deg) translateZ(50cqw);
+}
+
+.d5fc_flip_card--cube.d5fc_flip_card--right {
+  --d5fc-rest: translateZ(-50cqw) rotateY(0deg) translateZ(50cqw);
+  --d5fc-front-out: translateZ(-50cqw) rotateY(90deg) translateZ(50cqw);
+  --d5fc-back-in: translateZ(-50cqw) rotateY(-90deg) translateZ(50cqw);
+}
+
+.d5fc_flip_card--cube.d5fc_flip_card--up > .d5fc_flip_card__inner > #{$face} {
+  --d5fc-rest: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(0deg) translateZ(var(--d5fc-depth-y, 0px));
+  --d5fc-front-out: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(90deg) translateZ(var(--d5fc-depth-y, 0px));
+  --d5fc-back-in: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(-90deg) translateZ(var(--d5fc-depth-y, 0px));
+}
+
+.d5fc_flip_card--cube.d5fc_flip_card--down > .d5fc_flip_card__inner > #{$face} {
+  --d5fc-rest: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(0deg) translateZ(var(--d5fc-depth-y, 0px));
+  --d5fc-front-out: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(-90deg) translateZ(var(--d5fc-depth-y, 0px));
+  --d5fc-back-in: translateZ(calc(-1 * var(--d5fc-depth-y, 0px))) rotateX(90deg) translateZ(var(--d5fc-depth-y, 0px));
+}
+
+// Container units (cqw) for the cube depth; only on cube cards, to keep the containment local.
+.d5fc_flip_card--cube > .d5fc_flip_card__inner {
+  container-type: inline-size;
+}
+
+// Zoom: the growing back face stays inside the card.
+.d5fc_flip_card--zoom > .d5fc_flip_card__inner {
+  overflow: hidden;
+}
+
 .d5fc_flip_card__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -147,25 +216,29 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   backface-visibility: hidden;
   transition:
     transform var(--d5fc-duration) var(--d5fc-easing),
+    opacity var(--d5fc-duration) var(--d5fc-easing),
     visibility 0s linear var(--d5fc-hide-delay);
 }
 
-// Resting state: front visible, back turned or moved away.
+// Resting state: front visible, back turned, moved or faded away.
 .d5fc_flip_card__inner > #{$face}:nth-child(1 of #{$face}) {
   transform: var(--d5fc-rest);
+  opacity: 1;
   visibility: visible;
-  transition-delay: 0s, var(--d5fc-show-delay);
+  transition-delay: 0s, 0s, var(--d5fc-show-delay);
 }
 
 .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
   transform: var(--d5fc-back-in);
+  opacity: var(--d5fc-out-opacity);
   visibility: hidden;
-  transition-delay: 0s, var(--d5fc-hide-delay);
+  transition-delay: 0s, 0s, var(--d5fc-hide-delay);
 }
 
-// The sliding back face lies over the front. A see-through background and Design > Filters >
-// Backdrop Blur on the back face let the front show through, frosted.
-.d5fc_flip_card--slide
+// The back face lies over the front while sliding, fading or zooming. With the slide, a
+// see-through background and Design > Filters > Backdrop Blur on the back face let the front
+// show through, frosted.
+:is(.d5fc_flip_card--slide, .d5fc_flip_card--fade, .d5fc_flip_card--zoom)
   > .d5fc_flip_card__inner
   > #{$face}:nth-child(2 of #{$face}) {
   z-index: 1;

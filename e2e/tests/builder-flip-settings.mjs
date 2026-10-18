@@ -108,7 +108,7 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   resetPage('flip-edit');
   const { page, app, errors } = await builder(context, 'flip-edit');
   await openFlipSettings(page, app);
-  assert.deepEqual(await tileLabels(page, 'Slide'), ['Flip', 'Slide']);
+  assert.deepEqual(await tileLabels(page, 'Slide'), ['Flip', 'Slide', 'Fade', 'Zoom', 'Cube']);
   await tile(page, 'Slide').click();
   const samples = [];
   for (let i = 0; i < 12; i++) {
@@ -119,6 +119,13 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   assert.ok(samples.at(-1).includes('--slide') && !samples.at(-1).includes('--play'));
   await page.waitForTimeout(1500);
   assert.match(await cardClasses(app), /preview-both/);
+
+  // Cube: the builder measures the depth for up/down turns, as the front-end script does.
+  await tile(page, 'Cube').click();
+  await page.waitForTimeout(500);
+  assert.match(await cardClasses(app), /d5fc_flip_card--cube\b/);
+  const depth = await app.locator('.d5fc_flip_card__inner').first().evaluate((el) => ({ value: parseFloat(el.style.getPropertyValue('--d5fc-depth-y')), half: el.offsetHeight / 2 }));
+  assert.ok(depth.value > 0 && Math.abs(depth.value - depth.half) < 1, `cube depth is half the height (${JSON.stringify(depth)})`);
   assert.deepEqual(errors, []);
   await page.close();
 });

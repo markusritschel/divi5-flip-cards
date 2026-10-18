@@ -34,7 +34,7 @@ test('card is as tall as the taller face, and hovering flips it', async () => {
 
 test('duration setting reaches the transition', async () => {
   const d = await page.evaluate(() => [0, 1].map((i) => getComputedStyle(document.querySelector(`.d5fc_flip_card_${i} .d5fc_flip_card_face`)).transitionDuration));
-  assert.deepEqual(d, ['0.6s, 0s', '1.2s, 0s']);
+  assert.deepEqual(d, ['0.6s, 0.6s, 0s', '1.2s, 1.2s, 0s']);
 });
 
 test('per-face design settings apply', async () => {

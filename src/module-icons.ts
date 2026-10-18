@@ -5,6 +5,7 @@ import {
   directionLeft,
   directionRight,
   directionUp,
+  effectCube,
   moduleFlipCard,
   triggerButton,
   triggerClick,
@@ -22,4 +23,5 @@ addFilter("divi.iconLibrary.icon.map", "divi5FlipCards", (icons) => ({
   [directionRight.name]: directionRight,
   [directionUp.name]: directionUp,
   [directionDown.name]: directionDown,
+  [effectCube.name]: effectCube,
 }));

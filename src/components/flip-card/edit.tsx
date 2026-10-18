@@ -1,5 +1,5 @@
 // External dependencies.
-import React, { ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { ReactElement, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -197,6 +197,28 @@ const usePreviewOnChange = (id: string, stacked: boolean, effect: string, direct
   }, [id, effect, direction, duration]);
 };
 
+// Cube: measures the height of the inner wrapper into `--d5fc-depth-y`, as the front-end script does.
+const useCubeDepth = (inner: RefObject<HTMLDivElement>, active: boolean): void => {
+  useEffect(() => {
+    const element = inner.current;
+
+    if (! active || ! element) {
+      return undefined;
+    }
+
+    const observer = new ResizeObserver(([entry]) => {
+      element.style.setProperty('--d5fc-depth-y', `${entry.contentRect.height / 2}px`);
+    });
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.style.removeProperty('--d5fc-depth-y');
+    };
+  }, [inner, active]);
+};
+
 /**
  * Flip Card edit component of the Visual Builder.
  *
@@ -239,10 +261,15 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
     showInBuilder(id, value)(event);
   };
 
+  const effect   = attrs?.flip?.advanced?.effect?.desktop?.value ?? 'flip';
+  const innerRef = useRef<HTMLDivElement>(null);
+
+  useCubeDepth(innerRef, 'cube' === effect);
+
   usePreviewOnChange(
     id,
     'both' === preview,
-    attrs?.flip?.advanced?.effect?.desktop?.value ?? 'flip',
+    effect,
     attrs?.flip?.advanced?.direction?.desktop?.value ?? 'left',
     attrs?.flip?.advanced?.duration?.desktop?.value ?? '',
   );
@@ -264,7 +291,7 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
         attrName: 'module',
       })}
       {'both' !== shown && <FaceSwitch shown={shown} onShow={show} />}
-      <div className={shown === preview ? 'd5fc_flip_card__inner' : `d5fc_flip_card__inner d5fc_flip_card__inner--show-${shown}`}>
+      <div ref={innerRef} className={shown === preview ? 'd5fc_flip_card__inner' : `d5fc_flip_card__inner d5fc_flip_card__inner--show-${shown}`}>
         {childrenIds && childrenIds.length > 0 && (
           <ChildModulesContainer ids={childrenIds} isLooped={isLooped} loopIndex={loopIndex} canvasId={canvasId} />
         )}
