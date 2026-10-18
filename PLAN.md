@@ -11,12 +11,12 @@
 | Height | The card is always as tall as the taller face (both faces share one CSS grid cell). |
 | Grid of cards | No dedicated grid module for now. Put cards in a Divi Group/row with grid or flex layout. Can be revisited. |
 | Trigger | A setting: *Hover*, *Click anywhere* (clicks on links/buttons inside still work), *Flip button*. Hover falls back to tap on touch devices. Every card has a real flip button; with the other triggers it only shows on keyboard focus. Click/button cards return on a second click, Escape and/or when the pointer leaves (each a switch). An optional flip hint shows that a card can be turned. |
-| Effects | User-selectable from tiles (like Divi's Animation Style). Flip and Slide (the back face slides in over the front) exist; fade, zoom and possibly cube later. Changing effect, direction or duration plays the transition once in the builder. |
+| Effects | User-selectable from tiles (like Divi's Animation Style). Flip and Slide (the back face slides in over the front, which stays visible; optional backdrop blur; back face size full, content or fixed) exist; fade, zoom and possibly cube later. Changing effect, direction or duration plays the transition once in the builder. |
 | Directions | Left, right, up, down first; diagonal later. |
 | Design | Every face has its own full design settings (background, spacing, border, shadow, layout, text color, ...). The flip button has its own Design group (position, text, colors). |
 | Accessibility | Keyboard flipping, correct ARIA states, hidden face not focusable, `prefers-reduced-motion` gives a cross-fade. |
 | Naming | "Flip Cards for Divi 5", slug/text domain `divi5-flip-cards`, prefix `d5fc`, GPL-2.0-or-later. |
-| Distribution | For now the author and one client; public distribution later. |
+| Distribution | For now the author and one client; public distribution later. Release ZIPs are attached to GitHub releases by CI on each version tag, and installed sites update from them (Plugin Update Checker, as in SVG Filters). |
 | Development | Code that doesn't need Divi can be written anywhere; everything else is tested locally in **LocalWP** with Divi 5.15 (see `docs/local-development.md`). |
 
 ## Milestones

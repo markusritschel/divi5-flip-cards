@@ -33,6 +33,7 @@ Every PHP method in `modules/*/*.php` mirrors a TS file in `src/components/*` (n
 
 ```bash
 npm install
+composer install    # optional: the update checker (vendor/), shipped in release ZIPs
 npm run build       # production build into build/
 npm start           # watch mode
 npm run typecheck   # tsc; ignores errors inside node_modules/@divi (that package ships broken sources)
@@ -41,6 +42,7 @@ npm run zip         # build + dist/divi5-flip-cards-<version>.zip
 ```
 
 CI (`.github/workflows/build.yml`) runs typecheck, PHP lint and the ZIP build, and uploads the ZIP as an artifact.
+On a version tag (`v1.2.3`, must match `Version` and `D5FC_VERSION`), `.github/workflows/release.yml` builds the ZIP with `vendor/` and attaches it to the GitHub release; installed sites update from it (`modules/Updater/`).
 
 ## Testing
 

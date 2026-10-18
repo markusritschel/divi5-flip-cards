@@ -3,7 +3,7 @@
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.
 
-> **Status:** 0.2.0, in development and tested against Divi 5.15.1 (browser test suite in
+> **Status:** 0.3.0, in development and tested against Divi 5.15.1 (browser test suite in
 > [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
 ## Features
@@ -12,10 +12,12 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
   its own design settings.
 - **Triggers:** hover (tap on touch screens), click anywhere, or a flip button. Click and button
   cards turn back on a second click, with Escape and/or when the pointer leaves.
-- **Effects:** 3D flip or slide-in, in four directions, with adjustable duration.
+- **Effects:** 3D flip or slide-in, in four directions, with adjustable duration. With the slide, the
+  front can show through a see-through back face (optional backdrop blur), and the back face can
+  cover the whole card, only as much as its content needs, or a fixed size.
 - **Accessible:** every card has a real flip button for keyboard users, `aria-pressed`, hidden faces
   stay out of the tab order, and reduced motion gives a cross-fade.
-- **Flip button design:** corner, optional text, background and text colors.
+- **Flip button design:** corner, icon, optional text, background and text colors.
 - **Optional flip hint:** a small icon that wiggles once when the card scrolls into view.
 - **Builder:** both faces stacked for editing, or the real card with a Front/Back switch; "+" and an
   Elements list for filling faces; tiles for trigger, effect and direction with a live preview.
@@ -23,6 +25,11 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
   Feature List, Call to Action.
 
 Planned: fade, zoom and cube effects, easing and delay settings, diagonal directions, translations.
+
+## Updates
+
+Installed from a release ZIP, the plugin checks this repository's GitHub releases and offers
+updates under **Plugins**, like any other plugin.
 
 ## Requirements
 

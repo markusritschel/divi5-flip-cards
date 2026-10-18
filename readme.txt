@@ -4,7 +4,7 @@ Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,13 @@ always as tall as its taller face.
 Requires Divi 5.
 
 == Changelog ==
+
+= 0.3.0 =
+* Slide: the front face stays visible, so a see-through back face lets it show through; optional backdrop blur.
+* Slide: back face size (full, as far as its content needs, or a fixed size).
+* Flip button: pick its icon (Divi and Font Awesome icons).
+* Updates from GitHub releases show up under Plugins.
+* Fix: after a transition preview, the builder kept the "Show in Builder" view.
 
 = 0.2.0 =
 * Triggers: hover (tap on touch screens), click anywhere or flip button; choose how a flipped card returns (second click, Escape, pointer leaving).
