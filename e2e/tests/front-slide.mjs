@@ -6,6 +6,7 @@ import { launch, BASE, resetPage } from '../lib.mjs';
 test('back face slides in over the front, which stays visible', async () => {
   resetPage('slide');
   const browser = await launch();
+  try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
@@ -38,7 +39,10 @@ test('back face slides in over the front, which stays visible', async () => {
   const up = await faces(1);
   assert.ok(up[1].ty > 0 && up[1].tx === 0, 'up: back face comes from below');
   assert.deepEqual(errors, []);
-  await browser.close();
+  } finally {
+    // Always close, or a failed assertion leaves the browser (and the test run) hanging.
+    await browser.close();
+  }
 });
 
 test('the back face\'s Design > Filters > Backdrop Blur blurs the front showing through', async () => {

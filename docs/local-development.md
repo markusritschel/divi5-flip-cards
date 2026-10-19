@@ -54,6 +54,15 @@ cd e2e && pnpm install && pnpm test
 
 To check other browser engines, install them once (`pnpm exec playwright install firefox webkit`)
 and run e.g. `BROWSER=firefox pnpm test` or `BROWSER=webkit node --test --test-concurrency=1 "tests/front-*.mjs"`.
+Playwright's WebKit build is made for Ubuntu; on other distributions (e.g. Arch) it lacks libraries
+and fails to launch. Run it from Playwright's Docker image instead (the version must match `e2e/package.json`):
+
+```bash
+docker run -d --rm --name d5fc-playwright --network host --init mcr.microsoft.com/playwright:v1.56.1-noble \
+  /bin/sh -c "cd /tmp && npx -y playwright@1.56.1 run-server --port 3123 --host 127.0.0.1"
+BROWSER=webkit PW_WS=ws://127.0.0.1:3123/ node --test --test-concurrency=1 "tests/front-*.mjs"
+docker stop d5fc-playwright
+```
 
 The site is reachable at <http://localhost:8087> (admin / admin) for trying things by hand.
 Stop it with `docker compose -f e2e/docker-compose.yml down` (add `-v` to delete the site).

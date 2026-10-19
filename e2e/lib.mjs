@@ -28,12 +28,22 @@ export function resetPage(slug) {
 export const debugLog = () => inWp('cat wp-content/debug.log 2>/dev/null || true');
 
 // BROWSER=firefox|webkit runs the tests in Playwright's Firefox or WebKit (Safari's engine);
-// install them once with `pnpm exec playwright install firefox webkit`.
+// install them once with `pnpm exec playwright install firefox webkit`. PW_WS=ws://... connects
+// to a Playwright browser server instead, e.g. WebKit from Playwright's Docker image on systems
+// that lack its libraries (see docs/local-development.md).
 const engines = { chromium, firefox, webkit };
 
 export const launch = () => {
   const name = process.env.BROWSER || 'chromium';
+  if (process.env.PW_WS) {
+    return engines[name].connect(process.env.PW_WS);
+  }
   const options = 'chromium' === name && process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {};
+  if ('firefox' === name) {
+    // Headless Firefox has no input devices and reports `(hover: none)`, like a touch screen,
+    // which turns off hover flipping. 6 = fine pointer (2) + hover (4), as with a mouse.
+    options.firefoxUserPrefs = { 'ui.primaryPointerCapabilities': 6, 'ui.allPointerCapabilities': 6 };
+  }
   return engines[name].launch(options);
 };
 

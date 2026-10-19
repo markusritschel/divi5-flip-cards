@@ -67,7 +67,11 @@ test('a link on a click card navigates without flipping the card', async () => {
   assert.deepEqual(errors, []);
 });
 
-test('touch screens: the hover trigger flips on tap', async () => {
+// Playwright cannot emulate a phone (`isMobile`) in Firefox, and its emulated tap in WebKit sends
+// touch events but no click (a real iPhone sends the click).
+const noTapEmulation = { firefox: 'no phone emulation in Firefox', webkit: 'emulated taps send no click in WebKit' };
+
+test('touch screens: the hover trigger flips on tap', { skip: noTapEmulation[process.env.BROWSER] ?? false }, async () => {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 900 }, hasTouch: true, isMobile: true });
   const touch = await ctx.newPage();
   await touch.goto(`${BASE}/triggers/`, { waitUntil: 'networkidle' });
