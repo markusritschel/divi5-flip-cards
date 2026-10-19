@@ -390,6 +390,13 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
   min-height: 100%;
 }
 
+// Its scrollbar: thin, in the face's text color, on a clear track, so it suits light and dark faces.
+// Zero specificity, so the face's Custom CSS can restyle it.
+:where(#{$face}--scroll) {
+  scrollbar-color: color-mix(in srgb, currentColor 35%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
 // Only two faces are used. The builder shows the extra ones (see style.scss).
 .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {
   display: none !important;

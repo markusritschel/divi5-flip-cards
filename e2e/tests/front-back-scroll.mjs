@@ -21,6 +21,7 @@ const measure = async (page, i) => {
       content: back.scrollHeight,
       scrolled: back.scrollTop,
       scroll: back.classList.contains('d5fc_flip_card_face--scroll'),
+      scrollbar: getComputedStyle(back).scrollbarWidth,
     };
   });
   await page.mouse.move(2, 2);
@@ -47,6 +48,7 @@ test('a scrolling back face takes the front\'s height; a visible one still grows
       assert.equal(r.back, r.card, `${label}: back face fills the card`);
       assert.ok(r.content > r.back + 100, `${label}: the long content overflows the face`);
       assert.equal(r.scrolled, 50, `${label}: and scrolls`);
+      assert.equal(r.scrollbar, 'thin', `${label}: with a thin scrollbar`);
     }
 
     const visible = await measure(page, 2);
