@@ -19,6 +19,11 @@ before(async () => {
 });
 after(() => browser?.close());
 
+test('cards that turn on a click show the pointer; hover and button cards do not', async () => {
+  const cursor = (i) => card(i).evaluate((c) => getComputedStyle(c).cursor);
+  assert.deepEqual([await cursor(0), await cursor(1), await cursor(2)], ['pointer', 'auto', 'auto']);
+});
+
 test('click anywhere: clicks flip, hover does not, flip button stays hidden', async () => {
   await card(0).hover(); await pause();
   assert.deepEqual(await faceVisibility(page, 0), ['visible', 'hidden']);
@@ -77,6 +82,8 @@ test('touch screens: the hover trigger flips on tap', { skip: noTapEmulation[pro
   await touch.goto(`${BASE}/triggers/`, { waitUntil: 'networkidle' });
   assert.equal(await touch.evaluate(() => matchMedia('(hover: hover)').matches), false);
   const c = touch.locator('.d5fc_flip_card').nth(2);
+  // The pointer cursor also makes iOS Safari pass the tap on to the click listener.
+  assert.equal(await c.evaluate((el) => getComputedStyle(el).cursor), 'pointer');
   await c.scrollIntoViewIfNeeded();
   await c.tap(); await touch.waitForTimeout(400);
   assert.deepEqual(await faceVisibility(touch, 2), ['hidden', 'visible']);

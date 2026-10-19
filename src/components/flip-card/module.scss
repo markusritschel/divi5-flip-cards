@@ -335,6 +335,19 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
   }
 }
 
+// Cards that turn on a click or tap show the pointer. iOS Safari also needs it to pass taps on
+// them to the front-end script, which listens on the document. Zero specificity, so Custom CSS
+// wins; not in the builder, where clicks select modules.
+:where(.d5fc_flip_card--trigger-click:not(.d5fc_flip_card--builder)) {
+  cursor: pointer;
+}
+
+@media (hover: none) {
+  :where(.d5fc_flip_card--trigger-hover:not(.d5fc_flip_card--builder)) {
+    cursor: pointer;
+  }
+}
+
 // Flip button. Visible with the "Flip button" trigger; with the other triggers it only appears
 // while focused, so keyboard users can still turn the card.
 .d5fc_flip_card__toggle {
