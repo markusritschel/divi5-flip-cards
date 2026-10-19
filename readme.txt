@@ -4,7 +4,7 @@ Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,10 @@ always as tall as its taller face.
 Requires Divi 5.
 
 == Changelog ==
+
+= 0.4.1 =
+* Fix: a Flip Card saved as a Component now shows up in the builder's Components list and under "Convert to Component".
+* Cards that turn on a click or tap show the pointer cursor (this also helps taps reach the card on iPhones).
 
 = 0.4.0 =
 * New effects: Fade, Zoom and Cube.
