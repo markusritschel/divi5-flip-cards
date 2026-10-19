@@ -1,9 +1,10 @@
 # Flip Cards for Divi 5
 
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
-text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.
+text, images, buttons, groups, nested rows and more. The card is as tall as its taller side (or as the
+front, when the back face scrolls).
 
-> **Status:** 0.4.1, in development and tested against Divi 5.15.1 (browser test suite in
+> **Status:** 0.5.0, in development and tested against Divi 5.15.1 (browser test suite in
 > [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
 ## Features

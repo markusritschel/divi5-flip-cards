@@ -4,7 +4,7 @@ Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,10 @@ always as tall as its taller face.
 Requires Divi 5.
 
 == Changelog ==
+
+= 0.5.0 =
+* Fix: the faces' Box Shadow (and anything else reaching outside a face) shows with the Slide and Zoom effects; the moving back face still stays inside the card.
+* A back face with Design > Sizing height 100% and Overflow Y scroll (or auto) keeps the front's height and scrolls its content, with a thin scrollbar in the face's text color.
 
 = 0.4.1 =
 * Fix: a Flip Card saved as a Component now shows up in the builder's Components list and under "Convert to Component".
