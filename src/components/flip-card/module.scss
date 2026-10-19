@@ -9,6 +9,22 @@
 
 $face: ".d5fc_flip_card_face";
 
+// Slide and zoom keep the moving back face inside the card with a clip on the face itself (a clip
+// on the inner wrapper would also cut off the faces' box shadows). `--d5fc-out` runs from 1 (out)
+// to 0 (in) along with the transform; `--d5fc-released` turns 1 once the face is in and opens the
+// clip. Registered, so they transition.
+@property --d5fc-out {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --d5fc-released {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
 // Cards showing their back face: `--flipped` is set by the front-end script (click, flip
 // button, tap). In the builder, "Show in Builder" decides the face and the builder-only `--play`
 // class previews the transition once.
@@ -29,10 +45,13 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   }
 
   > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+    --d5fc-out: 0;
+    --d5fc-released: 1;
+
     transform: var(--d5fc-rest);
     opacity: 1;
     visibility: visible;
-    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay);
+    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay), var(--d5fc-delay), var(--d5fc-end-delay);
   }
 
   // Slide: the front stays, so it shows through a see-through back face.
@@ -78,6 +97,13 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   --d5fc-rest: rotateY(0deg);
   --d5fc-front-out: rotateY(-180deg);
   --d5fc-back-in: rotateY(180deg);
+
+  // Edges the back face is clipped on while it moves (slide and zoom; see below).
+  --d5fc-travel: 0%;
+  --d5fc-clip-top: 0;
+  --d5fc-clip-right: 0;
+  --d5fc-clip-bottom: 0;
+  --d5fc-clip-left: 0;
 }
 
 .d5fc_flip_card--right {
@@ -130,38 +156,54 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   --d5fc-show-at: 0;
   --d5fc-rest: translate(0, 0);
   --d5fc-front-out: translate(0, 0);
+
+  // How far the back face's clip moves in from the edges it crosses, in its own size.
+  --d5fc-travel: 100%;
 }
 
+// `--d5fc-clip-<edge>: 1` marks the edges the sliding back face crosses: clipped while it moves.
 .d5fc_flip_card--slide.d5fc_flip_card--left {
   --d5fc-back-in: translate(100%, 0);
+  --d5fc-clip-right: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--right {
   --d5fc-back-in: translate(-100%, 0);
+  --d5fc-clip-left: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--up {
   --d5fc-back-in: translate(0, 100%);
+  --d5fc-clip-bottom: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--down {
   --d5fc-back-in: translate(0, -100%);
+  --d5fc-clip-top: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--up-left {
   --d5fc-back-in: translate(100%, 100%);
+  --d5fc-clip-right: 1;
+  --d5fc-clip-bottom: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--up-right {
   --d5fc-back-in: translate(-100%, 100%);
+  --d5fc-clip-left: 1;
+  --d5fc-clip-bottom: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--down-left {
   --d5fc-back-in: translate(100%, -100%);
+  --d5fc-clip-right: 1;
+  --d5fc-clip-top: 1;
 }
 
 .d5fc_flip_card--slide.d5fc_flip_card--down-right {
   --d5fc-back-in: translate(-100%, -100%);
+  --d5fc-clip-left: 1;
+  --d5fc-clip-top: 1;
 }
 
 // Fade: no movement; the faces cross-fade.
@@ -182,6 +224,14 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   --d5fc-rest: scale(1);
   --d5fc-front-out: scale(0.85);
   --d5fc-back-in: scale(1.15);
+
+  // The larger back face is clipped on all edges by half its extra 15%: at the card's edge or just
+  // inside it while it shrinks to size, never outside.
+  --d5fc-travel: 7.5%;
+  --d5fc-clip-top: 1;
+  --d5fc-clip-right: 1;
+  --d5fc-clip-bottom: 1;
+  --d5fc-clip-left: 1;
 }
 
 // Cube: each face turns around an axis half the card's depth behind it, so the card turns like a
@@ -223,11 +273,6 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   container-type: inline-size;
 }
 
-// Zoom: the growing back face stays inside the card.
-.d5fc_flip_card--zoom > .d5fc_flip_card__inner {
-  overflow: hidden;
-}
-
 .d5fc_flip_card__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -236,9 +281,19 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   perspective: var(--d5fc-perspective);
 }
 
-// The sliding back face is clipped to the card while it is outside.
-.d5fc_flip_card--slide > .d5fc_flip_card__inner {
-  overflow: hidden;
+// Slide and zoom: while the back face moves, it is clipped to the card on the edges it crosses
+// (the card's edge, in the face's own moving coordinates: `--d5fc-travel` × `--d5fc-out`). Every
+// other edge, and all of them once the face is in, are open by 100vmax, so shadows show.
+// Zero-specificity effect classes, so the builder's stacked view can turn the clip off.
+:where(.d5fc_flip_card--slide, .d5fc_flip_card--zoom) > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+  $crossed: "(var(--d5fc-travel) * var(--d5fc-out) + (1 - var(--d5fc-released)) * 100vmax)";
+
+  clip-path: inset(
+    calc(var(--d5fc-clip-top) * #{$crossed} - 100vmax)
+    calc(var(--d5fc-clip-right) * #{$crossed} - 100vmax)
+    calc(var(--d5fc-clip-bottom) * #{$crossed} - 100vmax)
+    calc(var(--d5fc-clip-left) * #{$crossed} - 100vmax)
+  );
 }
 
 // `:not(#d5fc)` lifts the specificity above Divi's column gutter rules (e.g.
@@ -253,6 +308,7 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   // The Delay setting holds back the whole transition, the visibility switch included.
   --d5fc-hide-delay: calc(var(--d5fc-delay) + var(--d5fc-duration) * var(--d5fc-hide-at));
   --d5fc-show-delay: calc(var(--d5fc-delay) + var(--d5fc-duration) * var(--d5fc-show-at));
+  --d5fc-end-delay: calc(var(--d5fc-delay) + var(--d5fc-duration));
 
   grid-area: 1 / 1;
   -webkit-backface-visibility: hidden;
@@ -260,7 +316,9 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   transition:
     transform var(--d5fc-duration) var(--d5fc-easing),
     opacity var(--d5fc-duration) var(--d5fc-easing),
-    visibility 0s linear var(--d5fc-hide-delay);
+    visibility 0s linear var(--d5fc-hide-delay),
+    --d5fc-out var(--d5fc-duration) var(--d5fc-easing),
+    --d5fc-released 0s linear;
 }
 
 // Resting state: front visible, back turned, moved or faded away.
@@ -272,10 +330,13 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 }
 
 .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
+  --d5fc-out: 1;
+  --d5fc-released: 0;
+
   transform: var(--d5fc-back-in);
   opacity: var(--d5fc-out-opacity);
   visibility: hidden;
-  transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay);
+  transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay), var(--d5fc-delay), var(--d5fc-delay);
 }
 
 // The back face lies over the front while sliding, fading or zooming. With the slide, a
@@ -514,6 +575,7 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
 // No movement for people who asked for less motion: cross-fade instead.
 @media (prefers-reduced-motion: reduce) {
   .d5fc_flip_card__inner > #{$face} {
+    clip-path: none !important;
     transform: none !important;
     transition:
       opacity var(--d5fc-duration) ease var(--d5fc-delay),

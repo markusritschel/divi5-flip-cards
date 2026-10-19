@@ -14,7 +14,9 @@ test('back face slides in over the front, which stays visible', async () => {
   const card = (i) => page.locator('.d5fc_flip_card').nth(i);
   const faces = (i) => card(i).evaluate((c) => [...c.querySelectorAll('.d5fc_flip_card_face')].map((f) => { const s = getComputedStyle(f); const m = new DOMMatrix(s.transform); return { vis: s.visibility, tx: Math.round(m.m41), ty: Math.round(m.m42), z: s.zIndex }; }));
 
-  assert.equal(await card(0).evaluate((c) => getComputedStyle(c.querySelector('.d5fc_flip_card__inner')).overflow), 'hidden');
+  // The back face clips itself while it moves (front-shadows.mjs); clipping the wrapper would cut
+  // off the faces' shadows.
+  assert.equal(await card(0).evaluate((c) => getComputedStyle(c.querySelector('.d5fc_flip_card__inner')).overflow), 'visible');
   const rest = await faces(0);
   assert.deepEqual(rest.map((f) => f.vis), ['visible', 'hidden']);
   assert.ok(rest[1].tx > 500, 'back face waits outside on the right');

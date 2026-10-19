@@ -12,6 +12,7 @@ $face: '.d5fc_flip_card_face';
 
 .d5fc_flip_card--preview-both > .d5fc_flip_card__inner > #{$face}:nth-child(n of #{$face}) {
   grid-area: auto;
+  clip-path: none;
   opacity: 1;
   transform: none;
   visibility: visible;
@@ -49,10 +50,13 @@ $face: '.d5fc_flip_card_face';
   }
 
   > #{$face}:nth-child(2 of #{$face}) {
+    --d5fc-out: 0;
+    --d5fc-released: 1;
+
     transform: var(--d5fc-rest);
     opacity: 1;
     visibility: visible;
-    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay);
+    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay), var(--d5fc-delay), var(--d5fc-end-delay);
   }
 }
 
@@ -70,10 +74,13 @@ $face: '.d5fc_flip_card_face';
   }
 
   > #{$face}:nth-child(2 of #{$face}) {
+    --d5fc-out: 1;
+    --d5fc-released: 0;
+
     transform: var(--d5fc-back-in);
     opacity: var(--d5fc-out-opacity);
     visibility: hidden;
-    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay);
+    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay), var(--d5fc-delay), var(--d5fc-delay);
   }
 }
 

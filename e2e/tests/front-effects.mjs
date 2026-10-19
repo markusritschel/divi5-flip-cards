@@ -40,8 +40,9 @@ test('fade, zoom and cube move the faces as designed', async () => {
     assert.ok(fade.mid.every((f) => f.op > 0.05 && f.op < 0.95), `fade: both half transparent (${fade.mid.map((f) => f.op)})`);
     assert.deepEqual(fade.end.map((f) => [f.vis, f.op]), [['hidden', 0], ['visible', 1]]);
 
-    // Zoom: the front shrinks away, the back grows in from a little larger, inside the card.
-    assert.equal(await card(1).evaluate((c) => getComputedStyle(c.querySelector('.d5fc_flip_card__inner')).overflow), 'hidden');
+    // Zoom: the front shrinks away, the back grows in from a little larger, inside the card (the
+    // back face clips itself, see front-shadows.mjs).
+    assert.equal(await card(1).evaluate((c) => getComputedStyle(c.querySelector('.d5fc_flip_card__inner')).overflow), 'visible');
     const zoom = await turn(1);
     assert.ok(zoom.mid[0].sx < 1 && zoom.mid[0].sx > 0.85, `zoom: front shrinking (${zoom.mid[0].sx})`);
     assert.ok(zoom.mid[1].sx > 1 && zoom.mid[1].sx < 1.15, `zoom: back growing in (${zoom.mid[1].sx})`);
