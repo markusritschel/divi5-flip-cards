@@ -93,6 +93,8 @@ class FlipCardFace implements DependencyInterface {
 	/**
 	 * Adds the module classes. Mirrors `module-classnames.ts`.
 	 *
+	 * `--scroll`: Design > Sizing height 100% and Overflow Y scroll or auto (desktop values).
+	 *
 	 * @param array $args {
 	 *     @type object $classnamesInstance Classnames instance.
 	 *     @type array  $attrs              Module attributes.
@@ -107,6 +109,12 @@ class FlipCardFace implements DependencyInterface {
 		if ( $text_options_classnames ) {
 			$classnames_instance->add( $text_options_classnames, true );
 		}
+
+		$decoration = $attrs['module']['decoration'] ?? [];
+		$scrolls    = '100%' === ( $decoration['sizing']['desktop']['value']['height'] ?? '' )
+			&& in_array( $decoration['overflow']['desktop']['value']['y'] ?? '', [ 'scroll', 'auto' ], true );
+
+		$classnames_instance->add( 'd5fc_flip_card_face--scroll', $scrolls );
 	}
 
 	/**

@@ -17,6 +17,8 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
   stays visible behind the back face, so a see-through background with a backdrop blur
   (Design > Filters) gives a frosted-glass look; the back face covers the whole card unless its
   Design > Sizing says otherwise.
+- **Long back faces:** set the back face's Design > Sizing height to 100% and its Overflow Y to
+  scroll (or auto): the card keeps the front's height and the back face's content scrolls.
 - **Accessible:** every card has a real flip button for keyboard users, `aria-pressed`, hidden faces
   stay out of the tab order, and reduced motion gives a cross-fade.
 - **Flip button design:** corner, icon, optional text, background and text colors (the flip hint

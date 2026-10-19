@@ -381,6 +381,15 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
   min-height: 0;
 }
 
+// A scrolling back face (`--scroll`: Sizing height 100%, Overflow Y scroll or auto) leaves the
+// card's height to the front: height 0 keeps its content out of the grid row's size, the minimum of
+// 100% stretches it to the row again, and the content scrolls. Not in the stacked builder view,
+// whose rows are sized by their content.
+.d5fc_flip_card:not(.d5fc_flip_card--preview-both) > .d5fc_flip_card__inner > #{$face}--scroll:nth-child(2 of #{$face}) {
+  height: 0;
+  min-height: 100%;
+}
+
 // Only two faces are used. The builder shows the extra ones (see style.scss).
 .d5fc_flip_card__inner > #{$face}:nth-child(n + 3 of #{$face}) {
   display: none !important;
