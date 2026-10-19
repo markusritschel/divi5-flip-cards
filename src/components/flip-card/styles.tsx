@@ -11,7 +11,7 @@ import {
 // Local dependencies.
 import { FlipCardAttrs } from './types';
 import { cssFields } from './custom-css';
-import { durationDeclaration } from './style-declarations';
+import { flipDeclaration } from './style-declarations';
 
 /**
  * Flip Card style components.
@@ -44,8 +44,18 @@ export const ModuleStyles = ({
           {
             componentName: 'divi/common',
             props:         {
-              attr:                attrs?.flip?.advanced?.duration,
-              declarationFunction: durationDeclaration,
+              // The timing settings together, in Divi's breakpoint format (they are not responsive).
+              attr:                {
+                desktop: {
+                  value: {
+                    duration:    attrs?.flip?.advanced?.duration?.desktop?.value,
+                    easing:      attrs?.flip?.advanced?.easing?.desktop?.value,
+                    delay:       attrs?.flip?.advanced?.delay?.desktop?.value,
+                    perspective: attrs?.flip?.advanced?.perspective?.desktop?.value,
+                  },
+                },
+              },
+              declarationFunction: flipDeclaration,
             },
           },
         ],

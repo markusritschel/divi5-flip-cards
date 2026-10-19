@@ -45,6 +45,11 @@ class FlipCard implements DependencyInterface {
 	const EFFECTS = [ 'flip', 'slide', 'fade', 'zoom', 'cube' ];
 
 	/**
+	 * Speed curves (CSS timing functions). Mirrors `EASINGS` in `style-declarations.ts`.
+	 */
+	const EASINGS = [ 'ease-in-out', 'ease', 'ease-in', 'ease-out', 'linear' ];
+
+	/**
 	 * Triggers; each one has a matching `d5fc_flip_card--trigger-{trigger}` class, used by
 	 * module.scss and the front-end script.
 	 */
@@ -278,8 +283,18 @@ class FlipCard implements DependencyInterface {
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'attr'                => $attrs['flip']['advanced']['duration'] ?? [],
-											'declarationFunction' => [ self::class, 'duration_declaration' ],
+											// The timing settings together, in Divi's breakpoint format (they are not responsive).
+											'attr'                => [
+												'desktop' => [
+													'value' => [
+														'duration'    => $attrs['flip']['advanced']['duration']['desktop']['value'] ?? '',
+														'easing'      => $attrs['flip']['advanced']['easing']['desktop']['value'] ?? '',
+														'delay'       => $attrs['flip']['advanced']['delay']['desktop']['value'] ?? '',
+														'perspective' => $attrs['flip']['advanced']['perspective']['desktop']['value'] ?? '',
+													],
+												],
+											],
+											'declarationFunction' => [ self::class, 'flip_declaration' ],
 										],
 									],
 								],
@@ -308,14 +323,16 @@ class FlipCard implements DependencyInterface {
 	}
 
 	/**
-	 * Outputs the flip duration as a CSS custom property. Mirrors `style-declarations.ts`.
+	 * Outputs the flip timing and perspective as CSS custom properties. Mirrors
+	 * `style-declarations.ts`.
 	 *
-	 * @param array $params Declaration parameters; `attrValue` holds the duration, e.g. `600ms`.
+	 * @param array $params Declaration parameters; `attrValue` holds `duration` (e.g. `600ms`),
+	 *                      `easing`, `delay` and `perspective` (e.g. `1200px`).
 	 *
 	 * @return string
 	 */
-	public static function duration_declaration( $params ) {
-		$duration = $params['attrValue'] ?? '';
+	public static function flip_declaration( $params ) {
+		$timing = $params['attrValue'] ?? [];
 
 		$style_declarations = new StyleDeclarations(
 			[
@@ -324,8 +341,21 @@ class FlipCard implements DependencyInterface {
 			]
 		);
 
-		if ( is_string( $duration ) && '' !== $duration ) {
-			$style_declarations->add( '--d5fc-duration', $duration );
+		$properties = [
+			'duration'    => '--d5fc-duration',
+			'easing'      => '--d5fc-easing',
+			'delay'       => '--d5fc-delay',
+			'perspective' => '--d5fc-perspective',
+		];
+
+		foreach ( $properties as $key => $property ) {
+			$value = $timing[ $key ] ?? '';
+
+			if ( ! is_string( $value ) || '' === $value || ( 'easing' === $key && ! in_array( $value, self::EASINGS, true ) ) ) {
+				continue;
+			}
+
+			$style_declarations->add( $property, $value );
 		}
 
 		return $style_declarations->value();

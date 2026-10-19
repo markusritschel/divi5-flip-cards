@@ -25,14 +25,14 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
     transform: var(--d5fc-front-out);
     opacity: var(--d5fc-out-opacity);
     visibility: hidden;
-    transition-delay: 0s, 0s, var(--d5fc-hide-delay);
+    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay);
   }
 
   > .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
     transform: var(--d5fc-rest);
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s, 0s, var(--d5fc-show-delay);
+    transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay);
   }
 
   // Slide: the front stays, so it shows through a see-through back face.
@@ -63,6 +63,7 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 .d5fc_flip_card {
   --d5fc-duration: 600ms;
   --d5fc-easing: ease-in-out;
+  --d5fc-delay: 0ms;
   --d5fc-perspective: 1200px;
 
   // When a face hides and shows, as a fraction of the duration.
@@ -249,8 +250,9 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
 }
 
 .d5fc_flip_card__inner > #{$face} {
-  --d5fc-hide-delay: calc(var(--d5fc-duration) * var(--d5fc-hide-at));
-  --d5fc-show-delay: calc(var(--d5fc-duration) * var(--d5fc-show-at));
+  // The Delay setting holds back the whole transition, the visibility switch included.
+  --d5fc-hide-delay: calc(var(--d5fc-delay) + var(--d5fc-duration) * var(--d5fc-hide-at));
+  --d5fc-show-delay: calc(var(--d5fc-delay) + var(--d5fc-duration) * var(--d5fc-show-at));
 
   grid-area: 1 / 1;
   -webkit-backface-visibility: hidden;
@@ -266,14 +268,14 @@ $hover-flipped: ".d5fc_flip_card.d5fc_flip_card--trigger-hover:not(.d5fc_flip_ca
   transform: var(--d5fc-rest);
   opacity: 1;
   visibility: visible;
-  transition-delay: 0s, 0s, var(--d5fc-show-delay);
+  transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-show-delay);
 }
 
 .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {
   transform: var(--d5fc-back-in);
   opacity: var(--d5fc-out-opacity);
   visibility: hidden;
-  transition-delay: 0s, 0s, var(--d5fc-hide-delay);
+  transition-delay: var(--d5fc-delay), var(--d5fc-delay), var(--d5fc-hide-delay);
 }
 
 // The back face lies over the front while sliding, fading or zooming. With the slide, a
@@ -501,8 +503,8 @@ div:where(.d5fc_flip_card--slide:not(.d5fc_flip_card--preview-both)) > div:where
   .d5fc_flip_card__inner > #{$face} {
     transform: none !important;
     transition:
-      opacity var(--d5fc-duration) ease,
-      visibility 0s linear calc(var(--d5fc-duration) / 2) !important;
+      opacity var(--d5fc-duration) ease var(--d5fc-delay),
+      visibility 0s linear calc(var(--d5fc-delay) + var(--d5fc-duration) / 2) !important;
   }
 
   .d5fc_flip_card__inner > #{$face}:nth-child(2 of #{$face}) {

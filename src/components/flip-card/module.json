@@ -115,6 +115,21 @@
             "desktop": {
               "value": "600ms"
             }
+          },
+          "easing": {
+            "desktop": {
+              "value": "ease-in-out"
+            }
+          },
+          "delay": {
+            "desktop": {
+              "value": "0ms"
+            }
+          },
+          "perspective": {
+            "desktop": {
+              "value": "1200px"
+            }
           }
         }
       },
@@ -398,6 +413,99 @@
                   "max": 3000,
                   "allowedUnits": [
                     "ms"
+                  ]
+                }
+              }
+            }
+          },
+          "easing": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.easing",
+              "label": "Speed Curve",
+              "description": "How the transition speeds up and slows down.",
+              "priority": 32,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/select",
+                "props": {
+                  "options": {
+                    "ease-in-out": {
+                      "label": "Ease-In-Out"
+                    },
+                    "ease": {
+                      "label": "Ease"
+                    },
+                    "ease-in": {
+                      "label": "Ease-In"
+                    },
+                    "ease-out": {
+                      "label": "Ease-Out"
+                    },
+                    "linear": {
+                      "label": "Linear"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delay": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.delay",
+              "label": "Delay",
+              "description": "How long the card waits before it turns, both ways. With the hover trigger, a short delay keeps it from turning when the pointer only passes over it.",
+              "priority": 34,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "min": 0,
+                  "max": 3000,
+                  "allowedUnits": [
+                    "ms"
+                  ]
+                }
+              }
+            }
+          },
+          "perspective": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "contentFlip",
+              "attrName": "flip.advanced.perspective",
+              "label": "Perspective",
+              "description": "How deep the turn looks: the lower the value, the closer the viewer and the stronger the 3D effect.",
+              "priority": 36,
+              "render": true,
+              "features": {
+                "responsive": false,
+                "hover": false,
+                "sticky": false
+              },
+              "component": {
+                "type": "field",
+                "name": "divi/range",
+                "props": {
+                  "min": 200,
+                  "max": 3000,
+                  "allowedUnits": [
+                    "px"
                   ]
                 }
               }

@@ -120,6 +120,7 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   assert.ok(samples.at(-1).includes('--slide') && !samples.at(-1).includes('--play'));
   await page.waitForTimeout(1500);
   assert.match(await cardClasses(app), /preview-both/);
+  assert.equal(await page.getByText('Perspective', { exact: true }).isVisible(), false, 'no perspective for the slide');
 
   // Cube: the builder measures the depth for up/down turns, as the front-end script does.
   await tile(page, 'Cube').click();
@@ -127,6 +128,7 @@ test('effect tiles; choosing one plays the preview once and restores the stacked
   assert.match(await cardClasses(app), /d5fc_flip_card--cube\b/);
   const depth = await app.locator('.d5fc_flip_card__inner').first().evaluate((el) => ({ value: parseFloat(el.style.getPropertyValue('--d5fc-depth-y')), half: el.offsetHeight / 2 }));
   assert.ok(depth.value > 0 && Math.abs(depth.value - depth.half) < 1, `cube depth is half the height (${JSON.stringify(depth)})`);
+  assert.equal(await page.getByText('Perspective', { exact: true }).isVisible(), true, 'perspective for the cube');
   assert.deepEqual(errors, []);
   await page.close();
 });

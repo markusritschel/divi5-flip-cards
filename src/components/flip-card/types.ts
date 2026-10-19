@@ -12,6 +12,8 @@ export type FlipCardDirection = 'left' | 'right' | 'up' | 'down' | 'up-left' | '
 
 export type FlipCardEffect = 'flip' | 'slide' | 'fade' | 'zoom' | 'cube';
 
+export type FlipCardEasing = 'ease-in-out' | 'ease' | 'ease-in' | 'ease-out' | 'linear';
+
 export type FlipCardTrigger = 'hover' | 'click' | 'button';
 
 export type FlipCardButtonPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -67,6 +69,9 @@ export interface FlipCardAttrs extends InternalAttrs {
       effect?: FormatBreakpointStateAttr<FlipCardEffect>;
       direction?: FormatBreakpointStateAttr<FlipCardDirection>;
       duration?: FormatBreakpointStateAttr<string>;
+      easing?: FormatBreakpointStateAttr<FlipCardEasing>;
+      delay?: FormatBreakpointStateAttr<string>;
+      perspective?: FormatBreakpointStateAttr<string>;
     };
   };
 

@@ -141,15 +141,15 @@ const changeInstantly = (card: HTMLElement, change: () => void): void => {
 };
 
 /**
- * Plays the transition once (to the other face and back) when the effect, direction or duration
- * changes, so the choice can be judged right away. Builder only: the `--play` class turns the
+ * Plays the transition once (to the other face and back) when the effect, direction or a timing
+ * setting changes (`settings`, one key for all of them), so the choice can be judged right away. Builder only: the `--play` class turns the
  * card over in module.scss, and the stacked view is suspended while it plays.
  *
  * The new settings first take effect instantly; otherwise the faces would animate from the old
  * effect's position to the new one (e.g. a rotation before a slide). A layout effect, so the
  * browser never paints that in-between state.
  */
-const usePreviewOnChange = (id: string, stacked: boolean, effect: string, direction: string, duration: string): void => {
+const usePreviewOnChange = (id: string, stacked: boolean, settings: string): void => {
   const isFirstRender = useRef(true);
   // The current "Show in Builder" view, read when the preview ends (it may have changed since).
   const stackedRef    = useRef(stacked);
@@ -167,7 +167,8 @@ const usePreviewOnChange = (id: string, stacked: boolean, effect: string, direct
       return undefined;
     }
 
-    const ms       = parseFloat(getComputedStyle(card).getPropertyValue('--d5fc-duration')) || 600;
+    const style    = getComputedStyle(card);
+    const ms       = (parseFloat(style.getPropertyValue('--d5fc-duration')) || 600) + (parseFloat(style.getPropertyValue('--d5fc-delay')) || 0);
     const timers: number[] = [];
     let restored   = false;
 
@@ -194,7 +195,7 @@ const usePreviewOnChange = (id: string, stacked: boolean, effect: string, direct
       timers.forEach((timer) => window.clearTimeout(timer));
       restore();
     };
-  }, [id, effect, direction, duration]);
+  }, [id, settings]);
 };
 
 // Cube: measures the height of the inner wrapper into `--d5fc-depth-y`, as the front-end script does.
@@ -266,12 +267,19 @@ export const FlipCardEdit = (props: FlipCardEditProps): ReactElement => {
 
   useCubeDepth(innerRef, 'cube' === effect);
 
+  const flip = attrs?.flip?.advanced;
+
   usePreviewOnChange(
     id,
     'both' === preview,
-    effect,
-    attrs?.flip?.advanced?.direction?.desktop?.value ?? 'left',
-    attrs?.flip?.advanced?.duration?.desktop?.value ?? '',
+    [
+      effect,
+      flip?.direction?.desktop?.value,
+      flip?.duration?.desktop?.value,
+      flip?.easing?.desktop?.value,
+      flip?.delay?.desktop?.value,
+      flip?.perspective?.desktop?.value,
+    ].join('|'),
   );
 
   return (

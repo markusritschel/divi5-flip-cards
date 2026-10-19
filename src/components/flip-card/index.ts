@@ -50,6 +50,8 @@ export const flipCard: ModuleLibrary.Module.RegisterDefinition<FlipCardAttrs> = 
           flipAdvancedBackleave:  { visible: isClickOrButton },
           // The flip button already shows the card can be turned.
           flipAdvancedHint:       { visible: ({ attrs }) => 'button' !== (attrs as FlipCardAttrs)?.flip?.advanced?.trigger?.desktop?.value },
+          // Only the 3D effects have a perspective.
+          flipAdvancedPerspective: { visible: ({ attrs }) => ['flip', 'cube'].includes((attrs as FlipCardAttrs)?.flip?.advanced?.effect?.desktop?.value ?? 'flip') },
         },
       },
     },
