@@ -52,6 +52,9 @@ e2e/setup.sh /path/to/Divi.zip     # unpacks Divi to ~/.cache/d5fc-e2e, starts h
 cd e2e && pnpm install && pnpm test
 ```
 
+To check other browser engines, install them once (`pnpm exec playwright install firefox webkit`)
+and run e.g. `BROWSER=firefox pnpm test` or `BROWSER=webkit node --test --test-concurrency=1 "tests/front-*.mjs"`.
+
 The site is reachable at <http://localhost:8087> (admin / admin) for trying things by hand.
 Stop it with `docker compose -f e2e/docker-compose.yml down` (add `-v` to delete the site).
 

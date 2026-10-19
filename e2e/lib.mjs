@@ -3,7 +3,7 @@
 import { execFileSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 
 const DIR = fileURLToPath(new URL('.', import.meta.url));
 export const BASE = `http://localhost:${process.env.E2E_PORT || 8087}`;
@@ -27,7 +27,15 @@ export function resetPage(slug) {
 /** Contents of wp-content/debug.log ('' when there is none). */
 export const debugLog = () => inWp('cat wp-content/debug.log 2>/dev/null || true');
 
-export const launch = () => chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+// BROWSER=firefox|webkit runs the tests in Playwright's Firefox or WebKit (Safari's engine);
+// install them once with `pnpm exec playwright install firefox webkit`.
+const engines = { chromium, firefox, webkit };
+
+export const launch = () => {
+  const name = process.env.BROWSER || 'chromium';
+  const options = 'chromium' === name && process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {};
+  return engines[name].launch(options);
+};
 
 /** A browser with a logged-in admin context. */
 export async function start(contextOptions = {}) {
