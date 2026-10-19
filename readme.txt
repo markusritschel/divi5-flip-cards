@@ -4,7 +4,7 @@ Tags: divi, divi 5, flip card, flip box
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.3.1
+Stable tag: 0.4.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,12 @@ always as tall as its taller face.
 Requires Divi 5.
 
 == Changelog ==
+
+= 0.4.0 =
+* New effects: Fade, Zoom and Cube.
+* Diagonal directions (Up Left, Up Right, Down Left, Down Right); Cube flips on diagonals.
+* Speed Curve, Delay and Perspective settings next to Duration.
+* Slide: while the back face covers the front completely, the front's links are out of the tab order.
 
 = 0.3.1 =
 * Slide: the back face's own Design > Filters > Backdrop Blur works now; the extra Backdrop Blur slider is gone.

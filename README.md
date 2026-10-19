@@ -3,7 +3,7 @@
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is always as tall as its taller side.
 
-> **Status:** 0.3.1, in development and tested against Divi 5.15.1 (browser test suite in
+> **Status:** 0.4.0, in development and tested against Divi 5.15.1 (browser test suite in
 > [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
 ## Features
@@ -12,8 +12,9 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
   its own design settings.
 - **Triggers:** hover (tap on touch screens), click anywhere, or a flip button. Click and button
   cards turn back on a second click, with Escape and/or when the pointer leaves.
-- **Effects:** 3D flip or slide-in, in four directions, with adjustable duration. With the slide, the
-  front stays visible behind the back face, so a see-through background with a backdrop blur
+- **Effects:** 3D flip, slide-in, fade, zoom or cube turn, in four straight and four diagonal
+  directions, with duration, speed curve, delay and perspective settings. With the slide, the front
+  stays visible behind the back face, so a see-through background with a backdrop blur
   (Design > Filters) gives a frosted-glass look; the back face covers the whole card unless its
   Design > Sizing says otherwise.
 - **Accessible:** every card has a real flip button for keyboard users, `aria-pressed`, hidden faces
@@ -26,7 +27,7 @@ text, images, buttons, groups, nested rows and more. The card is always as tall 
 - **Ready-made cards** in the Divi Library ("Add From Library"): Icon + Text, Bold Statement,
   Feature List, Call to Action.
 
-Planned: fade, zoom and cube effects, easing and delay settings, diagonal directions, translations.
+Planned: translations.
 
 ## Updates
 

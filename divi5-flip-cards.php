@@ -3,7 +3,7 @@
  * Plugin Name:       Flip Cards for Divi 5
  * Plugin URI:        https://github.com/markusritschel/divi5-flip-cards
  * Description:       A flip card module for Divi 5. Put any Divi modules on the front and the back.
- * Version:           0.3.1
+ * Version:           0.4.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Markus Ritschel
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Direct access forbidden.' );
 }
 
-define( 'D5FC_VERSION', '0.3.1' );
+define( 'D5FC_VERSION', '0.4.0' );
 define( 'D5FC_FILE', __FILE__ );
 define( 'D5FC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'D5FC_URL', plugin_dir_url( __FILE__ ) );

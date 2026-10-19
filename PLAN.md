@@ -31,8 +31,8 @@
 3. **Triggers** (done, needs a manual pass in LocalWP): hover / click anywhere / flip button, touch
    fallback, keyboard (flip button, Enter/Space), `aria-pressed`, small front-end script; how a
    flipped card returns (second click, Escape, pointer leaving); optional flip hint.
-4. **Effects and timing** (started): flip and slide, with a builder preview. Still to do: fade, zoom,
-   cube; easing, delay, perspective; diagonal directions.
+4. **Effects and timing** (done in 0.4.0): flip, slide, fade, zoom and cube, with a builder
+   preview; speed curve, delay, perspective; diagonal directions (cube flips on them).
 5. **Builder usability** (done in 0.2.0): "+" inside empty faces, Elements list in the face
    settings, at most two faces, stacked view, Front/Back switch next to the toolbar, the edited
    module's face shown automatically, tiles for trigger/effect/direction, flip button design
