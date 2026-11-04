@@ -1,4 +1,12 @@
-# Flip Cards for Divi 5
+<h1 align="center">Flip Cards for Divi 5</h1>
+
+<p align="center">
+  <a href="https://github.com/markusritschel/divi5-flip-cards/actions/workflows/build.yml"><img src="https://github.com/markusritschel/divi5-flip-cards/actions/workflows/build.yml/badge.svg?branch=main" alt="Build workflow status" /></a>
+  <a href="https://github.com/markusritschel/divi5-flip-cards/actions/workflows/release.yml"><img src="https://github.com/markusritschel/divi5-flip-cards/actions/workflows/release.yml/badge.svg" alt="Release workflow status" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0--or--later-blue" alt="License: GPL-2.0-or-later" /></a>
+</p>
+
+---
 
 A flip card module for **Divi 5**. Each card has a front and a back, and each side can hold **any Divi modules**:
 text, images, buttons, groups, nested rows and more. The card is as tall as its taller side (or as the
