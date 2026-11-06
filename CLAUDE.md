@@ -55,6 +55,7 @@ The real check is the Visual Builder and the front end in WordPress with Divi 5.
 npm run build
 e2e/setup.sh /path/to/Divi.zip                 # once; again to reset the fixture pages
 cd e2e && pnpm install && pnpm test             # CHROMIUM_PATH=/usr/bin/chromium for a system browser
+cd e2e && node capture.mjs                      # README images -> docs/screenshots/ (~1 min; needs ffmpeg)
 ```
 
 Fixture pages are `e2e/fixtures/<slug>.html` (Divi block markup; every block needs `"builderVersion"`, or Divi's Flexbox migration renders it as legacy block layout). Divi's own "+" buttons ignore clicks in a headless browser, so tests dispatch the mousedown instead.
