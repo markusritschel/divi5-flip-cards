@@ -15,6 +15,10 @@ front, when the back face scrolls).
 > **Status:** 0.5.0, in development and tested against Divi 5.15.1 (browser test suite in
 > [`e2e/`](e2e)). See [`PLAN.md`](PLAN.md) for the roadmap.
 
+<p align="center">
+  <img src="docs/screenshots/flip-cards.gif" width="720" alt="The four ready-made cards flipping in turn: a 3D flip on hover, a slide on hover, a flip on click, and a flip with the More button" />
+</p>
+
 ## Features
 
 - **Flip Card** module with a **Front** and a **Back** face; each face holds any Divi modules and has
@@ -38,6 +42,12 @@ front, when the back face scrolls).
   Elements list for filling faces; tiles for trigger, effect and direction with a live preview.
 - **Ready-made cards** in the Divi Library ("Add From Library"): Icon + Text, Bold Statement,
   Feature List, Call to Action.
+
+<p align="center">
+  <img src="docs/screenshots/builder-flip.png" width="280" align="top" alt="Builder sidebar, Content > Flip: Show In Builder, Trigger tiles (hover, click, button), Show Flip Hint, Effect tiles (flip, slide, fade, zoom, cube), Direction tiles, duration, speed curve, delay, perspective" />
+  &nbsp;
+  <img src="docs/screenshots/builder-flip-button.png" width="280" align="top" alt="Builder sidebar, Design > Flip Button: position, button text, icon picker, background color" />
+</p>
 
 Planned: translations.
 
